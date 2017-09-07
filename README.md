@@ -11,3 +11,5 @@ Built with:
 * [Django](https://docs.djangoproject.com/en/1.11/topics/install/) using `pip install Django`
 
 
+## Notes
+* [Django Tutorial](https://docs.djangoproject.com/en/1.11/intro/)
