@@ -1,0 +1,6 @@
+db_engine = '<DB ENGINE>'
+db_name = '<DB NAME>'
+db_user = '<DB USERNAME>'
+db_password = '<DB PASSWORD>'
+db_host = '<DB HOST ADDRESS>'
+db_port = '<DB PORT #>'
