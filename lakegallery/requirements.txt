@@ -1,0 +1,6 @@
+Django==1.11.4
+django-geojson==2.10.0
+django-leaflet==0.22.0
+psycopg2==2.7.3.1
+pytz==2017.2
+six==1.10.0

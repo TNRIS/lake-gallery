@@ -1,0 +1,20 @@
+{% load leaflet_tags %}
+
+<html>
+  <head>
+    {% leaflet_js %}
+    {% leaflet_css %}
+  </head>
+  <body>
+    <h1>World Borders</h1>
+    {% leaflet_map "main" callback="main_map_init" %}
+
+    <script type="text/javascript">
+        function main_map_init (map, options) {
+            // Use Leaflet API here
+            // var shp = {{ data }};
+            // console.log(shp);
+        }
+    </script>
+  </body>
+</html>
