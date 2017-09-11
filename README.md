@@ -14,7 +14,9 @@ Install:
 
 1. cd into the secrets folder of the repo `cd ./lakegallery/lakegallery/secrets/`
 2. place a copy `vault-password.txt` into the secrets folder of the repo (You might need to change spaces to newlines) and run `make pull-secrets`
-  or
+  
+or
+
 2. make a copy of the secrets-sample.py, remove the '-sample' from the name, and manually fill in the values
 
 
