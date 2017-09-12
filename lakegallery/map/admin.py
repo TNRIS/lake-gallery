@@ -1,3 +1,5 @@
-from django.contrib import admin
+from django.contrib.gis import admin
+from .models import MajorReservoirs, RWPAs
 
-# Register your models here.
+admin.site.register(MajorReservoirs, admin.OSMGeoAdmin)
+admin.site.register(RWPAs, admin.OSMGeoAdmin)

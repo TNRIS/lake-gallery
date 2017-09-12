@@ -1,6 +1,10 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from .models import MajorReservoirs, RWPAs
 
 
 def index(request):
-    return HttpResponse("map!")
+    # data = WorldBorder.objects.filter(name='United States')
+    # print(data)
+    # context = {'q': data[0]}
+    # return render(request, 'world/index.html', context)
+    return render(request, 'map/index.html')

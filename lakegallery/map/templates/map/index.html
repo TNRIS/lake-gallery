@@ -1,0 +1,37 @@
+{% load leaflet_tags %}
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'map/style.css' %}" />
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Texas Lake Gallery</title>
+    {% leaflet_js %}
+    {% leaflet_css %}
+    <script
+	  src="https://code.jquery.com/jquery-3.2.1.min.js"
+	  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	  crossorigin="anonymous"></script>
+  </head>
+  <body>
+    {% leaflet_map "main" callback="main_map_init" %}
+
+    <script type="text/javascript">
+        function main_map_init (map, options) {
+          console.log(options);
+        	var layer = L.geoJson();
+			    map.addLayer(layer);
+
+        	var dataurl = '{% url "map:rwpas" %}';
+        	console.log(dataurl);
+
+    			$.getJSON(dataurl, function (data) {
+    			    layer.addData(data);
+    			});
+        }
+    </script>
+  </body>
+</html>
