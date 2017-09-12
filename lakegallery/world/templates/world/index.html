@@ -4,6 +4,10 @@
   <head>
     {% leaflet_js %}
     {% leaflet_css %}
+    <script
+	  src="https://code.jquery.com/jquery-3.2.1.min.js"
+	  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	  crossorigin="anonymous"></script>
   </head>
   <body>
     <h1>World Borders</h1>
@@ -11,9 +15,15 @@
 
     <script type="text/javascript">
         function main_map_init (map, options) {
-            // Use Leaflet API here
-            // var shp = {{ data }};
-            // console.log(shp);
+        	var layer = L.geoJson();
+			map.addLayer(layer);
+
+        	var dataurl = '{% url "world:data" %}';
+        	console.log(dataurl);
+
+			$.getJSON(dataurl, function (data) {
+			    layer.addData(data);
+			});
         }
     </script>
   </body>
