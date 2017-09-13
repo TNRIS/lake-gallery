@@ -27,4 +27,4 @@ class RWPAs(gismodels.Model):
     objects = gismodels.GeoManager()
 
     def __unicode__(self):
-        return self.name
+        return self.reg_name

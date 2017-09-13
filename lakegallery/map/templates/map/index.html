@@ -21,7 +21,6 @@
 
     <script type="text/javascript">
         function main_map_init (map, options) {
-          console.log(options);
         	var layer = L.geoJson();
 			    map.addLayer(layer);
 
@@ -29,6 +28,7 @@
         	console.log(dataurl);
 
     			$.getJSON(dataurl, function (data) {
+              console.log(data);
     			    layer.addData(data);
     			});
         }
