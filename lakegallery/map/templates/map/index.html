@@ -21,10 +21,23 @@
 
     <script type="text/javascript">
         function main_map_init (map, options) {
-        	var dataurl = '{% url "map:rwpas" %}';
+
+          function focusRegion (e) {
+            var regionLink = '/' + e.target.feature.properties.letter;
+            window.history.pushState({}, "Region", regionLink);;
+          }
+
+        	var dataurl = "{{ url }}";
+          console.log(dataurl);
 
     			$.getJSON(dataurl, function (data) {
-            L.geoJson(data).bindTooltip(function (layer) {
+            L.geoJson(data, {
+              onEachFeature: function (feature, layer) {
+                layer.on({
+                  click: focusRegion
+                });
+              }
+            }).bindTooltip(function (layer) {
                 var content = "<h5>" + layer.feature.properties.reg_name + "</h5>";
                 return content;
               }, {sticky: true} 

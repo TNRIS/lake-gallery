@@ -1,10 +1,22 @@
 from django.shortcuts import render
+from django.urls import reverse
+from django.core import serializers
 from .models import MajorReservoirs, RWPAs
 
 
-def index(request):
-    # data = WorldBorder.objects.filter(name='United States')
+def index(request, letter="", lake=""):
+    # data = MajorReservoirs.objects.filter(region='B')
     # print(data)
-    # context = {'q': data[0]}
-    # return render(request, 'world/index.html', context)
-    return render(request, 'map/index.html')
+    # json = serializers.serialize('json', data)
+    # print(json)
+
+    print(reverse('map:rwpas'))
+
+    if letter == "":
+        url = reverse('map:rwpas')
+    else:
+        url = reverse('map:majorres')
+
+    context = {'url': url}
+
+    return render(request, 'map/index.html', context)

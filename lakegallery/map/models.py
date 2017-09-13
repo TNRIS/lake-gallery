@@ -13,7 +13,7 @@ class MajorReservoirs(gismodels.Model):
     objects = gismodels.GeoManager()
 
     def __unicode__(self):
-        return self.name
+        return self.res_name
 
 
 class RWPAs(gismodels.Model):
