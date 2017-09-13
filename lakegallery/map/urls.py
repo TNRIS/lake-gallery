@@ -10,7 +10,7 @@ from . import views
 class MapLayer(GeoJSONLayerView):
     # Options
     # precision = 4   # float
-    # simplify = 0.9  # generalization
+    simplify = 0.9  # generalization
     geometry_field = 'geom'
 
 app_name = 'map'
