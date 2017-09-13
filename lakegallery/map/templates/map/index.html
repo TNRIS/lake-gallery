@@ -21,15 +21,15 @@
 
     <script type="text/javascript">
         function main_map_init (map, options) {
-        	var layer = L.geoJson();
-			    map.addLayer(layer);
-
         	var dataurl = '{% url "map:rwpas" %}';
-        	console.log(dataurl);
 
     			$.getJSON(dataurl, function (data) {
-              console.log(data);
-    			    layer.addData(data);
+            L.geoJson(data).bindTooltip(function (layer) {
+                var content = "<h5>" + layer.feature.properties.reg_name + "</h5>";
+                return content;
+              }, {sticky: true} 
+            ).addTo(map);
+
     			});
         }
     </script>
