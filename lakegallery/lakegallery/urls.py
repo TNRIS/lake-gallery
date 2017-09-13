@@ -22,6 +22,8 @@ from api import views
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
+router.register(r'reservoirs', views.ReservoirsViewSet)
+router.register(r'rwpas', views.RWPAsViewSet)
 
 urlpatterns = [
     url(r'^', include('map.urls')),
