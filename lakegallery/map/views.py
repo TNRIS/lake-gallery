@@ -1,9 +1,7 @@
 from django.shortcuts import render
-from django.urls import reverse
-from django.core import serializers
-from .models import MajorReservoirs, RWPAs
-
-from lakegallery.secrets import secrets
+# from django.urls import reverse
+# from django.core import serializers
+# from .models import MajorReservoirs, RWPAs
 
 
 def index(request, letter="", lake=""):
@@ -14,9 +12,11 @@ def index(request, letter="", lake=""):
 
     # print(reverse('map:rwpas'))
 
-    # if letter == "":
-    #     url = reverse('map:rwpas')
-    # else:
-    #     url = reverse('map:majorres')
+    if letter == "":
+        layer = 'rwpas'
+    else:
+        layer = 'reservoirs'
 
-    return render(request, 'map/index.html')
+    context = {'layer': layer}
+
+    return render(request, 'map/index.html', context)
