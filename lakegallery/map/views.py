@@ -3,6 +3,8 @@ from django.urls import reverse
 from django.core import serializers
 from .models import MajorReservoirs, RWPAs
 
+from lakegallery.secrets import secrets
+
 
 def index(request, letter="", lake=""):
     # data = MajorReservoirs.objects.filter(region='B')
@@ -10,13 +12,11 @@ def index(request, letter="", lake=""):
     # json = serializers.serialize('json', data)
     # print(json)
 
-    print(reverse('map:rwpas'))
+    # print(reverse('map:rwpas'))
 
-    if letter == "":
-        url = reverse('map:rwpas')
-    else:
-        url = reverse('map:majorres')
+    # if letter == "":
+    #     url = reverse('map:rwpas')
+    # else:
+    #     url = reverse('map:majorres')
 
-    context = {'url': url}
-
-    return render(request, 'map/index.html', context)
+    return render(request, 'map/index.html')

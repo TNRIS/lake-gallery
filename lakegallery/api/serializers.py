@@ -16,13 +16,13 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'name')
 
 
-class ReservoirsSerializer(serializers.HyperlinkedModelSerializer):
+class ReservoirsSerializer(serializers.ModelSerializer):
     class Meta:
         model = MajorReservoirs
         fields = ('res_lbl', 'region')
 
 
-class RWPAsSerializer(serializers.HyperlinkedModelSerializer):
+class RWPAsSerializer(serializers.ModelSerializer):
     class Meta:
         model = RWPAs
         fields = ('reg_name', 'letter')

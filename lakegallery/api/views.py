@@ -3,6 +3,8 @@ from rest_framework import viewsets
 from .serializers import (UserSerializer, GroupSerializer,
                           RWPAsSerializer, ReservoirsSerializer)
 
+from rest_framework_extensions.mixins import NestedViewSetMixin
+
 from map.models import MajorReservoirs, RWPAs
 
 
@@ -22,7 +24,7 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
 
 
-class ReservoirsViewSet(viewsets.ModelViewSet):
+class ReservoirsViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
     """
     API endpoint that allows MajorReservoirs to be viewed or edited.
     """
@@ -30,7 +32,7 @@ class ReservoirsViewSet(viewsets.ModelViewSet):
     serializer_class = ReservoirsSerializer
 
 
-class RWPAsViewSet(viewsets.ModelViewSet):
+class RWPAsViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
     """
     API endpoint that allows RWPAs to be viewed or edited.
     """
