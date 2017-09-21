@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
+from rest_framework_gis.serializers import GeoFeatureModelSerializer
 
 from map.models import MajorReservoirs, RWPAs
 
@@ -22,7 +23,9 @@ class ReservoirsSerializer(serializers.ModelSerializer):
         fields = ('res_lbl', 'region')
 
 
-class RWPAsSerializer(serializers.ModelSerializer):
+class RWPAsSerializer(GeoFeatureModelSerializer):
     class Meta:
         model = RWPAs
+        geo_field = 'geom'
+        auto_bbox = True
         fields = ('reg_name', 'letter')
