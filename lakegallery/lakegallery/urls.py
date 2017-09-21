@@ -13,9 +13,15 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import include, url
+from django.conf.urls import (include, url, handler400, handler403,
+                              handler404, handler500)
 from django.contrib.gis import admin
 from api.api import router
+
+handler400 = 'map.views.bad_request'
+handler403 = 'map.views.permission_denied'
+handler404 = 'map.views.page_not_found'
+handler500 = 'map.views.server_error'
 
 urlpatterns = [
     url(r'^', include('map.urls')),
