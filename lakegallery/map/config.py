@@ -8,7 +8,7 @@ layers = {
     "reservoirs": {
         "table_name": "reservoirs",
         "label_field": "res_lbl",
-        "carto_css": '#layer {polygon-fill: #74b6f7;polygon-opacity: 1;}#layer::outline {line-color: #FFF;line-opacity: 0.5;}',
+        "carto_css": '#layer {polygon-fill: #007ffc;polygon-opacity: 1;}#layer::outline {line-color: #FFF;line-opacity: 0.5;}',
         "interactivity": ["region", "res_lbl"]
     }
 }

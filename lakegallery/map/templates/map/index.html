@@ -51,6 +51,18 @@
             var sql = `select * from ${config.table_name}`;
             if (regionLetter) {
               sql = `select * from ${config.table_name} where region= '${regionLetter}'`;
+
+              $.ajax({
+                crossOrigin: true,
+                type: 'GET',
+                dataType: 'json',
+                contentType: 'application/json',
+                url: `/api/rwpas/${regionLetter}/region`,
+                success: function(data) {
+                  var bb = data.results.features[0].bbox;
+                  map.flyToBounds([[bb[1],bb[0]],[bb[3],bb[2]]]);
+                }
+              })
             }
 
             var mapconfig = {
@@ -99,8 +111,12 @@
               }
             })
           }
-          
-          getTileUrls(rwpasConfig);
+
+          if ("{{ region }}" == "") {
+            getTileUrls(rwpasConfig);
+          } else {
+            getTileUrls(resConfig, "{{ region }}");
+          }
         }
     </script> 
   </body>
