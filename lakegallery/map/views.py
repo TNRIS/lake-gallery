@@ -7,12 +7,12 @@ import json
 
 
 def index(request, letter=""):
-    if letter == "":
-        layer = layers['rwpas']
-    else:
-        layer = layers['reservoirs']
-    print(letter)
+    # if letter == "":
+    #     layer = layers['rwpas']
+    # else:
+    #     layer = layers['reservoirs']
+    # print(letter)
     # print(json.loads(json.dumps(layer)))
-    context = {'layer': layer}
+    context = {'layers': layers}
 
     return render(request, 'map/index.html', context)

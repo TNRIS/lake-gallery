@@ -26,10 +26,32 @@
 
     <script type="text/javascript">
         function main_map_init (map, options) {
+          var account = 'tnris-flood'
+          var tooltip;
+          var tileLayer;
+          var utfGrid;
 
-          function getTileUrls (layerName) {
-            var css = "{{ layer.carto_css }}".replace(/&quot;/g, '"');
-            var interactivity = JSON.parse("{{ layer.interactivity }}".replace(/&#39;/g, '"'));
+          var rwpasConfig = JSON.parse('{{ layers.rwpas }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
+          var resConfig = JSON.parse('{{ layers.reservoirs }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
+
+          function focusRegion (regionLetter) {
+            var regionLink = '/' + regionLetter;
+            window.history.pushState({}, "Region", regionLink);
+            map.eachLayer(function (layer) {
+              map.removeLayer(tileLayer);
+              map.removeLayer(utfGrid);
+              getTileUrls(resConfig, regionLetter);
+            });
+          }
+
+          function getTileUrls (config, regionLetter) {
+            var css = config.carto_css;
+            var interactivity = config.interactivity;
+            
+            var sql = `select * from ${config.table_name}`;
+            if (regionLetter) {
+              sql = `select * from ${config.table_name} where region= '${regionLetter}'`;
+            }
 
             var mapconfig = {
               "version": "1.3.1",
@@ -38,14 +60,11 @@
                 "options": {
                   "cartocss_version": "2.1.1",
                   "cartocss": css,
-                  "sql": `select * from ${layerName}`,
+                  "sql": sql,
                   "interactivity": interactivity
                 }
               }]
             }
-
-            var account = 'tnris-flood'
-            var tooltip;
 
             $.ajax({
               crossOrigin: true,
@@ -56,46 +75,32 @@
               data: JSON.stringify(mapconfig),
               success: function(data) {
                 var url = `https://${account}.carto.com/api/v1/map/` + data.layergroupid + '/{z}/{x}/{y}.png'
-                L.tileLayer(url).addTo(map);
+                tileLayer = new L.tileLayer(url);
+                tileLayer.addTo(map);
 
                 var gridUrl = `https://${account}.carto.com/api/v1/map/` + data.layergroupid + '/0/{z}/{x}/{y}.grid.json'
-                var utfGrid = new L.utfGrid(gridUrl);
+                utfGrid = new L.utfGrid(gridUrl);
                 utfGrid.on('mouseover', function (e) {
                   $('.leaflet-container').css('cursor', 'pointer');
-                  utfGrid.setTooltipContent(e.data["{{ layer.label_field }}"]);
+                  utfGrid.setTooltipContent(e.data[config.label_field]);
                 });
                 utfGrid.on('mouseout', function (e) {
                   $('.leaflet-container').css('cursor', '');
+                });
+                utfGrid.on('click', function (e) {
+                  if (e.data.letter) {
+                    focusRegion(e.data.letter);
+                  }
+                  else if (e.data.res_lbl) {
+                    // handle jump to reservoir story here
+                  }
                 });
                 utfGrid.bindTooltip("", {sticky: true}).addTo(map);
               }
             })
           }
           
-          getTileUrls("{{ layer.table_name }}");
-
-       //    function focusRegion (e) {
-       //      var regionLink = '/' + e.target.feature.properties.letter;
-       //      window.history.pushState({}, "Region", regionLink);;
-       //    }
-
-       //  	var dataurl = "{{ url }}";
-       //    console.log(dataurl);
-
-    			// $.getJSON(dataurl, function (data) {
-       //      L.geoJson(data, {
-       //        onEachFeature: function (feature, layer) {
-       //          layer.on({
-       //            click: focusRegion
-       //          });
-       //        }
-       //      }).bindTooltip(function (layer) {
-       //          var content = "<h5>" + layer.feature.properties.reg_name + "</h5>";
-       //          return content;
-       //        }, {sticky: true} 
-       //      ).addTo(map);
-
-    			// });
+          getTileUrls(rwpasConfig);
         }
     </script> 
   </body>
