@@ -7,13 +7,17 @@ class MajorReservoirs(gismodels.Model):
     type = models.CharField(max_length=50)
     status = models.CharField(max_length=50)
     res_lbl = models.CharField(max_length=100)
-    region = models.CharField(max_length=50)
+    region = models.CharField(max_length=1)
 
     geom = gismodels.MultiPolygonField(srid=4326)
     objects = gismodels.GeoManager()
 
-    def __unicode__(self):
-        return self.res_name
+    def __str__(self):
+        return self.res_lbl
+
+    class Meta:
+        verbose_name = "Major Reservoir"
+        verbose_name_plural = "Major Reservoirs"
 
 
 class RWPAs(gismodels.Model):
@@ -26,5 +30,9 @@ class RWPAs(gismodels.Model):
     geom = gismodels.MultiPolygonField(srid=4326)
     objects = gismodels.GeoManager()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.reg_name
+
+    class Meta:
+        verbose_name = "RWPA"
+        verbose_name_plural = "RWPAs"
