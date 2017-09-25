@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .config import layers
 
 from django.shortcuts import render_to_response
@@ -8,6 +8,11 @@ from django.template import RequestContext
 def index(request, letter=""):
     context = {'layers': layers, 'region': letter}
     return render(request, 'map/index.html', context)
+
+
+def redirect_region(request, letter):
+    uppercase = letter.upper()
+    return redirect('/' + uppercase)
 
 
 def bad_request(request):
