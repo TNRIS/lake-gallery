@@ -1,5 +1,5 @@
 from django.test import TestCase
-
+from django.urls import reverse
 from .models import MajorReservoirs, RWPAs
 import string
 
@@ -81,3 +81,29 @@ class URLTests(TestCase):
         for l in bad_letters:
             response = self.client.get('/' + l)
             self.assertEqual(response.status_code, 404)
+
+
+class ViewTests(TestCase):
+
+    def test_index_context(self):
+        """
+        Test the layer config object in context
+        """
+        response = self.client.get(reverse('map:index'))
+        config = response.context['layers']
+        check_layers = ['rwpas', 'reservoirs']
+        check_keys = ['table_name', 'label_field', 'carto_css',
+                      'interactivity']
+
+        # check that the 2 layers are in config with proper keys
+        for layer in check_layers:
+            self.assertIs(layer in config.keys(), True)
+            # check the keys of those 2 layers
+            layer_info = config[layer]
+            for key in check_keys:
+                self.assertIs(key in layer_info.keys(), True)
+            # check the value type for each key
+            self.assertIs(isinstance(layer_info['table_name'], str), True)
+            self.assertIs(isinstance(layer_info['label_field'], str), True)
+            self.assertIs(isinstance(layer_info['carto_css'], str), True)
+            self.assertIs(isinstance(layer_info['interactivity'], list), True)

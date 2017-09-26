@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .config import layers
 
 from django.shortcuts import render_to_response
-from django.template import RequestContext
+# from django.template import RequestContext
 
 
 def index(request, letter=""):
