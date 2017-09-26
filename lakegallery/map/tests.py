@@ -107,3 +107,22 @@ class ViewTests(TestCase):
             self.assertIs(isinstance(layer_info['label_field'], str), True)
             self.assertIs(isinstance(layer_info['carto_css'], str), True)
             self.assertIs(isinstance(layer_info['interactivity'], list), True)
+            # verify 2 layer fields: 1 for region letter, 1 for name
+            self.assertEqual(len(layer_info['interactivity']), 2)
+
+    def test_index_templates(self):
+        """
+        Test the index view templates include required leaflet
+        """
+        leaflet_templates = ['leaflet/js.html', 'leaflet/css.html',
+                             'leaflet/_leaflet_map.html']
+        index_template = 'map/index.html'
+
+        response = self.client.get('/')
+        template_names = []
+        for t in response.templates:
+            template_names.append(t.name)
+
+        for lt in leaflet_templates:
+            self.assertIs(lt in template_names, True)
+        self.assertIs(index_template in template_names, True)
