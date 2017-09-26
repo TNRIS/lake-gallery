@@ -12,23 +12,17 @@
             // var interactivity = config.interactivity;
             var sql = `select * from ${config.table_name} where res_lbl = '${lakeName}'`;
 
-            // if (regionLetter) {
-            //   sql = `select * from ${config.table_name} where region= '${regionLetter}'`;
-
-            //   $.ajax({
-            //     crossOrigin: true,
-            //     type: 'GET',
-            //     dataType: 'json',
-            //     contentType: 'application/json',
-            //     url: `/api/rwpas/${regionLetter}/region`,
-            //     success: function(data) {
-            //       var bb = data.results.features[0].bbox;
-            //       map.flyToBounds([[bb[1],bb[0]],[bb[3],bb[2]]]);
-            //     }
-            //   })
-
-
-            // }
+            $.ajax({
+              crossOrigin: true,
+              type: 'GET',
+              dataType: 'json',
+              contentType: 'application/json',
+              url: `/api/reservoirs/${lakeName}/name`,
+              success: function(data) {
+                var bb = data.results.features[0].bbox;
+                map.flyToBounds([[bb[1],bb[0]],[bb[3],bb[2]]]);
+              }
+            })
 
             var mapconfig = {
               "version": "1.3.1",
