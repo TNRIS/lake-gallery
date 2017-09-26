@@ -15,6 +15,11 @@ def redirect_region(request, letter):
     return redirect('/' + uppercase)
 
 
+def story(request, letter, lake):
+    context = {'layer': layers['reservoirs'], 'lake': lake}
+    return render(request, 'map/story.html', context)
+
+
 def bad_request(request):
     context = {'code': 400, 'text': 'Bad Request'}
     response = render_to_response('map/error.html', context)
