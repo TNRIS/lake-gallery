@@ -1,5 +1,8 @@
 {% extends 'map/base.html' %}
+{% load leaflet_tags %}
+
 {% block content %}
+    {% leaflet_map "main" callback="main_map_init" %}
     <script type="text/javascript">
         function main_map_init (map, options) {
           var account = 'tnris-flood'
@@ -106,13 +109,15 @@
                   $('.leaflet-container').css('cursor', '');
                 });
                 utfGrid.on('click', function (e) {
-                  if (e.data.letter) {
-                    focusRegion(e.data.letter);
-                  }
-                  else if (e.data.res_lbl) {
-                    // handle jump to reservoir story here
-                    var name = encodeURIComponent(e.data.res_lbl);
-                    window.location.href = `/${e.data.region}/${name}`
+                  if (e.data) {
+                    if (e.data.letter != null) {
+                      focusRegion(e.data.letter);
+                    }
+                    else if (e.data.res_lbl) {
+                      // handle jump to reservoir story here
+                      var name = encodeURIComponent(e.data.res_lbl);
+                      window.location.href = `/${e.data.region}/${name}`
+                    }
                   }
                 });
                 // utfGrid.bindTooltip("", {sticky: true}).addTo(map);

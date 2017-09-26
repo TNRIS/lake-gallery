@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'world',
     'leaflet',
     'djgeojson',
+    'bootstrap4',
 ]
 
 MIDDLEWARE = [

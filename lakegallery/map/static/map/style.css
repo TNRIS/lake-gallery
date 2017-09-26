@@ -1,3 +1,9 @@
+
+.navbar {
+	background-color: #011355;
+}
+
 .leaflet-container {
-    height: 100%;
+    height: calc(100% - 56px);
+    width: 100%;
 }

@@ -1,5 +1,8 @@
 {% extends 'map/base.html' %}
+{% load leaflet_tags %}
+
 {% block content %}
+    {% leaflet_map "main" callback="main_map_init" %}
     <script type="text/javascript">
         function main_map_init (map, options) {
           var account = 'tnris-flood'
