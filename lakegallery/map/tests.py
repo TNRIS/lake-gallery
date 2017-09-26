@@ -93,7 +93,7 @@ class ViewTests(TestCase):
         config = response.context['layers']
         check_layers = ['rwpas', 'reservoirs']
         check_keys = ['table_name', 'label_field', 'carto_css',
-                      'interactivity']
+                      'carto_lbl', 'interactivity']
 
         # check that the 2 layers are in config with proper keys
         for layer in check_layers:
@@ -106,6 +106,7 @@ class ViewTests(TestCase):
             self.assertIs(isinstance(layer_info['table_name'], str), True)
             self.assertIs(isinstance(layer_info['label_field'], str), True)
             self.assertIs(isinstance(layer_info['carto_css'], str), True)
+            self.assertIs(isinstance(layer_info['carto_lbl'], str), True)
             self.assertIs(isinstance(layer_info['interactivity'], list), True)
             # verify 2 layer fields: 1 for region letter, 1 for name
             self.assertEqual(len(layer_info['interactivity']), 2)

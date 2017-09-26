@@ -23,6 +23,7 @@
 
           function getTileUrls (config, regionLetter) {
             var css = config.carto_css;
+            css += config.carto_lbl;
             var interactivity = config.interactivity;
             
             var sql = `select * from ${config.table_name}`;
