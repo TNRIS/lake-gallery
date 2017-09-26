@@ -152,5 +152,6 @@ LEAFLET_CONFIG = {
             'js': 'map/leaflet_utfgrid/L.UTFGrid-min.js',
             'auto-include': True
         }
-    }
+    },
+    'TILES': 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}@2x.png'
 }
