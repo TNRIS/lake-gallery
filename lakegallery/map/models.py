@@ -52,6 +52,12 @@ class HistoricalAerialLinks(models.Model):
     def __str__(self):
         return self.link
 
+    def as_dict(self):
+        return {
+            'link': self.link,
+            'year': self.year
+        }
+
     class Meta:
         verbose_name = "Historical Aerial Link"
         verbose_name_plural = "Historical Aerial Links"

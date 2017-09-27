@@ -3,6 +3,7 @@ from .config import layers
 
 from django.shortcuts import render_to_response
 # from django.template import RequestContext
+from .models import MajorReservoirs, HistoricalAerialLinks
 
 
 def index(request, letter=""):
@@ -16,7 +17,10 @@ def redirect_region(request, letter):
 
 
 def story(request, letter, lake):
-    context = {'layer': layers['reservoirs'], 'lake': lake}
+    r = MajorReservoirs.objects.get(res_lbl=lake)
+    l = HistoricalAerialLinks.objects.filter(lake=r)
+    links = [obj.as_dict() for obj in l]
+    context = {'layer': layers['reservoirs'], 'lake': lake, 'links': links}
     return render(request, 'map/story.html', context)
 
 

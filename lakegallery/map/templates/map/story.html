@@ -28,6 +28,8 @@
               var tileLayer;
 
               var resConfig = JSON.parse('{{ layer }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
+              var linkConfig = JSON.parse('{{ links }}'.replace(/&#39;/g, '"'));
+              console.log(linkConfig[0]['link']);
 
               function getTileUrls (config, lakeName) {
                 var css = config.carto_css;
@@ -71,9 +73,15 @@
                     tileLayer = new L.tileLayer(url);
                     tileLayer.addTo(map);
                     layerController.addOverlay(tileLayer, '{{ lake }}');
+
+
                   }
                 })
               }
+
+              var historicalLayer = L.esri.tiledMapLayer({'url':linkConfig[3]['link']}).addTo(map);
+              L.control.sideBySide(basemaps['Google Imagery'], historicalLayer).addTo(map);
+
 
               getTileUrls(resConfig, "{{ lake }}");
               console.log("{{ lake }}");

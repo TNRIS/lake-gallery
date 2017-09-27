@@ -152,6 +152,14 @@ LEAFLET_CONFIG = {
         'UTFGRID': {
             'js': 'map/leaflet_utfgrid/L.UTFGrid-min.js',
             'auto-include': True
+        },
+        'SIDEBYSIDE': {
+            'js': 'map/leaflet-side-by-side.js',
+            'auto-include': True
+        },
+        'ESRI': {
+            'js': 'map/esri/esri-leaflet.js',
+            'auto-include': True
         }
     },
     'TILES': []

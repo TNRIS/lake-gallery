@@ -28,7 +28,7 @@ class ReservoirsViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
     """
     API endpoint that allows MajorReservoirs to be viewed or edited.
     """
-    queryset = MajorReservoirs.objects.all()
+    queryset = MajorReservoirs.objects.get_queryset().order_by('res_lbl')
     serializer_class = ReservoirsSerializer
 
 
