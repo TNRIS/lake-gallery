@@ -1,6 +1,11 @@
 from django.db import models
 from django.contrib.gis.db import models as gismodels
 
+import datetime
+YEAR_CHOICES = []
+for r in range(1920, (datetime.datetime.now().year+1)):
+    YEAR_CHOICES.append((r, r))
+
 
 class MajorReservoirs(gismodels.Model):
     res_name = models.CharField(max_length=50)
@@ -36,3 +41,17 @@ class RWPAs(gismodels.Model):
     class Meta:
         verbose_name = "RWPA"
         verbose_name_plural = "RWPAs"
+
+
+class HistoricalAerialLinks(models.Model):
+    link = models.URLField()
+    year = models.IntegerField(choices=YEAR_CHOICES,
+                               default=datetime.datetime.now().year)
+    lake = models.ForeignKey(MajorReservoirs)
+
+    def __str__(self):
+        return self.link
+
+    class Meta:
+        verbose_name = "Historical Aerial Link"
+        verbose_name_plural = "Historical Aerial Links"

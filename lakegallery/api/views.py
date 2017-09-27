@@ -36,5 +36,5 @@ class RWPAsViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
     """
     API endpoint that allows RWPAs to be viewed or edited.
     """
-    queryset = RWPAs.objects.all()
+    queryset = RWPAs.objects.get_queryset().order_by('letter')
     serializer_class = RWPAsSerializer

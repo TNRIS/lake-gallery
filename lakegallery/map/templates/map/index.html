@@ -5,6 +5,7 @@
     {% leaflet_map "main" callback="main_map_init" %}
     <script type="text/javascript">
         function main_map_init (map, options) {
+          L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}@2x.png').addTo(map);
           var account = 'tnris-flood'
           // var tooltip;
           var tileLayer;
