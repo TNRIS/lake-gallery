@@ -50,15 +50,26 @@
         <ul class="navbar-nav ml-auto">
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Regions
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+              {% for r in header_regions %}
+                <a class="dropdown-item" href="/{{ r.letter }}">{{ r.name }}</a>
+              {% endfor %}
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Lakes
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
+              {% for l in header_lakes %}
+                <a class="dropdown-item" href="/{{ l.region }}/{{ l.name }}">{{ l.name }}</a>
+              {% endfor %}
             </div>
           </li>
         </ul>
+        <img class="headerLogo" src="{% static 'map/images/twdb.png' %}" />
       </div>
     </nav>
 

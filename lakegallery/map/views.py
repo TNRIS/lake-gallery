@@ -3,11 +3,20 @@ from .config import layers
 
 from django.shortcuts import render_to_response
 # from django.template import RequestContext
-from .models import MajorReservoirs, HistoricalAerialLinks
+from .models import MajorReservoirs, RWPAs, HistoricalAerialLinks
 
 
 def index(request, letter=""):
-    context = {'layers': layers, 'region': letter}
+    l = RWPAs.objects.values_list('reg_name', 'letter')
+    labels = [{'name': r[0], 'letter': r[1]} for r in l]
+    labels.sort(key=lambda x: x['name'])
+    # print(labels)
+    r = MajorReservoirs.objects.values_list('res_lbl', 'region')
+    res = [{'name': n[0], 'region': n[1]} for n in r]
+    res.sort(key=lambda x: x['name'])
+    # print(res)
+    context = {'header_regions': labels, 'header_lakes': res,
+               'layers': layers, 'region': letter}
     return render(request, 'map/index.html', context)
 
 

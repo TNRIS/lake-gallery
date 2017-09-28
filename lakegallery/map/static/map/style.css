@@ -12,6 +12,12 @@
 	margin-right: 10px;
 }
 
+.dropdown-menu {
+	max-height: 600px;
+	overflow: hidden;
+    overflow-y: auto;
+}
+
 .leaflet-container {
     height: calc(100% - 56px);
     width: 100%;
