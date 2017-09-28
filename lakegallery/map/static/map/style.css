@@ -18,6 +18,12 @@
     overflow-y: auto;
 }
 
+.contentPanel {
+	height: calc(100% - 56px);
+	overflow: hidden;
+    overflow-y: auto;
+}
+
 .leaflet-container {
     height: calc(100% - 56px);
     width: 100%;

@@ -4,9 +4,20 @@
 {% block content %}
   <div class="container-fluid">
     <div class="row">
-      <div class="col-2">
+      <div class="col-4 contentPanel">
+        <h2>{{ lake }} Story Map</h2>
+        <p>{{ story.summary }}</p>
+        <h2>History of {{ lake }}</h2>
+        <p>{{ story.history }}</p>
+        <h2>{{ story.section_one_header }}</h2>
+        <p>{{ story.section_one_content }}</p>
+        <h2>{{ story.section_two_header }}</h2>
+        <p>{{ story.section_two_content }}</p>
+        <h2>{{ story.section_three_header }}</h2>
+        <p>{{ story.section_three_content }}</p>
+      
       </div>
-      <div class="col-10 mapPanel">
+      <div class="col-8 mapPanel">
         <input id="historicalSlider" type="text" style="display:none;"/>
         {% leaflet_map "storyMap" callback="main_map_init" %}
         <script type="text/javascript">
@@ -107,7 +118,7 @@
                 });
                 var active = false;
                 var secondBasemap;
-                var historicalLayer
+                var historicalLayer;
                 var sideBySideControl;
                 $("#historicalSlider").on('slideStop', function(e) {
                   if (active == true) {

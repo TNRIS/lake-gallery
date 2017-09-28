@@ -61,3 +61,19 @@ class HistoricalAerialLinks(models.Model):
     class Meta:
         verbose_name = "Historical Aerial Link"
         verbose_name_plural = "Historical Aerial Links"
+
+
+class StoryContent(models.Model):
+    lake = models.OneToOneField(MajorReservoirs, primary_key=True)
+    summary = models.TextField()
+    history = models.TextField()
+    section_one_header = models.CharField(max_length=50, blank=True)
+    section_one_content = models.TextField(blank=True)
+    section_two_header = models.CharField(max_length=50, blank=True)
+    section_two_content = models.TextField(blank=True)
+    section_three_header = models.CharField(max_length=50, blank=True)
+    section_three_content = models.TextField(blank=True)
+
+    class Meta:
+        verbose_name = "Story Content"
+        verbose_name_plural = "Story Content"
