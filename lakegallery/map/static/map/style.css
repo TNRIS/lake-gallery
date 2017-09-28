@@ -1,4 +1,4 @@
-
+/*SITE HEADER*/
 .navbar {
 	background-color: #011355;
 }
@@ -18,12 +18,24 @@
     overflow-y: auto;
 }
 
+/*STORY CONTENT PANEL*/
 .contentPanel {
+	height: calc(100% - 56px);
+	padding: 0;
+}
+
+#navbar-contentPanel {
+	position: relative;
+}
+
+.contentText {
 	height: calc(100% - 56px);
 	overflow: hidden;
     overflow-y: auto;
+    padding: 8px;
 }
 
+/*STORY MAP PANEL*/
 .leaflet-container {
     height: calc(100% - 56px);
     width: 100%;
