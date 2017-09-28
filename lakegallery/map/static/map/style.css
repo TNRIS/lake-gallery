@@ -3,7 +3,51 @@
 	background-color: #011355;
 }
 
+.navbar-brand {
+	padding: 0;
+}
+
+.headerLogo {
+	max-height: 40px;
+	margin-right: 10px;
+}
+
 .leaflet-container {
     height: calc(100% - 56px);
     width: 100%;
 }
+
+.mapPanel {
+	position: relative;
+	padding: 0;
+}
+
+.sliderContainer {
+	height: 200px;
+}
+
+#sliderToggler {
+	position: absolute;
+	bottom: 40px;
+	right: 20px;
+	z-index: 100;
+}
+
+div.slider.slider-horizontal {
+	position: absolute;
+	bottom: 30px;
+	right: 50px;
+	z-index: 100;
+	/*display: none;*/
+}
+
+.slider-tick-label {
+	color: white;
+	width: 52.5px;
+}
+
+#storyMap {
+	z-index: 10;
+}
+
+

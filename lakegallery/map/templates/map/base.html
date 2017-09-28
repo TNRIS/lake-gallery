@@ -20,11 +20,17 @@
     {% bootstrap_messages %}
 
     <link rel="stylesheet" type="text/css" href="{% static 'map/style.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'map/bootstrap-slider/css/bootstrap-slider.min.css' %}" />
+    <script type="text/javascript" src="{% static 'map/bootstrap-slider/bootstrap-slider.min.js' %}"></script>
 
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark">
-      <a class="navbar-brand" href="#">Texas Lake Gallery</a>
+
+      <a class="navbar-brand" href="/">
+        <img class="headerLogo" src="{% static 'map/images/texas_solid.png' %}" />
+        Texas Lake Gallery
+      </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>

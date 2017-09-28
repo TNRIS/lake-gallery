@@ -20,6 +20,7 @@ def story(request, letter, lake):
     r = MajorReservoirs.objects.get(res_lbl=lake)
     l = HistoricalAerialLinks.objects.filter(lake=r)
     links = [obj.as_dict() for obj in l]
+    links.sort(key=lambda x: x['year'])
     context = {'layer': layers['reservoirs'], 'lake': lake, 'links': links}
     return render(request, 'map/story.html', context)
 
