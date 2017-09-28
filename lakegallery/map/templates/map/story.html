@@ -7,7 +7,7 @@
       <div class="col-2">
       </div>
       <div class="col-10 mapPanel">
-        <input id="historicalSlider" type="text" />
+        <input id="historicalSlider" type="text" style="display:none;"/>
         {% leaflet_map "storyMap" callback="main_map_init" %}
         <script type="text/javascript">
             
@@ -31,7 +31,6 @@
 
               var resConfig = JSON.parse('{{ layer }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
               var linkConfig = JSON.parse('{{ links }}'.replace(/&#39;/g, '"'));
-              console.log(linkConfig);
 
               function getTileUrls (config, lakeName) {
                 var css = config.carto_css;
@@ -111,13 +110,10 @@
                 var historicalLayer
                 var sideBySideControl;
                 $("#historicalSlider").on('slideStop', function(e) {
-                  console.log(e.value);
-                  console.log(active);
                   if (active == true) {
                     map.removeLayer(secondBasemap);
                     map.removeLayer(historicalLayer);
                     map.removeControl(sideBySideControl);
-                    active = false;
                   }
                   if (e.value != 0) {
                     secondBasemap = L.tileLayer.wms('https://txgi.tnris.org/login/path/source-blonde-xray-cheese/wms', {
@@ -127,13 +123,15 @@
                     var position = e.value - 1;
                     historicalLayer = L.esri.tiledMapLayer({'url':linkConfig[position]['link']}).addTo(map);
                     sideBySideControl = L.control.sideBySide(basemaps['Google Imagery'], [secondBasemap, historicalLayer]).addTo(map);
-                    active = !active;
-                    console.log(active);
+                    active = true;
                   }
                 });
 
               }
-              setupHistoricalSlider(linkConfig);
+              if (linkConfig.length > 0) {
+                $("#historicalSlider").css('display', 'block');
+                setupHistoricalSlider(linkConfig);
+              }
             }
 
             
