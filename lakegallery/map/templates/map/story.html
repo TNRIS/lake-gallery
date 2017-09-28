@@ -5,8 +5,8 @@
   <div class="container-fluid">
     <div class="row">
         <div class="col-4 contentPanel">
-          <nav id="navbar-contentPanel" class="navbar fixed-top navbar-light bg-light">
-            <a class="navbar-brand" href="#">Navbar</a>
+          <nav id="navbar-contentPanel" class="navbar navbar-light bg-light">
+            <!-- <a class="navbar-brand" href="#">Navbar</a> -->
             <ul class="nav nav-pills">
               <li class="nav-item">
                 <a class="nav-link" href="#story">Story</a>
@@ -31,7 +31,7 @@
               {% endif %}
             </ul>
           </nav>
-          <div class="contentText" data-spy="scroll" data-target="#navbar-contentPanel" data-offset="0">
+          <div class="contentText" data-spy="scroll" data-target="#navbar-contentPanel" data-offset="100">
             <h2 id="story">{{ lake }} Story Map</h2>
             <p>{{ story.summary }}</p>
             <h2 id="history">History of {{ lake }}</h2>
@@ -51,7 +51,7 @@
               <h2 id="three">{{ story.section_three_header }}</h2>
               <p>{{ story.section_three_content }}</p>
             {% endif %}
-            
+
           </div>
         
         </div>
