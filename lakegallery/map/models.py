@@ -93,9 +93,8 @@ class StoryContent(models.Model):
     #     super().save(*args, **kwargs)  # Call the "real" save() method.
 
     def image_tag(self):
-        return mark_safe('<img src="/media/%s" width="150" height="150" />'
+        return mark_safe('<img src="/media/%s" style="max-height:150px;" />'
                          % (self.section_one_photo))
-    image_tag.short_description = 'Image'
     image_tag.allow_tags = True
 
     class Meta:
