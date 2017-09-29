@@ -2,7 +2,6 @@ from django.conf.urls import url
 
 from . import views
 
-
 app_name = 'map'
 urlpatterns = [
     url(r'^([A-P]{1})/([\w|\W]+)$', views.story, name='story'),

@@ -44,8 +44,9 @@
     padding: 8px;
 }
 
-.contentText > img {
-	width: 100%;
+.contentText > p > img {
+	max-width: 100%;
+	height: auto;
 	padding: 8px;
 }
 

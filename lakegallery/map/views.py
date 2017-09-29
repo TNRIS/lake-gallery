@@ -46,7 +46,6 @@ def story(request, letter, lake):
     links.sort(key=lambda x: x['year'])
 
     c = StoryContent.objects.get(lake=m)
-    print(c)
 
     context = {'header_regions': labels, 'header_lakes': res,
                'layer': layers['reservoirs'], 'lake': lake, 'links': links,
