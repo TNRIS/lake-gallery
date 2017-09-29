@@ -39,6 +39,7 @@
             {% if story.section_one_header %}
               <h2 id="{{ story.section_one_nav|cut:' ' }}">{{ story.section_one_header }}</h2>
               <p>{{ story.section_one_content|safe }}</p>
+              <img src="{{ story.section_one_photo.url }}" />
             {% endif %}
 
             {% if story.section_two_header %}

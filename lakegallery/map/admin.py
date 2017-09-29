@@ -12,7 +12,9 @@ class StoryContentAdmin(admin.ModelAdmin):
         (None,               {'fields': ['lake', 'summary', 'history']}),
         ('Additional Section 1', {'fields': ['section_one_nav',
                                              'section_one_header',
-                                             'section_one_content']}),
+                                             'section_one_content',
+                                             'section_one_photo',
+                                             'image_tag']}),
         ('Additional Section 2', {'fields': ['section_two_nav',
                                              'section_two_header',
                                              'section_two_content']}),
@@ -20,6 +22,7 @@ class StoryContentAdmin(admin.ModelAdmin):
                                              'section_three_header',
                                              'section_three_content']}),
     ]
+    readonly_fields = ('image_tag',)
 
 admin.site.register(MajorReservoirs, admin.OSMGeoAdmin)
 admin.site.register(RWPAs, admin.OSMGeoAdmin)

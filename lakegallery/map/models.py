@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.gis.db import models as gismodels
+from django.utils.safestring import mark_safe
+import os
 
 import datetime
 YEAR_CHOICES = []
@@ -63,6 +65,10 @@ class HistoricalAerialLinks(models.Model):
         verbose_name_plural = "Historical Aerial Links"
 
 
+def get_upload_path(instance, filename):
+    return os.path.join(str(instance.lake), filename)
+
+
 class StoryContent(models.Model):
     lake = models.OneToOneField(MajorReservoirs, primary_key=True)
     summary = models.TextField()
@@ -71,6 +77,8 @@ class StoryContent(models.Model):
     section_one_nav = models.CharField(max_length=25, blank=True)
     section_one_header = models.CharField(max_length=50, blank=True)
     section_one_content = models.TextField(blank=True)
+    section_one_photo = models.ImageField(upload_to=get_upload_path,
+                                          blank=True)
 
     section_two_nav = models.CharField(max_length=25, blank=True)
     section_two_header = models.CharField(max_length=50, blank=True)
@@ -83,6 +91,12 @@ class StoryContent(models.Model):
     # def save(self, *args, **kwargs):
     #     self.section_one_nav = self.section_one_nav.lower().replace(" ", "")
     #     super().save(*args, **kwargs)  # Call the "real" save() method.
+
+    def image_tag(self):
+        return mark_safe('<img src="/media/%s" width="150" height="150" />'
+                         % (self.section_one_photo))
+    image_tag.short_description = 'Image'
+    image_tag.allow_tags = True
 
     class Meta:
         verbose_name = "Story Content"

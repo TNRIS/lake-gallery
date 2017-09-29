@@ -44,6 +44,10 @@
     padding: 8px;
 }
 
+.contentText > img {
+	width: 100%;
+}
+
 /*STORY MAP PANEL*/
 .leaflet-container {
     height: calc(100% - 56px);
