@@ -44,10 +44,20 @@
     padding: 8px;
 }
 
-.contentText > p > img {
+.contentText > figure > img {
 	max-width: 100%;
 	height: auto;
 	padding: 8px;
+}
+
+.contentText > figure > figcaption {
+	font-size: small;
+	font-style: italic;
+}
+
+sources {
+	font-size: x-small;
+	font-style: italic;
 }
 
 /*STORY MAP PANEL*/
