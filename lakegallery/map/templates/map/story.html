@@ -6,50 +6,49 @@
     <div class="row">
         <div class="col-4 contentPanel">
           <nav id="navbar-contentPanel" class="navbar navbar-light bg-light">
-            <!-- <a class="navbar-brand" href="#">Navbar</a> -->
             <ul class="nav nav-pills">
               <li class="nav-item">
-                <a class="nav-link" href="#story">Story</a>
+                <a class="nav-link" href="#Story">Story</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#history">History</a>
+                <a class="nav-link" href="#History">History</a>
               </li>
               {% if story.section_one_header %}
                 <li class="nav-item">
-                  <a class="nav-link" href="#one">One</a>
+                  <a class="nav-link" href="#{{ story.section_one_nav|cut:' ' }}">{{ story.section_one_nav }}</a>
                 </li>
               {% endif %}
               {% if story.section_two_header %}
                 <li class="nav-item">
-                  <a class="nav-link" href="#two">Two</a>
+                  <a class="nav-link" href="#{{ story.section_two_nav|cut:' ' }}">{{ story.section_two_nav }}</a>
                 </li>
               {% endif %}
               {% if story.section_three_header %}
                 <li class="nav-item">
-                  <a class="nav-link" href="#three">Three</a>
+                  <a class="nav-link" href="#{{ story.section_three_nav|cut:' ' }}">{{ story.section_three_nav }}</a>
                 </li>
               {% endif %}
             </ul>
           </nav>
           <div class="contentText" data-spy="scroll" data-target="#navbar-contentPanel" data-offset="100">
-            <h2 id="story">{{ lake }} Story Map</h2>
-            <p>{{ story.summary }}</p>
-            <h2 id="history">History of {{ lake }}</h2>
-            <p>{{ story.history }}</p>
+            <h2 id="Story">{{ lake }} Story Map</h2>
+            <p>{{ story.summary|safe }}</p>
+            <h2 id="History">History of {{ lake }}</h2>
+            <p>{{ story.history|safe }}</p>
 
             {% if story.section_one_header %}
-              <h2 id="one">{{ story.section_one_header }}</h2>
-              <p>{{ story.section_one_content }}</p>
+              <h2 id="{{ story.section_one_nav|cut:' ' }}">{{ story.section_one_header }}</h2>
+              <p>{{ story.section_one_content|safe }}</p>
             {% endif %}
 
             {% if story.section_two_header %}
-              <h2 id="two">{{ story.section_two_header }}</h2>
-              <p>{{ story.section_two_content }}</p>
+              <h2 id="{{ story.section_two_nav|cut:' ' }}">{{ story.section_two_header }}</h2>
+              <p>{{ story.section_two_content|safe }}</p>
             {% endif %}
 
             {% if story.section_three_header %}
-              <h2 id="three">{{ story.section_three_header }}</h2>
-              <p>{{ story.section_three_content }}</p>
+              <h2 id="{{ story.section_three_nav|cut:' ' }}">{{ story.section_three_header }}</h2>
+              <p>{{ story.section_three_content|safe }}</p>
             {% endif %}
 
           </div>

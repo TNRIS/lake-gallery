@@ -67,12 +67,22 @@ class StoryContent(models.Model):
     lake = models.OneToOneField(MajorReservoirs, primary_key=True)
     summary = models.TextField()
     history = models.TextField()
+
+    section_one_nav = models.CharField(max_length=25, blank=True)
     section_one_header = models.CharField(max_length=50, blank=True)
     section_one_content = models.TextField(blank=True)
+
+    section_two_nav = models.CharField(max_length=25, blank=True)
     section_two_header = models.CharField(max_length=50, blank=True)
     section_two_content = models.TextField(blank=True)
+
+    section_three_nav = models.CharField(max_length=25, blank=True)
     section_three_header = models.CharField(max_length=50, blank=True)
     section_three_content = models.TextField(blank=True)
+
+    # def save(self, *args, **kwargs):
+    #     self.section_one_nav = self.section_one_nav.lower().replace(" ", "")
+    #     super().save(*args, **kwargs)  # Call the "real" save() method.
 
     class Meta:
         verbose_name = "Story Content"
