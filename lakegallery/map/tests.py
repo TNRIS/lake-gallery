@@ -98,6 +98,17 @@ class HistoricalAerialLinksModelTests(TestCase):
                                              "integer."])
             self.assertEqual(error['link'], ['Enter a valid URL.'])
 
+    def test_key_relationship_requirement(self):
+        """
+        Test the 'lake' ForeignKey field requirement
+        """
+        response = HistoricalAerialLinks(link='http://google.com', year=1970)
+        try:
+            response.full_clean()
+        except ValidationError as e:
+            error = dict(e)
+            self.assertEqual(error['lake'], ['This field cannot be null.'])
+
 
 class StoryContentTests(TestCase):
 
@@ -145,6 +156,17 @@ class StoryContentTests(TestCase):
         soup = BeautifulSoup(s.three_tag(), "html.parser")
         src = soup.findAll('img')[0]['src']
         self.assertEqual(src, good_url)
+
+    def test_key_relationship_requirement(self):
+        """
+        Test the 'lake' OneToOne relationship field requirement
+        """
+        try:
+            StoryContent(summary="text here", history="text there",
+                         lake="lake")
+        except:
+            # self.assertRaises(ValueError)
+            self.assertRaises(TypeError)
 
 
 class functionTests(TestCase):
