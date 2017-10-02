@@ -1,11 +1,15 @@
 from django.test import TestCase
 from django.urls import reverse
+from django.conf import settings
 from django.core.exceptions import ValidationError
+from bs4 import BeautifulSoup
+
 from django.contrib.gis.geos import Polygon, MultiPolygon
 
 from .models import (MajorReservoirs, RWPAs, HistoricalAerialLinks,
                      StoryContent, get_upload_path)
-import string, os
+import string
+import os
 
 p1 = Polygon(((0, 0), (0, 1), (1, 1), (0, 0)))
 p2 = Polygon(((1, 1), (1, 2), (2, 2), (1, 1)))
@@ -52,7 +56,7 @@ class HistoricalAerialLinksModelTests(TestCase):
 
     def test_string_representation(self):
         """
-        Test the string representation of the model return the link URL
+        Test the string representation of the model returns the link URL
         """
         response = HistoricalAerialLinks(link="http://google.com")
         self.assertEqual(str(response), response.link)
@@ -93,6 +97,54 @@ class HistoricalAerialLinksModelTests(TestCase):
             self.assertEqual(error['year'], ["'string' value must be an "
                                              "integer."])
             self.assertEqual(error['link'], ['Enter a valid URL.'])
+
+
+class StoryContentTests(TestCase):
+
+    def test_verbose_name_representations(self):
+        """
+        Test the name representations are formatted correctly
+        """
+        self.assertEqual(str(StoryContent._meta.verbose_name),
+                         "Story Content")
+        self.assertEqual(str(StoryContent._meta.verbose_name_plural),
+                         "Story Content")
+
+    def test_tags(self):
+        """
+        Test the photo tag image sources
+        """
+        lake_name = "Lake Travis"
+        MajorReservoirs(res_lbl=lake_name, geom=test_geom).save()
+        m = MajorReservoirs.objects.get(res_lbl=lake_name)
+
+        test_file = 'test.png'
+        good_url = settings.MEDIA_URL + os.path.join(lake_name, test_file)
+        s = StoryContent(lake=m)
+
+        # history tag
+        s.history_photo = get_upload_path(s, test_file)
+        soup = BeautifulSoup(s.hist_tag(), "html.parser")
+        src = soup.findAll('img')[0]['src']
+        self.assertEqual(src, good_url)
+
+        # section one tag
+        s.section_one_photo = get_upload_path(s, test_file)
+        soup = BeautifulSoup(s.one_tag(), "html.parser")
+        src = soup.findAll('img')[0]['src']
+        self.assertEqual(src, good_url)
+
+        # section two tag
+        s.section_two_photo = get_upload_path(s, test_file)
+        soup = BeautifulSoup(s.two_tag(), "html.parser")
+        src = soup.findAll('img')[0]['src']
+        self.assertEqual(src, good_url)
+
+        # section three tag
+        s.section_three_photo = get_upload_path(s, test_file)
+        soup = BeautifulSoup(s.three_tag(), "html.parser")
+        src = soup.findAll('img')[0]['src']
+        self.assertEqual(src, good_url)
 
 
 class functionTests(TestCase):

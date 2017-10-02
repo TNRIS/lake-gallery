@@ -1,3 +1,4 @@
+beautifulsoup4==4.6.0
 Django==1.11.4
 django-bootstrap4==0.0.3
 django-filter==1.0.4
