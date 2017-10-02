@@ -1,7 +1,15 @@
 from django.test import TestCase
 from django.urls import reverse
-from .models import MajorReservoirs, RWPAs
-import string
+from django.core.exceptions import ValidationError
+from django.contrib.gis.geos import Polygon, MultiPolygon
+
+from .models import (MajorReservoirs, RWPAs, HistoricalAerialLinks,
+                     StoryContent, get_upload_path)
+import string, os
+
+p1 = Polygon(((0, 0), (0, 1), (1, 1), (0, 0)))
+p2 = Polygon(((1, 1), (1, 2), (2, 2), (1, 1)))
+test_geom = MultiPolygon(p1, p2)
 
 
 class MajorReservoirsModelTests(TestCase):
@@ -38,6 +46,67 @@ class RWPAsModelTests(TestCase):
         """
         self.assertEqual(str(RWPAs._meta.verbose_name), "RWPA")
         self.assertEqual(str(RWPAs._meta.verbose_name_plural), "RWPAs")
+
+
+class HistoricalAerialLinksModelTests(TestCase):
+
+    def test_string_representation(self):
+        """
+        Test the string representation of the model return the link URL
+        """
+        response = HistoricalAerialLinks(link="http://google.com")
+        self.assertEqual(str(response), response.link)
+
+    def test_verbose_name_representations(self):
+        """
+        Test the name representations are formatted correctly
+        """
+        self.assertEqual(str(HistoricalAerialLinks._meta.verbose_name),
+                         "Historical Aerial Link")
+        self.assertEqual(str(HistoricalAerialLinks._meta.verbose_name_plural),
+                         "Historical Aerial Links")
+
+    def test_dictionary_method(self):
+        """
+        Test the dictionary method as a response with the link & year
+        """
+        response = HistoricalAerialLinks(link="http://google.com", year=1970)
+        dictionary = response.as_dict()
+        self.assertIs(isinstance(dictionary, dict), True)
+        self.assertIs(isinstance(dictionary['link'], str), True)
+        self.assertIs(isinstance(dictionary['year'], int), True)
+        self.assertEqual(response.link, "http://google.com")
+        self.assertEqual(response.year, 1970)
+
+    def test_field_types(self):
+        """
+        Test the fields will error if not the correct types
+        """
+        MajorReservoirs(res_lbl="Lake Travis", geom=test_geom).save()
+        m = MajorReservoirs.objects.get(res_lbl="Lake Travis")
+        response = HistoricalAerialLinks(link="not a URL",
+                                         year="string", lake=m)
+        try:
+            response.full_clean()
+        except ValidationError as e:
+            error = dict(e)
+            self.assertEqual(error['year'], ["'string' value must be an "
+                                             "integer."])
+            self.assertEqual(error['link'], ['Enter a valid URL.'])
+
+
+class functionTests(TestCase):
+
+    def test_upload_path(self):
+        """
+        Test the upload path generator function
+        """
+        lake_name = "Lake Travis"
+        MajorReservoirs(res_lbl=lake_name, geom=test_geom).save()
+        m = MajorReservoirs.objects.get(res_lbl=lake_name)
+        response = StoryContent(lake=m)
+        path = get_upload_path(response, "photo.png")
+        self.assertEqual(path, os.path.join(lake_name, "photo.png"))
 
 
 class URLTests(TestCase):
