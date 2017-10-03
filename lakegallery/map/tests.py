@@ -102,12 +102,12 @@ class HistoricalAerialLinksModelTests(TestCase):
         """
         Test the 'lake' ForeignKey field requirement
         """
-        response = HistoricalAerialLinks(link='http://google.com', year=1970)
-        try:
-            response.full_clean()
-        except ValidationError as e:
-            error = dict(e)
-            self.assertEqual(error['lake'], ['This field cannot be null.'])
+        with self.assertRaises(ValueError) as e:
+            HistoricalAerialLinks(link='http://google.com', year=1970,
+                                  lake="lake")
+        print(e.exception)
+        assert ('"HistoricalAerialLinks.lake" must be a "MajorReservoirs"'
+                ' instance' in str(e.exception))
 
 
 class StoryContentTests(TestCase):
@@ -161,12 +161,11 @@ class StoryContentTests(TestCase):
         """
         Test the 'lake' OneToOne relationship field requirement
         """
-        try:
+        with self.assertRaises(ValueError) as e:
             StoryContent(summary="text here", history="text there",
                          lake="lake")
-        except:
-            # self.assertRaises(ValueError)
-            self.assertRaises(TypeError)
+        assert ('"StoryContent.lake" must be a "MajorReservoirs" instance' in
+                str(e.exception))
 
 
 class functionTests(TestCase):
