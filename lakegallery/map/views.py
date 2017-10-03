@@ -53,7 +53,11 @@ def story(request, letter, lake):
     links = [obj.as_dict() for obj in n]
     links.sort(key=lambda x: x['year'])
 
-    c = StoryContent.objects.get(lake=m)
+    try:
+        c = StoryContent.objects.get(lake=m)
+    except:
+        c = {'summary': 'summary pending...',
+             'history': 'history pending...'}
 
     context = {'header_regions': labels, 'header_lakes': res,
                'layer': layers['reservoirs'], 'lake': lake, 'links': links,
