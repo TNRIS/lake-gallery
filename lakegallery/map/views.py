@@ -3,7 +3,8 @@ from .config import layers
 
 from django.shortcuts import render_to_response
 # from django.template import RequestContext
-from .models import MajorReservoirs, RWPAs, HistoricalAerialLinks, StoryContent
+from .models import (MajorReservoirs, RWPAs, HistoricalAerialLinks,
+                     StoryContent, LakeStatistics)
 
 
 """
@@ -59,9 +60,14 @@ def story(request, letter, lake):
         c = {'summary': 'summary pending...',
              'history': 'history pending...'}
 
+    try:
+        s = LakeStatistics.objects.get(lake=m)
+    except:
+        s = {}
+
     context = {'header_regions': labels, 'header_lakes': res,
                'layer': layers['reservoirs'], 'lake': lake, 'links': links,
-               'story': c}
+               'story': c, 'stats': s}
 
     return render(request, 'map/story.html', context)
 

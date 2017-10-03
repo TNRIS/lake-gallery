@@ -4,6 +4,7 @@ django-bootstrap4==0.0.3
 django-filter==1.0.4
 django-geojson==2.10.0
 django-leaflet==0.22.0
+django-multiselectfield==0.1.8
 djangorestframework==3.6.4
 djangorestframework-gis==0.11.2
 drf-extensions==0.3.1

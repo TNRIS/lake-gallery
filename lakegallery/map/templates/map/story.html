@@ -13,6 +13,11 @@
               <li class="nav-item">
                 <a class="nav-link" href="#History">History</a>
               </li>
+              {% if stats.original_name %}
+                <li class="nav-item">
+                  <a class="nav-link" href="#Statistics">Statistics</a>
+                </li>
+              {% endif %}
               {% if story.section_one_header %}
                 <li class="nav-item">
                   <a class="nav-link" href="#{{ story.section_one_nav|cut:' ' }}">{{ story.section_one_nav }}</a>
@@ -35,6 +40,13 @@
             <p>{{ story.summary|safe }}</p>
             <h2 id="History">History of {{ lake }}</h2>
             <p>{{ story.history|safe }}</p>
+
+            {% if stats.original_name %}
+              <h2 id="Statistics">{{ lake }} Statistics</h2>
+              <p>{{ stats.original_name }}</p>
+              <p>{{ stats.primary_purposes }}</p>
+              <p>{{ stats.location }}</p>
+            {% endif %}
 
             {% if story.section_one_header %}
               <h2 id="{{ story.section_one_nav|cut:' ' }}">{{ story.section_one_header }}</h2>

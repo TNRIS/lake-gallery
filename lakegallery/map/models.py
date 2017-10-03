@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.gis.db import models as gismodels
 from django.utils.safestring import mark_safe
+from multiselectfield import MultiSelectField
 import os
 
 import datetime
@@ -121,3 +122,56 @@ class StoryContent(models.Model):
     class Meta:
         verbose_name = "Story Content"
         verbose_name_plural = "Story Content"
+
+
+class LakeStatistics(models.Model):
+    purpose_choices = (('Flood Management', 'Flood Management'),
+                       ('Water Storage', 'Water Storage'),
+                       ('Hydroelectric Power', 'Hydroelectric Power'))
+
+    # general stats
+    lake = models.OneToOneField(MajorReservoirs, primary_key=True)
+    original_name = models.CharField(max_length=50, blank=True)
+    primary_purposes = MultiSelectField(choices=purpose_choices, blank=True)
+    location = models.CharField(max_length=50, blank=True,
+                                help_text="Ex. Travis County, Texas")
+    construction_dates = models.CharField(max_length=50, blank=True,
+                                          help_text="Ex. 1937 to 1942")
+    length_of_lake = models.FloatField(null=True, blank=True,
+                                       help_text="Miles")
+    miles_of_shoreline = models.FloatField(null=True, blank=True,
+                                           help_text="Miles")
+    maximum_width = models.FloatField(null=True, blank=True, help_text="Miles")
+    lake_area = models.FloatField(null=True, blank=True, help_text="Acres")
+    lake_capacity = models.FloatField(null=True, blank=True,
+                                      help_text="Acre-feet")
+    full_elevation_msl = models.FloatField(null=True, blank=True,
+                                           help_text="Mean Sea Level")
+    full_elevation_gal = models.FloatField(null=True, blank=True,
+                                           help_text="Gallons of Water")
+    maximum_depth = models.FloatField(null=True, blank=True, help_text="Feet")
+    average_depth = models.FloatField(null=True, blank=True, help_text="Feet")
+    historic_high_msl = models.FloatField(null=True, blank=True,
+                                          help_text="Feet above Mean Sea"
+                                          " Level")
+    historic_high_date = models.DateField(null=True, blank=True)
+    historic_low_msl = models.FloatField(null=True, blank=True,
+                                         help_text="Feet above Mean Sea Level")
+    historic_low_date = models.DateField(null=True, blank=True)
+
+    # dam stats
+    dam_height = models.FloatField(null=True, blank=True, help_text="Feet")
+    dam_width = models.FloatField(null=True, blank=True, help_text="Feet")
+    spillway_elevation = models.FloatField(null=True, blank=True,
+                                           help_text="Feet above Mean Sea"
+                                           " Level")
+    top_of_dam = models.FloatField(null=True, blank=True,
+                                   help_text="Feet above Mean Sea Level")
+    num_of_floodgates = models.FloatField(null=True, blank=True,
+                                          verbose_name='Number of Floodgates')
+    discharge_capacity = models.TextField(blank=True, help_text="typically - "
+                                          "Cubic Feet per Second")
+
+    class Meta:
+        verbose_name = "Lake Statistics"
+        verbose_name_plural = "Lake Statistics"
