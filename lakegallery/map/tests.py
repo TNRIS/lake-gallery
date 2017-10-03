@@ -8,6 +8,7 @@ from django.contrib.gis.geos import Polygon, MultiPolygon
 
 from .models import (MajorReservoirs, RWPAs, HistoricalAerialLinks,
                      StoryContent, get_upload_path)
+from .views import (get_region_header_list, get_lake_header_list)
 import string
 import os
 
@@ -105,7 +106,6 @@ class HistoricalAerialLinksModelTests(TestCase):
         with self.assertRaises(ValueError) as e:
             HistoricalAerialLinks(link='http://google.com', year=1970,
                                   lake="lake")
-        print(e.exception)
         assert ('"HistoricalAerialLinks.lake" must be a "MajorReservoirs"'
                 ' instance' in str(e.exception))
 
@@ -227,9 +227,37 @@ class URLTests(TestCase):
 
 class ViewTests(TestCase):
 
+    def test_header_lists(self):
+        """
+        Test the header lists generated
+        """
+        region_nm_1, region_lt_1 = 'rwpa 1', 'A'
+        region_nm_2, region_lt_2 = 'rwpa 2', 'B'
+        RWPAs(objectid=1, reg_name=region_nm_1, letter=region_lt_1,
+              shape_leng=10, shape_area=2, geom=test_geom).save()
+        RWPAs(objectid=2, reg_name=region_nm_2, letter=region_lt_2,
+              shape_leng=10, shape_area=2, geom=test_geom).save()
+        res_nm_1, res_lt_1 = 'mr 1', 'A'
+        res_nm_2, res_lt_2 = 'mr 2', 'B'
+        MajorReservoirs(res_lbl=res_nm_1, region=res_lt_1,
+                        geom=test_geom).save()
+        MajorReservoirs(res_lbl=res_nm_2, region=res_lt_2,
+                        geom=test_geom).save()
+
+        reg_list = get_region_header_list()
+        self.assertEqual(reg_list, [{'name': region_nm_1,
+                                     'letter': region_lt_1},
+                                    {'name': region_nm_2,
+                                     'letter': region_lt_2}])
+        res_list = get_lake_header_list()
+        self.assertEqual(res_list, [{'name': res_nm_1,
+                                     'region': res_lt_1},
+                                    {'name': res_nm_2,
+                                     'region': res_lt_2}])
+
     def test_index_context(self):
         """
-        Test the layer config object in context
+        Test the index template context; config & header lists
         """
         response = self.client.get(reverse('map:index'))
         config = response.context['layers']
@@ -253,14 +281,105 @@ class ViewTests(TestCase):
             # verify 2 layer fields: 1 for region letter, 1 for name
             self.assertEqual(len(layer_info['interactivity']), 2)
 
-    def test_index_templates(self):
+        # although the header functions are tested above, we will retest them
+        # here to verify they are in the context
+        region_nm_1, region_lt_1 = 'rwpa 1', 'A'
+        region_nm_2, region_lt_2 = 'rwpa 2', 'B'
+        RWPAs(objectid=1, reg_name=region_nm_1, letter=region_lt_1,
+              shape_leng=10, shape_area=2, geom=test_geom).save()
+        RWPAs(objectid=2, reg_name=region_nm_2, letter=region_lt_2,
+              shape_leng=10, shape_area=2, geom=test_geom).save()
+        res_nm_1, res_lt_1 = 'mr 1', 'A'
+        res_nm_2, res_lt_2 = 'mr 2', 'B'
+        MajorReservoirs(res_lbl=res_nm_1, region=res_lt_1,
+                        geom=test_geom).save()
+        MajorReservoirs(res_lbl=res_nm_2, region=res_lt_2,
+                        geom=test_geom).save()
+        response = self.client.get(reverse('map:index'))
+        hdr_reg = response.context['header_regions']
+        self.assertEqual(hdr_reg, [{'name': region_nm_1,
+                                    'letter': region_lt_1},
+                                   {'name': region_nm_2,
+                                    'letter': region_lt_2}])
+        hdr_lks = response.context['header_lakes']
+        self.assertEqual(hdr_lks, [{'name': res_nm_1,
+                                    'region': res_lt_1},
+                                   {'name': res_nm_2,
+                                    'region': res_lt_2}])
+
+    def test_story_context(self):
         """
-        Test the index view templates include required leaflet
+        Test the story template context; header lists
+        """
+        # although the header functions are tested above, we will retest them
+        # here to verify they are in the context
+        region_nm_1, region_lt_1 = 'rwpa 1', 'A'
+        region_nm_2, region_lt_2 = 'rwpa 2', 'B'
+        RWPAs(objectid=1, reg_name=region_nm_1, letter=region_lt_1,
+              shape_leng=10, shape_area=2, geom=test_geom).save()
+        RWPAs(objectid=2, reg_name=region_nm_2, letter=region_lt_2,
+              shape_leng=10, shape_area=2, geom=test_geom).save()
+        res_nm_1, res_lt_1 = 'mr one', 'A'
+        res_nm_2, res_lt_2 = 'mr two', 'B'
+        MajorReservoirs(res_lbl=res_nm_1, region=res_lt_1,
+                        geom=test_geom).save()
+        MajorReservoirs(res_lbl=res_nm_2, region=res_lt_2,
+                        geom=test_geom).save()
+        m = MajorReservoirs.objects.get(res_lbl='mr one')
+        StoryContent(lake=m, summary="text here", history="text there").save()
+
+        response = self.client.get(reverse('map:story', args=['A', 'mr one']))
+        hdr_reg = response.context['header_regions']
+        self.assertEqual(hdr_reg, [{'name': region_nm_1,
+                                    'letter': region_lt_1},
+                                   {'name': region_nm_2,
+                                    'letter': region_lt_2}])
+        hdr_lks = response.context['header_lakes']
+        self.assertEqual(hdr_lks, [{'name': res_nm_1,
+                                    'region': res_lt_1},
+                                   {'name': res_nm_2,
+                                    'region': res_lt_2}])
+
+        # check the layer info
+        config = response.context['layer']
+        check_keys = ['table_name', 'label_field', 'carto_css',
+                      'carto_lbl', 'interactivity']
+        # check the keys of the layer config
+        for key in check_keys:
+            self.assertIs(key in config.keys(), True)
+        # check the value type for each key
+        self.assertIs(isinstance(config['table_name'], str), True)
+        self.assertIs(isinstance(config['label_field'], str), True)
+        self.assertIs(isinstance(config['carto_css'], str), True)
+        self.assertIs(isinstance(config['carto_lbl'], str), True)
+        self.assertIs(isinstance(config['interactivity'], list), True)
+        # verify 2 layer fields: 1 for region letter, 1 for name
+        self.assertEqual(len(config['interactivity']), 2)
+
+        # check the story content in context referencing the table
+        c = StoryContent.objects.get(lake=m)
+        self.assertEqual(response.context['story'], c)
+
+        # check the lake in context is referencing the url lake
+        lake_in_url = response.request['PATH_INFO'].split("/")[2]
+        self.assertEqual(response.context['lake'], lake_in_url)
+
+        # check that links is a key in the context
+        self.assertIs('links' in response.context, True)
+        self.assertIs(isinstance(response.context['links'], list),
+                      True)
+
+    def test_templates(self):
+        """
+        Test view templates include required leaflet and html
         """
         leaflet_templates = ['leaflet/js.html', 'leaflet/css.html',
                              'leaflet/_leaflet_map.html']
+        base_template = 'map/base.html'
         index_template = 'map/index.html'
+        story_template = 'map/story.html'
 
+        # index template
         response = self.client.get('/')
         template_names = []
         for t in response.templates:
@@ -269,3 +388,20 @@ class ViewTests(TestCase):
         for lt in leaflet_templates:
             self.assertIs(lt in template_names, True)
         self.assertIs(index_template in template_names, True)
+        self.assertIs(base_template in template_names, True)
+
+        # story template
+        MajorReservoirs(res_lbl='Lake Tester', region='A',
+                        geom=test_geom).save()
+        m = MajorReservoirs.objects.get(res_lbl='Lake Tester')
+        StoryContent(lake=m, summary="text here", history="text there").save()
+
+        response = self.client.get('/A/Lake%20Tester')
+        template_names = []
+        for t in response.templates:
+            template_names.append(t.name)
+
+        for lt in leaflet_templates:
+            self.assertIs(lt in template_names, True)
+        self.assertIs(story_template in template_names, True)
+        self.assertIs(base_template in template_names, True)

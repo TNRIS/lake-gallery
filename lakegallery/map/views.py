@@ -6,7 +6,11 @@ from django.shortcuts import render_to_response
 from .models import MajorReservoirs, RWPAs, HistoricalAerialLinks, StoryContent
 
 
-### utility functions
+"""
+utility functions
+"""
+
+
 def get_region_header_list():
     l = RWPAs.objects.values_list('reg_name', 'letter')
     labels = [{'name': r[0], 'letter': r[1]} for r in l]
@@ -21,7 +25,11 @@ def get_lake_header_list():
     return res
 
 
-### views/templates & redirects
+"""
+views/templates & redirects
+"""
+
+
 def index(request, letter=""):
     labels = get_region_header_list()
     res = get_lake_header_list()
@@ -54,7 +62,11 @@ def story(request, letter, lake):
     return render(request, 'map/story.html', context)
 
 
-### error code handling
+"""
+error code handling
+"""
+
+
 def bad_request(request):
     context = {'code': 400, 'text': 'Bad Request'}
     response = render_to_response('map/error.html', context)
