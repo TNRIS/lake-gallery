@@ -129,49 +129,103 @@ class LakeStatistics(models.Model):
                        ('Water Storage', 'Water Storage'),
                        ('Hydroelectric Power', 'Hydroelectric Power'))
 
-    # general stats
     lake = models.OneToOneField(MajorReservoirs, primary_key=True)
+
+    # general stats
     original_name = models.CharField(max_length=50, blank=True)
-    primary_purposes = MultiSelectField(choices=purpose_choices, blank=True)
+    primary_purposes = MultiSelectField(choices=purpose_choices, null=True,
+                                        blank=True)
     location = models.CharField(max_length=50, blank=True,
                                 help_text="Ex. Travis County, Texas")
     construction_dates = models.CharField(max_length=50, blank=True,
                                           help_text="Ex. 1937 to 1942")
-    length_of_lake = models.FloatField(null=True, blank=True,
+    length_of_lake = models.FloatField(default=0, blank=True,
                                        help_text="Miles")
-    miles_of_shoreline = models.FloatField(null=True, blank=True,
+    miles_of_shoreline = models.FloatField(default=0, blank=True,
                                            help_text="Miles")
-    maximum_width = models.FloatField(null=True, blank=True, help_text="Miles")
-    lake_area = models.FloatField(null=True, blank=True, help_text="Acres")
-    lake_capacity = models.FloatField(null=True, blank=True,
+    maximum_width = models.FloatField(default=0, blank=True, help_text="Miles")
+    lake_area = models.FloatField(default=0, blank=True, help_text="Acres")
+    lake_capacity = models.FloatField(default=0, blank=True,
                                       help_text="Acre-feet")
-    full_elevation_msl = models.FloatField(null=True, blank=True,
+    full_elevation_msl = models.FloatField(default=0, blank=True,
                                            help_text="Mean Sea Level")
-    full_elevation_gal = models.FloatField(null=True, blank=True,
+    full_elevation_gal = models.FloatField(default=0, blank=True,
                                            help_text="Gallons of Water")
-    maximum_depth = models.FloatField(null=True, blank=True, help_text="Feet")
-    average_depth = models.FloatField(null=True, blank=True, help_text="Feet")
-    historic_high_msl = models.FloatField(null=True, blank=True,
+    maximum_depth = models.FloatField(default=0, blank=True, help_text="Feet")
+    average_depth = models.FloatField(default=0, blank=True, help_text="Feet")
+    historic_high_msl = models.FloatField(default=0, blank=True,
                                           help_text="Feet above Mean Sea"
                                           " Level")
     historic_high_date = models.DateField(null=True, blank=True)
-    historic_low_msl = models.FloatField(null=True, blank=True,
+    historic_low_msl = models.FloatField(default=0, blank=True,
                                          help_text="Feet above Mean Sea Level")
     historic_low_date = models.DateField(null=True, blank=True)
 
     # dam stats
-    dam_height = models.FloatField(null=True, blank=True, help_text="Feet")
-    dam_width = models.FloatField(null=True, blank=True, help_text="Feet")
-    spillway_elevation = models.FloatField(null=True, blank=True,
+    dam_height = models.FloatField(default=0, blank=True, help_text="Feet")
+    dam_width = models.FloatField(default=0, blank=True, help_text="Feet")
+    spillway_elevation = models.FloatField(default=0, blank=True,
                                            help_text="Feet above Mean Sea"
                                            " Level")
-    top_of_dam = models.FloatField(null=True, blank=True,
+    top_of_dam = models.FloatField(default=0, blank=True,
                                    help_text="Feet above Mean Sea Level")
-    num_of_floodgates = models.PositiveIntegerField(null=True, blank=True,
+    num_of_floodgates = models.PositiveIntegerField(default=0, blank=True,
                                                     verbose_name='Number of '
                                                     'Floodgates')
     discharge_capacity = models.TextField(blank=True, help_text="typically - "
                                           "Cubic Feet per Second")
+
+    def comma_numbers(self):
+        self.miles_of_shoreline = "{:,}".format(self.miles_of_shoreline)
+        self.lake_area = "{:,}".format(self.lake_area)
+        self.lake_capacity = "{:,}".format(self.lake_capacity)
+        self.full_elevation_msl = "{:,}".format(self.full_elevation_msl)
+        self.full_elevation_gal = "{:,}".format(self.full_elevation_gal)
+        self.maximum_depth = "{:,}".format(self.maximum_depth)
+        self.average_depth = "{:,}".format(self.average_depth)
+        self.historic_high_msl = "{:,}".format(self.historic_high_msl)
+        self.historic_low_msl = "{:,}".format(self.historic_low_msl)
+        self.dam_height = "{:,}".format(self.dam_height)
+        self.dam_width = "{:,}".format(self.dam_width)
+        self.spillway_elevation = "{:,}".format(self.spillway_elevation)
+        self.top_of_dam = "{:,}".format(self.top_of_dam)
+        return self
+
+    def set_displays(self):
+        self.general_stats = False
+        general_stats = [self.original_name,
+                         str(self.primary_purposes),
+                         self.location,
+                         self.construction_dates,
+                         self.length_of_lake,
+                         self.miles_of_shoreline,
+                         self.maximum_width,
+                         self.lake_area,
+                         self.lake_capacity,
+                         self.full_elevation_msl,
+                         self.full_elevation_gal,
+                         self.maximum_depth,
+                         self.average_depth,
+                         self.historic_high_msl,
+                         self.historic_high_date,
+                         self.historic_low_msl,
+                         self.historic_low_date]
+        for g in general_stats:
+            if g != 0.0 and g != "" and g is not None:
+                self.general_stats = True
+
+        self.dam_stats = False
+        dam_stats = [self.dam_height,
+                     self.dam_width,
+                     self.spillway_elevation,
+                     self.top_of_dam,
+                     self.num_of_floodgates,
+                     self.discharge_capacity]
+        for d in dam_stats:
+            if d != 0.0 and d != 0 and d != "":
+                self.general_stats = True
+                self.dam_stats = True
+        return self
 
     class Meta:
         verbose_name = "Lake Statistics"

@@ -62,19 +62,10 @@ def story(request, letter, lake):
 
     try:
         s = LakeStatistics.objects.get(lake=m)
-        s.miles_of_shoreline = "{:,}".format(s.miles_of_shoreline)
-        s.lake_area = "{:,}".format(s.lake_area)
-        s.lake_capacity = "{:,}".format(s.lake_capacity)
-        s.full_elevation_msl = "{:,}".format(s.full_elevation_msl)
-        s.full_elevation_gal = "{:,}".format(s.full_elevation_gal)
-        s.maximum_depth = "{:,}".format(s.maximum_depth)
-        s.average_depth = "{:,}".format(s.average_depth)
-        s.historic_high_msl = "{:,}".format(s.historic_high_msl)
-        s.historic_low_msl = "{:,}".format(s.historic_low_msl)
-        s.dam_height = "{:,}".format(s.dam_height)
-        s.dam_width = "{:,}".format(s.dam_width)
-        s.spillway_elevation = "{:,}".format(s.spillway_elevation)
-        s.top_of_dam = "{:,}".format(s.top_of_dam)
+        s = s.set_displays()
+        s = s.comma_numbers()
+
+        print(s.general_stats, s.dam_stats)
     except:
         s = {}
 
