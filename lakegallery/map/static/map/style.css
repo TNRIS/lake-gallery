@@ -48,11 +48,23 @@
 	max-width: 100%;
 	height: auto;
 	padding: 8px;
+	cursor: pointer;
 }
 
 .contentText > div > figure > figcaption {
 	font-size: small;
 	font-style: italic;
+}
+
+@media (min-width: 576px) {
+	.modal-dialog {
+	    max-width: 80%;
+	    max-height: 80%;
+	}
+}
+
+.modal-body > .close {
+	cursor: pointer;
 }
 
 sources {
