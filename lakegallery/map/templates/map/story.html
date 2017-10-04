@@ -10,9 +10,11 @@
               <li class="nav-item">
                 <a class="nav-link" href="#Story">Story</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#History">History</a>
-              </li>
+              {% if story.history %}
+                <li class="nav-item">
+                  <a class="nav-link" href="#History">History</a>
+                </li>
+              {% endif %}
               {% if stats.general_stats %}
                 <li class="nav-item">
                   <a class="nav-link" href="#Statistics">Statistics</a>
@@ -38,9 +40,10 @@
           <div class="contentText" data-spy="scroll" data-target="#navbar-contentPanel" data-offset="100">
             <h2 id="Story">{{ lake }} Story Map</h2>
             <div>{{ story.summary|safe }}</div>
-            <h2 id="History">History of {{ lake }}</h2>
-            <div>{{ story.history|safe }}</div>
-
+            {% if story.history %}
+              <h2 id="History">History of {{ lake }}</h2>
+              <div>{{ story.history|safe }}</div>
+            {% endif %}
             {% if stats.general_stats %}
               <h2 id="Statistics">{{ lake }} Statistics</h2>
               <ul class="statsList">

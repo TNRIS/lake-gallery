@@ -57,8 +57,7 @@ def story(request, letter, lake):
     try:
         c = StoryContent.objects.get(lake=m)
     except:
-        c = {'summary': 'summary pending...',
-             'history': 'history pending...'}
+        c = {}
 
     try:
         s = LakeStatistics.objects.get(lake=m)
