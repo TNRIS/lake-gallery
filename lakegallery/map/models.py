@@ -175,22 +175,13 @@ class LakeStatistics(models.Model):
     discharge_capacity = models.TextField(blank=True, help_text="typically - "
                                           "Cubic Feet per Second")
 
-    def comma_numbers(self):
-        self.length_of_lake = "{:,}".format(self.length_of_lake)
-        self.miles_of_shoreline = "{:,}".format(self.miles_of_shoreline)
-        self.maximum_width = "{:,}".format(self.maximum_width)
-        self.lake_area = "{:,}".format(self.lake_area)
-        self.lake_capacity = "{:,}".format(self.lake_capacity)
-        self.full_elevation_msl = "{:,}".format(self.full_elevation_msl)
-        self.full_elevation_gal = "{:,}".format(self.full_elevation_gal)
-        self.maximum_depth = "{:,}".format(self.maximum_depth)
-        self.average_depth = "{:,}".format(self.average_depth)
-        self.historic_high_msl = "{:,}".format(self.historic_high_msl)
-        self.historic_low_msl = "{:,}".format(self.historic_low_msl)
-        self.dam_height = "{:,}".format(self.dam_height)
-        self.dam_width = "{:,}".format(self.dam_width)
-        self.spillway_elevation = "{:,}".format(self.spillway_elevation)
-        self.top_of_dam = "{:,}".format(self.top_of_dam)
+    def string_numbers(self):
+        flds = self._meta.get_fields()
+        for f in flds:
+            field_type = f.get_internal_type()
+            if field_type == 'FloatField':
+                attr = getattr(self, f.name)
+                setattr(self, f.name, "{:,}".format(attr))
         return self
 
     def set_displays(self):

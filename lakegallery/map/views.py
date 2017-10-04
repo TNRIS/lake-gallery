@@ -62,7 +62,7 @@ def story(request, letter, lake):
 
     try:
         s = LakeStatistics.objects.get(lake=m)
-        s = s.comma_numbers()
+        s = s.string_numbers()
         s = s.set_displays()
     except:
         s = {}
