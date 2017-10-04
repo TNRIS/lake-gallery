@@ -44,13 +44,13 @@
     padding: 8px;
 }
 
-.contentText > figure > img {
+.contentText > div > figure > img {
 	max-width: 100%;
 	height: auto;
 	padding: 8px;
 }
 
-.contentText > figure > figcaption {
+.contentText > div > figure > figcaption {
 	font-size: small;
 	font-style: italic;
 }
@@ -58,6 +58,12 @@
 sources {
 	font-size: x-small;
 	font-style: italic;
+	display: block;
+	margin-bottom: 10px;
+}
+
+.statLabel {
+	font-weight: bold;
 }
 
 /*STORY MAP PANEL*/

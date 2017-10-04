@@ -167,8 +167,9 @@ class LakeStatistics(models.Model):
                                            " Level")
     top_of_dam = models.FloatField(null=True, blank=True,
                                    help_text="Feet above Mean Sea Level")
-    num_of_floodgates = models.FloatField(null=True, blank=True,
-                                          verbose_name='Number of Floodgates')
+    num_of_floodgates = models.PositiveIntegerField(null=True, blank=True,
+                                                    verbose_name='Number of '
+                                                    'Floodgates')
     discharge_capacity = models.TextField(blank=True, help_text="typically - "
                                           "Cubic Feet per Second")
 

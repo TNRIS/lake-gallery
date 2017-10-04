@@ -37,30 +37,109 @@
           </nav>
           <div class="contentText" data-spy="scroll" data-target="#navbar-contentPanel" data-offset="100">
             <h2 id="Story">{{ lake }} Story Map</h2>
-            <p>{{ story.summary|safe }}</p>
+            <div>{{ story.summary|safe }}</div>
             <h2 id="History">History of {{ lake }}</h2>
-            <p>{{ story.history|safe }}</p>
+            <div>{{ story.history|safe }}</div>
 
             {% if stats.original_name %}
               <h2 id="Statistics">{{ lake }} Statistics</h2>
-              <p>{{ stats.original_name }}</p>
-              <p>{{ stats.primary_purposes }}</p>
-              <p>{{ stats.location }}</p>
+              <ul class="statsList">
+                <li>
+                  <span class="statLabel">Original Name:</span>
+                  {{ stats.original_name }}
+                </li>
+                <li>
+                  <span class="statLabel">Primary Purposes:</span>
+                  {{ stats.primary_purposes }}
+                  </li>
+                <li>
+                  <span class="statLabel">Location:</span>
+                  {{ stats.location }}
+                </li>
+                <li>
+                  <span class="statLabel">Construction Dates:</span>
+                  {{ stats.construction_dates }}
+                </li>
+                <li>
+                  <span class="statLabel">Length of Lake:</span>
+                  {{ stats.length_of_lake }} miles
+                </li>
+                <li>
+                  <span class="statLabel">Miles of Shoreline:</span>
+                  {{ stats.miles_of_shoreline }} miles
+                </li>
+                <li>
+                  <span class="statLabel">Maximum Width:</span>
+                  {{ stats.maximum_width }} miles
+                </li>
+                <li>
+                  <span class="statLabel">Lake Area:</span>
+                  {{ stats.lake_area }} acres
+                </li>
+                <li>
+                  <span class="statLabel">Lake Capacity:</span>
+                  {{ stats.lake_capacity }} acre-feet
+                </li>
+                <li>
+                  <span class="statLabel">Full Elevation:</span>
+                  {{ stats.full_elevation_msl }} mean sea level (msl) ({{ stats.full_elevation_gal }} gallons of water)
+                </li>
+                <li>
+                  <span class="statLabel">Maximum Depth:</span>
+                  {{ stats.maximum_depth }} ft
+                </li>
+                <li>
+                  <span class="statLabel">Average Depth:</span>
+                  {{ stats.average_depth }} ft
+                </li>
+                <li>
+                  <span class="statLabel">Historic High:</span>
+                  {{ stats.historic_high_msl }} feet msl on {{ stats.historic_high_date }}
+                </li>
+                <li>
+                  <span class="statLabel">Historic Low:</span>
+                  {{ stats.historic_low_msl }} feet msl on {{ stats.historic_low_date }}
+                </li>
+              </ul>
+              <h4>Dam Statistics</h4>
+              <ul class="statsList">
+                <li>
+                  <span class="statLabel">Dam Dimensions:</span>
+                  {{ stats.dam_height }} feet high, {{ stats.dam_width }} feet long
+                </li>
+                <li>
+                  <span class="statLabel">Spillway Elevation:</span>
+                  {{ stats.spillway_elevation }} feet above msl
+                </li>
+                <li>
+                  <span class="statLabel">Top of Dam:</span>
+                  {{ stats.top_of_dam }} feet above msl
+                </li>
+                <li>
+                  <span class="statLabel">Number of Floodgates:</span>
+                  {{ stats.num_of_floodgates }}
+                </li>
+                <li>
+                  <span class="statLabel">Total Discharge Capacity:</span>
+                  <br />
+                  {{ stats.discharge_capacity|safe }}
+                </li>
+              </ul>
             {% endif %}
 
             {% if story.section_one_header %}
               <h2 id="{{ story.section_one_nav|cut:' ' }}">{{ story.section_one_header }}</h2>
-              <p>{{ story.section_one_content|safe }}</p>
+              <div>{{ story.section_one_content|safe }}</div>
             {% endif %}
 
             {% if story.section_two_header %}
               <h2 id="{{ story.section_two_nav|cut:' ' }}">{{ story.section_two_header }}</h2>
-              <p>{{ story.section_two_content|safe }}</p>
+              <div>{{ story.section_two_content|safe }}</div>
             {% endif %}
 
             {% if story.section_three_header %}
               <h2 id="{{ story.section_three_nav|cut:' ' }}">{{ story.section_three_header }}</h2>
-              <p>{{ story.section_three_content|safe }}</p>
+              <div>{{ story.section_three_content|safe }}</div>
             {% endif %}
 
           </div>
