@@ -44,87 +44,127 @@
             {% if stats.general_stats %}
               <h2 id="Statistics">{{ lake }} Statistics</h2>
               <ul class="statsList">
-                <li>
-                  <span class="statLabel">Original Name:</span>
-                  {{ stats.original_name }}
-                </li>
-                <li>
-                  <span class="statLabel">Primary Purposes:</span>
-                  {{ stats.primary_purposes }}
+                {% if stats.original_name not in stats.stat_defaults %}
+                  <li>
+                    <span class="statLabel">Original Name:</span>
+                    {{ stats.original_name }}
                   </li>
-                <li>
-                  <span class="statLabel">Location:</span>
-                  {{ stats.location }}
-                </li>
-                <li>
-                  <span class="statLabel">Construction Dates:</span>
-                  {{ stats.construction_dates }}
-                </li>
-                <li>
-                  <span class="statLabel">Length of Lake:</span>
-                  {{ stats.length_of_lake }} miles
-                </li>
-                <li>
-                  <span class="statLabel">Miles of Shoreline:</span>
-                  {{ stats.miles_of_shoreline }} miles
-                </li>
-                <li>
-                  <span class="statLabel">Maximum Width:</span>
-                  {{ stats.maximum_width }} miles
-                </li>
-                <li>
-                  <span class="statLabel">Lake Area:</span>
-                  {{ stats.lake_area }} acres
-                </li>
-                <li>
-                  <span class="statLabel">Lake Capacity:</span>
-                  {{ stats.lake_capacity }} acre-feet
-                </li>
-                <li>
-                  <span class="statLabel">Full Elevation:</span>
-                  {{ stats.full_elevation_msl }} mean sea level (msl) ({{ stats.full_elevation_gal }} gallons of water)
-                </li>
-                <li>
-                  <span class="statLabel">Maximum Depth:</span>
-                  {{ stats.maximum_depth }} ft
-                </li>
-                <li>
-                  <span class="statLabel">Average Depth:</span>
-                  {{ stats.average_depth }} ft
-                </li>
-                <li>
-                  <span class="statLabel">Historic High:</span>
-                  {{ stats.historic_high_msl }} feet msl on {{ stats.historic_high_date }}
-                </li>
-                <li>
-                  <span class="statLabel">Historic Low:</span>
-                  {{ stats.historic_low_msl }} feet msl on {{ stats.historic_low_date }}
-                </li>
+                {% endif %}
+                {% if stats.primary_purposes not in stats.stat_defaults %}
+                  <li>
+                    <span class="statLabel">Primary Purposes:</span>
+                    {{ stats.primary_purposes }}
+                  </li>
+                {% endif %}
+                {% if stats.location not in stats.stat_defaults %}
+                  <li>
+                    <span class="statLabel">Location:</span>
+                    {{ stats.location }}
+                  </li>
+                {% endif %}
+                {% if stats.construction_dates not in stats.stat_defaults %}
+                  <li>
+                    <span class="statLabel">Construction Dates:</span>
+                    {{ stats.construction_dates }}
+                  </li>
+                {% endif %}
+                {% if stats.length_of_lake not in stats.stat_defaults %}
+                  <li>
+                    <span class="statLabel">Length of Lake:</span>
+                    {{ stats.length_of_lake }} miles
+                  </li>
+                {% endif %}
+                {% if stats.miles_of_shoreline not in stats.stat_defaults %}
+                  <li>
+                    <span class="statLabel">Miles of Shoreline:</span>
+                    {{ stats.miles_of_shoreline }} miles
+                  </li>
+                {% endif %}
+                {% if stats.maximum_width not in stats.stat_defaults %}
+                  <li>
+                    <span class="statLabel">Maximum Width:</span>
+                    {{ stats.maximum_width }} miles
+                  </li>
+                {% endif %}
+                {% if stats.lake_area not in stats.stat_defaults %}
+                  <li>
+                    <span class="statLabel">Lake Area:</span>
+                    {{ stats.lake_area }} acres
+                  </li>
+                {% endif %}
+                {% if stats.lake_capacity not in stats.stat_defaults %}
+                  <li>
+                    <span class="statLabel">Lake Capacity:</span>
+                    {{ stats.lake_capacity }} acre-feet
+                  </li>
+                {% endif %}
+                {% if stats.full_elevation_msl not in stats.stat_defaults %}
+                  <li>
+                    <span class="statLabel">Full Elevation:</span>
+                    {{ stats.full_elevation_msl }} mean sea level (msl) ({{ stats.full_elevation_gal }} gallons of water)
+                  </li>
+                {% endif %}
+                {% if stats.maximum_depth not in stats.stat_defaults %}
+                  <li>
+                    <span class="statLabel">Maximum Depth:</span>
+                    {{ stats.maximum_depth }} ft
+                  </li>
+                {% endif %}
+                {% if stats.average_depth not in stats.stat_defaults %}
+                  <li>
+                    <span class="statLabel">Average Depth:</span>
+                    {{ stats.average_depth }} ft
+                  </li>
+                {% endif %}
+                {% if stats.historic_high_msl not in stats.stat_defaults %}
+                  <li>
+                    <span class="statLabel">Historic High:</span>
+                    {{ stats.historic_high_msl }} feet msl on {{ stats.historic_high_date }}
+                  </li>
+                {% endif %}
+                {% if stats.historic_low_msl not in stats.stat_defaults %}
+                  <li>
+                    <span class="statLabel">Historic Low:</span>
+                    {{ stats.historic_low_msl }} feet msl on {{ stats.historic_low_date }}
+                  </li>
+                {% endif %}
               </ul>
-              <h5>Dam Statistics</h5>
-              <ul class="statsList">
-                <li>
-                  <span class="statLabel">Dam Dimensions:</span>
-                  {{ stats.dam_height }} feet high, {{ stats.dam_width }} feet long
-                </li>
-                <li>
-                  <span class="statLabel">Spillway Elevation:</span>
-                  {{ stats.spillway_elevation }} feet above msl
-                </li>
-                <li>
-                  <span class="statLabel">Top of Dam:</span>
-                  {{ stats.top_of_dam }} feet above msl
-                </li>
-                <li>
-                  <span class="statLabel">Number of Floodgates:</span>
-                  {{ stats.num_of_floodgates }}
-                </li>
-                <li>
-                  <span class="statLabel">Total Discharge Capacity:</span>
-                  <br />
-                  {{ stats.discharge_capacity|safe }}
-                </li>
-              </ul>
+              {% if stats.dam_stats %}
+                <h5>Dam Statistics</h5>
+                <ul class="statsList">
+                  {% if stats.dam_height not in stats.stat_defaults %}
+                    <li>
+                      <span class="statLabel">Dam Dimensions:</span>
+                      {{ stats.dam_height }} feet high, {{ stats.dam_width }} feet long
+                    </li>
+                  {% endif %}
+                  {% if stats.spillway_elevation not in stats.stat_defaults %}
+                    <li>
+                      <span class="statLabel">Spillway Elevation:</span>
+                      {{ stats.spillway_elevation }} feet above msl
+                    </li>
+                  {% endif %}
+                  {% if stats.top_of_dam not in stats.stat_defaults %}
+                    <li>
+                      <span class="statLabel">Top of Dam:</span>
+                      {{ stats.top_of_dam }} feet above msl
+                    </li>
+                  {% endif %}
+                  {% if stats.num_of_floodgates not in stats.stat_defaults %}
+                    <li>
+                      <span class="statLabel">Number of Floodgates:</span>
+                      {{ stats.num_of_floodgates }}
+                    </li>
+                  {% endif %}
+                  {% if stats.discharge_capacity not in stats.stat_defaults %}
+                    <li>
+                      <span class="statLabel">Total Discharge Capacity:</span>
+                      <br />
+                      {{ stats.discharge_capacity|safe }}
+                    </li>
+                  {% endif %}
+                </ul>
+              {% endif %}
             {% endif %}
 
             {% if story.section_one_header %}

@@ -176,7 +176,9 @@ class LakeStatistics(models.Model):
                                           "Cubic Feet per Second")
 
     def comma_numbers(self):
+        self.length_of_lake = "{:,}".format(self.length_of_lake)
         self.miles_of_shoreline = "{:,}".format(self.miles_of_shoreline)
+        self.maximum_width = "{:,}".format(self.maximum_width)
         self.lake_area = "{:,}".format(self.lake_area)
         self.lake_capacity = "{:,}".format(self.lake_capacity)
         self.full_elevation_msl = "{:,}".format(self.full_elevation_msl)
@@ -192,9 +194,11 @@ class LakeStatistics(models.Model):
         return self
 
     def set_displays(self):
+        self.stat_defaults = [0.0, 0, "0.0", "", None]
+        self.primary_purposes = str(self.primary_purposes)
         self.general_stats = False
         general_stats = [self.original_name,
-                         str(self.primary_purposes),
+                         self.primary_purposes,
                          self.location,
                          self.construction_dates,
                          self.length_of_lake,
@@ -211,7 +215,7 @@ class LakeStatistics(models.Model):
                          self.historic_low_msl,
                          self.historic_low_date]
         for g in general_stats:
-            if g != 0.0 and g != "" and g is not None:
+            if g not in self.stat_defaults:
                 self.general_stats = True
 
         self.dam_stats = False
@@ -222,7 +226,7 @@ class LakeStatistics(models.Model):
                      self.num_of_floodgates,
                      self.discharge_capacity]
         for d in dam_stats:
-            if d != 0.0 and d != 0 and d != "":
+            if d not in self.stat_defaults:
                 self.general_stats = True
                 self.dam_stats = True
         return self
