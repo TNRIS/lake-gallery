@@ -1,3 +1,17 @@
+/*DOCUMENT*/
+@font-face {
+	font-family: "Clear Sans";
+	src: url("font/EOT/ClearSans-Light.eot");
+	src: 
+	url("font/WOFF/ClearSans-Light.woff") format("woff"),
+	url("font/TTF/ClearSans-Light.ttf") format("ttf"),
+	url("font/SVG/ClearSans-Light.svg#filename") format("svg");
+}
+
+body {
+	font-family: "Clear Sans";
+}
+
 /*SITE HEADER*/
 .navbar {
 	background-color: #011355;
