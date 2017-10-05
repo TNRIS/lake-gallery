@@ -17,7 +17,7 @@
 
           function focusRegion (regionLetter) {
             var regionLink = '/' + regionLetter;
-            window.history.pushState({}, "Region", regionLink);
+            window.history.pushState({"url": regionLink}, "Region", regionLink);
             map.eachLayer(function (layer) {
               map.removeLayer(tileLayer);
               map.removeLayer(utfGrid);
@@ -133,5 +133,11 @@
             getTileUrls(resConfig, "{{ region }}");
           }
         }
+        $(function() {
+          window.history.pushState({"url": window.location.pathname}, "Original", window.location.pathname);
+        });
+        $(window).on("popstate", function(e) {
+          window.location.href = e.originalEvent.state.url;
+        });
     </script> 
 {% endblock %}
