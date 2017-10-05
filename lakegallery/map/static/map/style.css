@@ -14,7 +14,7 @@ body {
 
 /*SITE HEADER*/
 .navbar {
-	background-color: #011355;
+	background-color: #3C5163;
 }
 
 .navbar-brand {
@@ -23,7 +23,8 @@ body {
 
 .headerLogo {
 	max-height: 40px;
-	margin-right: 10px;
+	margin-right: 8px;
+	margin-left: 8px;
 }
 
 .dropdown-menu {
@@ -49,6 +50,15 @@ body {
 
 #navbar-contentPanel > ul > li > .nav-link {
 	padding: 4px 8px 4px 8px;
+}
+
+.nav.nav-pills > .nav-item > .nav-link {
+	color: #3C5163;
+}
+
+.nav.nav-pills > .nav-item > .nav-link.active {
+	color: #fff;
+	background-color: #3C5163;
 }
 
 .contentText {
@@ -136,12 +146,16 @@ div.slider.slider-horizontal {
 	bottom: 30px;
 	right: 50px;
 	z-index: 100;
-	/*display: none;*/
 }
 
 .slider-tick-label {
 	color: white;
 	width: 52.5px;
+	font-weight: bold;
+}
+
+div.slider-handle.min-slider-handle.round {
+	background-image: linear-gradient(to bottom,#337ab7 0,#3C5163 100%);
 }
 
 #storyMap {
