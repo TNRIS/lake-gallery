@@ -56,10 +56,17 @@
 	font-style: italic;
 }
 
+#imagemodal {
+	text-align: center;
+}
+
 @media (min-width: 576px) {
 	.modal-dialog {
 	    max-width: 80%;
 	    max-height: 90%;
+	    width: auto !important;
+    	display: inline-block;
+    	text-align: center;
 	}
 
 	.modal-body > img {
