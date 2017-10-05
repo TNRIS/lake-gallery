@@ -133,11 +133,9 @@
             getTileUrls(resConfig, "{{ region }}");
           }
         }
-        $(function() {
-          window.history.pushState({"url": window.location.pathname}, "Original", window.location.pathname);
-        });
         $(window).on("popstate", function(e) {
-          window.location.href = e.originalEvent.state.url;
-        });
+            window.location.href = "/";
+          });
+        
     </script> 
 {% endblock %}
