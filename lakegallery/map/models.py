@@ -181,7 +181,10 @@ class LakeStatistics(models.Model):
             field_type = f.get_internal_type()
             if field_type == 'FloatField':
                 attr = getattr(self, f.name)
-                setattr(self, f.name, "{:,}".format(attr))
+                string = "{:,}".format(attr)
+                if string[-2:] == ".0":
+                    string = string[:-2]
+                setattr(self, f.name, string)
         return self
 
     def set_displays(self):

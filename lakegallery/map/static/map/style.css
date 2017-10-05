@@ -59,8 +59,18 @@
 @media (min-width: 576px) {
 	.modal-dialog {
 	    max-width: 80%;
-	    max-height: 80%;
+	    max-height: 90%;
 	}
+
+	.modal-body > img {
+		margin: 0 auto;
+		display: block;
+		max-width: 100%;
+	}
+}
+
+.modal-body > img {
+	max-width: 100%;
 }
 
 .modal-body > .close {
