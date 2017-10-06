@@ -3,12 +3,27 @@ from .models import (MajorReservoirs, RWPAs, HistoricalAerialLinks,
                      StoryContent, LakeStatistics)
 
 
+class MajorReservoirsAdmin(admin.OSMGeoAdmin):
+    list_display = ['region', 'res_lbl']
+    ordering = ['region']
+    list_filter = ['region']
+
+
+class RWPAsAdmin(admin.OSMGeoAdmin):
+    list_display = ['letter', 'reg_name']
+    ordering = ['letter']
+
+
 class HistoricalAerialLinksAdmin(admin.ModelAdmin):
     list_display = ('lake', 'year', 'link')
+    ordering = ('lake', 'year', 'link')
+    list_per_page = 50
+    list_filter = ['lake']
 
 
 class StoryContentAdmin(admin.ModelAdmin):
     list_display = ['lake']
+    ordering = ['lake']
     fieldsets = [
         (None,               {'fields': ['lake', 'summary', 'history',
                                          ('history_photo', 'hist_tag')]}),
@@ -33,6 +48,7 @@ class StoryContentAdmin(admin.ModelAdmin):
 
 class LakeStatisticsAdmin(admin.ModelAdmin):
     list_display = ['lake']
+    ordering = ['lake']
     fieldsets = [
         (None, {'fields': ['lake']}),
         ('General Statistics', {'fields': ['original_name',
@@ -60,8 +76,12 @@ class LakeStatisticsAdmin(admin.ModelAdmin):
                                        'discharge_capacity']})
     ]
 
-admin.site.register(MajorReservoirs, admin.OSMGeoAdmin)
-admin.site.register(RWPAs, admin.OSMGeoAdmin)
+
+admin.site.register(MajorReservoirs, MajorReservoirsAdmin)
+admin.site.register(RWPAs, RWPAsAdmin)
 admin.site.register(HistoricalAerialLinks, HistoricalAerialLinksAdmin)
 admin.site.register(StoryContent, StoryContentAdmin)
 admin.site.register(LakeStatistics, LakeStatisticsAdmin)
+
+admin.site.site_header = "Texas Lake Gallery - Administration"
+admin.site.index_title = "Database Tables"
