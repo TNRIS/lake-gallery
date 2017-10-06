@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from django.contrib.gis.geos import Polygon, MultiPolygon
 
 from .models import (MajorReservoirs, RWPAs, HistoricalAerialLinks,
-                     StoryContent, get_upload_path)
+                     StoryContent, LakeStatistics, get_upload_path)
 from .views import (get_region_header_list, get_lake_header_list)
 import string
 import os
@@ -110,7 +110,7 @@ class HistoricalAerialLinksModelTests(TestCase):
                 ' instance' in str(e.exception))
 
 
-class StoryContentTests(TestCase):
+class StoryContentModelTests(TestCase):
 
     def test_verbose_name_representations(self):
         """
@@ -166,6 +166,54 @@ class StoryContentTests(TestCase):
                          lake="lake")
         assert ('"StoryContent.lake" must be a "MajorReservoirs" instance' in
                 str(e.exception))
+
+
+class LakeStatisticsModelTests(TestCase):
+
+    def test_verbose_name_representations(self):
+        """
+        Test the name representations are formatted correctly
+        """
+        self.assertEqual(str(LakeStatistics._meta.verbose_name),
+                         "Lake Statistics")
+        self.assertEqual(str(LakeStatistics._meta.verbose_name_plural),
+                         "Lake Statistics")
+
+    def test_lake_only_requirement(self):
+        """
+        Test the lake property will error if not designated
+        """
+        response = LakeStatistics()
+        try:
+            response.full_clean()
+        except ValidationError as e:
+            error = dict(e)
+            self.assertEqual(error['lake'], ['This field cannot be null.'])
+
+    def test_key_relationship_requirement(self):
+        """
+        Test the 'lake' OneToOne relationship field requirement
+        """
+        with self.assertRaises(ValueError) as e:
+            LakeStatistics(lake="lake")
+        assert ('"LakeStatistics.lake" must be a "MajorReservoirs" instance' in
+                str(e.exception))
+
+    def test_string_numbers_method(self):
+        """
+        Test the float numbers to strings method
+        """
+        lake_name = "Lake Travis"
+        MajorReservoirs(res_lbl=lake_name, geom=test_geom).save()
+        m = MajorReservoirs.objects.get(res_lbl=lake_name)
+        response = LakeStatistics(lake=m, dam_height=4.3)
+        str_res = response.string_numbers()
+        flds = str_res._meta.get_fields()
+        for f in flds:
+            attr = getattr(response, f.name)
+            attr_type = type(attr)
+            self.assertNotEqual(str(attr_type), 'float')
+            self.assertNotEqual(str(attr)[-2:], '.0')
 
 
 class functionTests(TestCase):
