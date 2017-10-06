@@ -11,18 +11,20 @@
           var tileLayer;
           var utfGrid;
           var outlineLayer;
+          // var defaultBounds;
 
           var rwpasConfig = JSON.parse('{{ layers.rwpas }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
           var resConfig = JSON.parse('{{ layers.reservoirs }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
 
           function focusRegion (regionLetter) {
             var regionLink = '/' + regionLetter;
-            window.history.pushState({"url": regionLink}, "Region", regionLink);
-            map.eachLayer(function (layer) {
-              map.removeLayer(tileLayer);
-              map.removeLayer(utfGrid);
-              getTileUrls(resConfig, regionLetter);
-            });
+            // window.history.pushState({"url": regionLink}, "Region", regionLink);
+            window.location.href = regionLink;
+            // map.eachLayer(function (layer) {
+            //   map.removeLayer(tileLayer);
+            //   map.removeLayer(utfGrid);
+            //   getTileUrls(resConfig, regionLetter);
+            // });
           }
 
           function getTileUrls (config, regionLetter) {
@@ -128,14 +130,44 @@
           }
 
           if ("{{ region }}" == "") {
+            var bnds = map.getBounds();
+            console.log(bnds);
+            defaultBounds = bnds;
             getTileUrls(rwpasConfig);
           } else {
             getTileUrls(resConfig, "{{ region }}");
           }
+
+          // $(function() { 
+          //   window.history.pushState({"url": window.location.pathname}, "Original", window.location.pathname); 
+          // }); 
+          // $(window).on("popstate", function(e) {
+          //   console.log(e.originalEvent.state);
+          //   // window.location.href = "/";
+          //   if (e.originalEvent.state == null) {
+          //     console.log("nuller");
+          //     window.history.back();
+          //   }
+          //   else if (e.originalEvent.state.url == "/") {
+          //     // window.location.href = e.originalEvent.state.url;
+          //     console.log('home');
+          //     map.removeLayer(tileLayer);
+          //     map.removeLayer(utfGrid);
+          //     map.removeLayer(outlineLayer);
+          //     map.flyToBounds(defaultBounds);
+          //     getTileUrls(rwpasConfig);
+          //   } 
+          //   else {
+          //     console.log(e.originalEvent.state);
+          //     map.removeLayer(tileLayer);
+          //     map.removeLayer(utfGrid);
+          //     getTileUrls(resConfig, e.originalEvent.state.url.charAt(1));
+          //   }
+
+          // });
+
         }
-        $(window).on("popstate", function(e) {
-          window.location.href = "/";
-        });
+        
         
     </script> 
 {% endblock %}
