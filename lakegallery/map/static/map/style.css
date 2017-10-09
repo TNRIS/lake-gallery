@@ -119,6 +119,27 @@ sources {
 	font-weight: bold;
 }
 
+.rankedHeader {
+	margin-top: 10px;
+}
+
+.table.rankedEvents {
+	width: 85%;
+	margin: 0 auto;
+}
+
+.table.rankedEvents > tbody > tr > td {
+	padding: .5rem;
+}
+
+.table.rankedEvents > tbody > tr > th {
+	padding: .5rem;
+}
+
+#rankingFooter {
+	margin-top: 15px;
+}
+
 /*STORY MAP PANEL*/
 .leaflet-container {
     height: calc(100% - 56px);

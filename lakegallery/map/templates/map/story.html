@@ -178,6 +178,54 @@
                   {% endif %}
                 </ul>
               {% endif %}
+
+              {% if high_events|length > 0 %}
+                <h5 class="rankedHeader">Top {{ high_events|length }} Highest Lake Levels</h5>
+                <table class="table rankedEvents">
+                  <thead>
+                    <tr>
+                      <th>Rank</th>
+                      <th>Date</th>
+                      <th>Height*</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for e in high_events %}
+                      <tr>
+                        <th scope="row">{{ e.rank }}</th>
+                        <td>{{ e.date }}</td>
+                        <td>{{ e.height }}</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              {% endif %}
+              {% if low_events|length > 0 %}
+                <h5 class="rankedHeader">Top {{ low_events|length }} Lowest Lake Levels</h5>
+                <table class="table rankedEvents">
+                  <thead>
+                    <tr>
+                      <th>Rank</th>
+                      <th>Drought</th>
+                      <th>Date</th>
+                      <th>Height*</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for e in low_events %}
+                      <tr>
+                        <th scope="row">{{ e.rank }}</th>
+                        <td>{{ e.drought }}</td>
+                        <td>{{ e.date }}</td>
+                        <td>{{ e.height }}</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              {% endif %}
+              {% if low_events|length > 0 or high_events|length > 0 %}
+                <p id="rankingFooter"><sub>*Height is represented as feet above mean sea level (MSL)</sub></p>
+              {% endif %}
             {% endif %}
 
             {% if story.section_one_header %}

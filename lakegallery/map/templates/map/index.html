@@ -130,9 +130,8 @@
           }
 
           if ("{{ region }}" == "") {
-            var bnds = map.getBounds();
-            console.log(bnds);
-            defaultBounds = bnds;
+            // var bnds = map.getBounds();
+            // defaultBounds = bnds;
             getTileUrls(rwpasConfig);
           } else {
             getTileUrls(resConfig, "{{ region }}");

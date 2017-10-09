@@ -244,6 +244,13 @@ class SignificantEvents(models.Model):
     def __str__(self):
         return self.event_type + " " + str(self.date)
 
+    def as_dict(self):
+        return {
+            'date': self.date,
+            'height': self.height,
+            'drought': self.drought
+        }
+
     class Meta:
         verbose_name = "Significant Event"
         verbose_name_plural = "Significant Events"

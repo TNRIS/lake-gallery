@@ -5,7 +5,7 @@ from .config import layers
 from django.shortcuts import render_to_response
 # from django.template import RequestContext
 from .models import (MajorReservoirs, RWPAs, HistoricalAerialLinks,
-                     StoryContent, LakeStatistics)
+                     StoryContent, LakeStatistics, SignificantEvents)
 
 
 """
@@ -74,9 +74,38 @@ def story(request, letter, lake):
     except:
         s = {}
 
+    try:
+        h = SignificantEvents.objects.filter(lake=m, event_type='High')
+        high_list = [obj.as_dict() for obj in h]
+        high_list.sort(key=lambda x: x['height'])
+        high_list.reverse()
+        for h in high_list:
+            rank = high_list.index(h)
+            rank += 1
+            h['rank'] = rank
+            del h['drought']
+        if len(high_list) > 10:
+            high_list = high_list[:10]
+    except:
+        high_list = []
+
+    try:
+        l = SignificantEvents.objects.filter(lake=m, event_type='Low')
+        low_list = [obj.as_dict() for obj in l]
+        low_list.sort(key=lambda x: x['height'])
+        for l in low_list:
+            rank = low_list.index(l)
+            rank += 1
+            l['rank'] = rank
+        if len(low_list) > 10:
+            low_list = low_list[:10]
+    except:
+        low_list = []
+
     context = {'header_regions': labels, 'header_lakes': res,
                'layer': layers['reservoirs'], 'lake': lake, 'links': links,
-               'story': c, 'stats': s}
+               'story': c, 'stats': s, 'high_events': high_list,
+               'low_events': low_list}
 
     return render(request, 'map/story.html', context)
 

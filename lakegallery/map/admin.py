@@ -83,6 +83,13 @@ class SignificantEventsAdmin(admin.ModelAdmin):
     list_per_page = 50
     list_filter = ['lake', 'event_type']
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "lake":
+            kwargs["queryset"] = (MajorReservoirs.objects.all()
+                                  .order_by('res_lbl'))
+        return (super(SignificantEventsAdmin, self)
+                .formfield_for_foreignkey(db_field, request, **kwargs))
+
 
 admin.site.register(MajorReservoirs, MajorReservoirsAdmin)
 admin.site.register(RWPAs, RWPAsAdmin)
