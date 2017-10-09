@@ -215,6 +215,33 @@ class LakeStatisticsModelTests(TestCase):
             self.assertNotEqual(str(attr_type), 'float')
             self.assertNotEqual(str(attr)[-2:], '.0')
 
+    def test_set_displays_method(self):
+        """
+        Test the set displays formatting method
+        """
+        lake_name = "Lake Travis"
+        MajorReservoirs(res_lbl=lake_name, geom=test_geom).save()
+        m = MajorReservoirs.objects.get(res_lbl=lake_name)
+        # test display no statistics
+        response = LakeStatistics(lake=m)
+        dis_res = response.set_displays()
+        self.assertIs(dis_res.general_stats, False)
+        self.assertIs(dis_res.dam_stats, False)
+        self.assertEqual(type(dis_res.primary_purposes), str)
+        minimum_defaults = [0.0, 0, "0.0", "", None, "None"]
+        for s in dis_res.stat_defaults:
+            self.assertTrue(s in minimum_defaults)
+        # test display only general stats
+        response = LakeStatistics(lake=m, original_name="Lake Water")
+        dis_res = response.set_displays()
+        self.assertIs(dis_res.general_stats, True)
+        self.assertIs(dis_res.dam_stats, False)
+        # test display dam stats also displays general stats header
+        response = LakeStatistics(lake=m, top_of_dam=32.4)
+        dis_res = response.set_displays()
+        self.assertIs(dis_res.general_stats, True)
+        self.assertIs(dis_res.dam_stats, True)
+
 
 class functionTests(TestCase):
 

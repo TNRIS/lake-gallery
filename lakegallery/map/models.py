@@ -188,7 +188,7 @@ class LakeStatistics(models.Model):
         return self
 
     def set_displays(self):
-        self.stat_defaults = [0.0, 0, "0.0", "", None]
+        self.stat_defaults = [0.0, 0, "0.0", "", None, "None"]
         self.primary_purposes = str(self.primary_purposes)
         self.general_stats = False
         general_stats = [self.original_name,
