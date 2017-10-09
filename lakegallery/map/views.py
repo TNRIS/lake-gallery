@@ -45,6 +45,12 @@ def redirect_region(request, letter):
     return redirect('/' + uppercase)
 
 
+def redirect_story(request, letter, lake):
+    uppercase = letter.upper()
+    print(letter, lake)
+    return redirect('/' + uppercase + '/' + lake)
+
+
 def story(request, letter, lake):
     labels = get_region_header_list()
     res = get_lake_header_list()
