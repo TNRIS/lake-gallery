@@ -1,6 +1,6 @@
 from django.contrib.gis import admin
 from .models import (MajorReservoirs, RWPAs, HistoricalAerialLinks,
-                     StoryContent, LakeStatistics)
+                     StoryContent, LakeStatistics, SignificantEvents)
 
 
 class MajorReservoirsAdmin(admin.OSMGeoAdmin):
@@ -77,11 +77,19 @@ class LakeStatisticsAdmin(admin.ModelAdmin):
     ]
 
 
+class SignificantEventsAdmin(admin.ModelAdmin):
+    list_display = ('lake', 'event_type', 'date', 'height')
+    ordering = ('lake', 'event_type', 'date')
+    list_per_page = 50
+    list_filter = ['lake', 'event_type']
+
+
 admin.site.register(MajorReservoirs, MajorReservoirsAdmin)
 admin.site.register(RWPAs, RWPAsAdmin)
 admin.site.register(HistoricalAerialLinks, HistoricalAerialLinksAdmin)
 admin.site.register(StoryContent, StoryContentAdmin)
 admin.site.register(LakeStatistics, LakeStatisticsAdmin)
+admin.site.register(SignificantEvents, SignificantEventsAdmin)
 
 admin.site.site_header = "Texas Lake Gallery - Administration"
 admin.site.index_title = "Database Tables"

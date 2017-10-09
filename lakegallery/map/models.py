@@ -228,3 +228,22 @@ class LakeStatistics(models.Model):
     class Meta:
         verbose_name = "Lake Statistics"
         verbose_name_plural = "Lake Statistics"
+
+
+class SignificantEvents(models.Model):
+    lake = models.ForeignKey(MajorReservoirs)
+    event_type = models.CharField(max_length=4,
+                                  choices=[('High', 'High'), ('Low', 'Low')],
+                                  default='High')
+    date = models.DateField()
+    height = models.FloatField(help_text="Feet above mean sea level")
+    drought = models.CharField(max_length=9, blank=True,
+                               help_text="Year range of drought (low "
+                               "events only). Example: '1947-57'")
+
+    def __str__(self):
+        return self.event_type + " " + str(self.date)
+
+    class Meta:
+        verbose_name = "Significant Event"
+        verbose_name_plural = "Significant Events"

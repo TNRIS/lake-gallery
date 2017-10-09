@@ -7,10 +7,12 @@ from bs4 import BeautifulSoup
 from django.contrib.gis.geos import Polygon, MultiPolygon
 
 from .models import (MajorReservoirs, RWPAs, HistoricalAerialLinks,
-                     StoryContent, LakeStatistics, get_upload_path)
+                     StoryContent, LakeStatistics, SignificantEvents,
+                     get_upload_path)
 from .views import (get_region_header_list, get_lake_header_list)
 import string
 import os
+import datetime
 
 p1 = Polygon(((0, 0), (0, 1), (1, 1), (0, 0)))
 p2 = Polygon(((1, 1), (1, 2), (2, 2), (1, 1)))
@@ -241,6 +243,34 @@ class LakeStatisticsModelTests(TestCase):
         dis_res = response.set_displays()
         self.assertIs(dis_res.general_stats, True)
         self.assertIs(dis_res.dam_stats, True)
+
+
+class SignificantEventsModelTests(TestCase):
+
+    def test_string_representation(self):
+        """
+        Test the string representation of the model returns the binary
+        event type with the date
+        """
+        lake_name = "Lake Travis"
+        MajorReservoirs(res_lbl=lake_name, geom=test_geom).save()
+        m = MajorReservoirs.objects.get(res_lbl=lake_name)
+
+        today = datetime.datetime.today()
+        dt = str(today.year) + "-" + str(today.month) + "-" + str(today.day)
+        response = SignificantEvents(lake=m, event_type='High',
+                                     date=dt, height=99.99)
+        expected = response.event_type + " " + dt
+        self.assertEqual(str(response), expected)
+
+    def test_verbose_name_representations(self):
+        """
+        Test the name representations are formatted correctly
+        """
+        self.assertEqual(str(SignificantEvents._meta.verbose_name),
+                         "Significant Event")
+        self.assertEqual(str(SignificantEvents._meta.verbose_name_plural),
+                         "Significant Events")
 
 
 class functionTests(TestCase):
