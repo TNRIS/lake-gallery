@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import Http404
 from .config import layers
 
 from django.shortcuts import render_to_response
@@ -47,7 +48,6 @@ def redirect_region(request, letter):
 
 def redirect_story(request, letter, lake):
     uppercase = letter.upper()
-    print(letter, lake)
     return redirect('/' + uppercase + '/' + lake)
 
 
@@ -56,6 +56,8 @@ def story(request, letter, lake):
     res = get_lake_header_list()
 
     m = MajorReservoirs.objects.get(res_lbl=lake)
+    if m.region != letter:
+        raise Http404()
     n = HistoricalAerialLinks.objects.filter(lake=m)
     links = [obj.as_dict() for obj in n]
     links.sort(key=lambda x: x['year'])

@@ -299,6 +299,26 @@ class URLTests(TestCase):
             response = self.client.get('/' + l)
             self.assertEqual(response.status_code, 404)
 
+    def test_story_pages(self):
+        """
+        Test lake story page urls
+        """
+        lake_name = "Lake Travis"
+        lake_region = "K"
+        MajorReservoirs(res_lbl=lake_name, region=lake_region,
+                        geom=test_geom).save()
+        m = MajorReservoirs.objects.get(res_lbl=lake_name)
+        StoryContent(lake=m)
+        # test successful query for lake
+        response = self.client.get('/' + lake_region + '/' + lake_name)
+        self.assertEqual(response.status_code, 200)
+        # test bad region for lake in URL
+        response = self.client.get('/A/' + lake_name)
+        self.assertEqual(response.status_code, 404)
+        # test redirect if lowercase region supplied
+        response = self.client.get('/' + lake_region.lower() + '/' + lake_name)
+        self.assertEqual(response.status_code, 302)
+
 
 class ViewTests(TestCase):
 
