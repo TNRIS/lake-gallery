@@ -265,7 +265,6 @@
               layerController.addTo(map);
               basemaps['Google Imagery'].addTo(map);
 
-
               var account = 'tnris-flood'
               var tileLayer;
 
@@ -314,19 +313,11 @@
                     tileLayer = new L.tileLayer(url);
                     tileLayer.addTo(map);
                     layerController.addOverlay(tileLayer, '{{ lake }}');
-
-
                   }
                 })
               }
 
-
-
-
               getTileUrls(resConfig, "{{ lake }}");
-              
-              console.log("{{ lake }}");
-
 
               function setupHistoricalSlider(links) {
                 
