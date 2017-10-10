@@ -10,6 +10,7 @@ from .models import (MajorReservoirs, RWPAs, HistoricalAerialLinks,
                      StoryContent, LakeStatistics, SignificantEvents,
                      get_upload_path)
 from .views import (get_region_header_list, get_lake_header_list)
+from .validators import validate_past_dates
 import string
 import os
 import datetime
@@ -305,6 +306,22 @@ class functionTests(TestCase):
         response = StoryContent(lake=m)
         path = get_upload_path(response, "photo.png")
         self.assertEqual(path, os.path.join(lake_name, "photo.png"))
+
+    def test_date_validator(self):
+        """
+        Test the past date validator function doesn't allow future dates
+        """
+        # past date should pass
+        yesterday = datetime.date.today() - datetime.timedelta(days=1)
+        self.assertEqual(validate_past_dates(yesterday), yesterday)
+        # current date should pass
+        today = datetime.date.today()
+        self.assertEqual(validate_past_dates(today), today)
+        # future date should fail
+        tomorrow = datetime.date.today() + datetime.timedelta(days=1)
+        with self.assertRaises(ValidationError) as e:
+            validate_past_dates(tomorrow)
+        assert ('The date cannot be in the future!' in str(e.exception))
 
 
 class URLTests(TestCase):

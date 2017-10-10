@@ -251,7 +251,7 @@ class SignificantEvents(models.Model):
                                "events only). Example: '1947-57'")
 
     def __str__(self):
-        return self.lake + " " + self.event_type + " " + str(self.date)
+        return str(self.lake) + " " + self.event_type + " " + str(self.date)
 
     def as_dict(self):
         return {
