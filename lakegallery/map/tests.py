@@ -114,6 +114,16 @@ class HistoricalAerialLinksModelTests(TestCase):
 
 class StoryContentModelTests(TestCase):
 
+    def test_string_representation(self):
+        """
+        Test the string representation of the model return the Lake name
+        """
+        lake_name = "Lake Travis"
+        MajorReservoirs(res_lbl=lake_name, geom=test_geom).save()
+        m = MajorReservoirs.objects.get(res_lbl=lake_name)
+        response = StoryContent(lake=m)
+        self.assertEqual(str(response), lake_name)
+
     def test_verbose_name_representations(self):
         """
         Test the name representations are formatted correctly
@@ -171,6 +181,16 @@ class StoryContentModelTests(TestCase):
 
 
 class LakeStatisticsModelTests(TestCase):
+
+    def test_string_representation(self):
+        """
+        Test the string representation of the model return the Lake name
+        """
+        lake_name = "Lake Travis"
+        MajorReservoirs(res_lbl=lake_name, geom=test_geom).save()
+        m = MajorReservoirs.objects.get(res_lbl=lake_name)
+        response = LakeStatistics(lake=m)
+        self.assertEqual(str(response), lake_name)
 
     def test_verbose_name_representations(self):
         """
@@ -230,7 +250,7 @@ class LakeStatisticsModelTests(TestCase):
         self.assertIs(dis_res.general_stats, False)
         self.assertIs(dis_res.dam_stats, False)
         self.assertEqual(type(dis_res.primary_purposes), str)
-        minimum_defaults = [0.0, 0, "0.0", "", None, "None"]
+        minimum_defaults = [0.0, 0, "0", "0.0", "", None, "None"]
         for s in dis_res.stat_defaults:
             self.assertTrue(s in minimum_defaults)
         # test display only general stats
@@ -260,7 +280,7 @@ class SignificantEventsModelTests(TestCase):
         dt = str(today.year) + "-" + str(today.month) + "-" + str(today.day)
         response = SignificantEvents(lake=m, event_type='High',
                                      date=dt, height=99.99)
-        expected = response.event_type + " " + dt
+        expected = lake_name + " " + response.event_type + " " + dt
         self.assertEqual(str(response), expected)
 
     def test_verbose_name_representations(self):

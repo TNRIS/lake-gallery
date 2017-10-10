@@ -20,6 +20,13 @@ class HistoricalAerialLinksAdmin(admin.ModelAdmin):
     list_per_page = 50
     list_filter = ['lake']
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "lake":
+            kwargs["queryset"] = (MajorReservoirs.objects.all()
+                                  .order_by('res_lbl'))
+        return (super(HistoricalAerialLinksAdmin, self)
+                .formfield_for_foreignkey(db_field, request, **kwargs))
+
 
 class StoryContentAdmin(admin.ModelAdmin):
     list_display = ['lake']
@@ -44,6 +51,13 @@ class StoryContentAdmin(admin.ModelAdmin):
                                               'three_tag')]}),
     ]
     readonly_fields = ('hist_tag', 'one_tag', 'two_tag', 'three_tag')
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "lake":
+            kwargs["queryset"] = (MajorReservoirs.objects.all()
+                                  .order_by('res_lbl'))
+        return (super(StoryContentAdmin, self)
+                .formfield_for_foreignkey(db_field, request, **kwargs))
 
 
 class LakeStatisticsAdmin(admin.ModelAdmin):
@@ -75,6 +89,13 @@ class LakeStatisticsAdmin(admin.ModelAdmin):
                                        'num_of_floodgates',
                                        'discharge_capacity']})
     ]
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "lake":
+            kwargs["queryset"] = (MajorReservoirs.objects.all()
+                                  .order_by('res_lbl'))
+        return (super(LakeStatisticsAdmin, self)
+                .formfield_for_foreignkey(db_field, request, **kwargs))
 
 
 class SignificantEventsAdmin(admin.ModelAdmin):

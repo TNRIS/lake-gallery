@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.gis.db import models as gismodels
 from django.utils.safestring import mark_safe
 from multiselectfield import MultiSelectField
+from .validators import validate_past_dates
 import os
 
 import datetime
@@ -119,6 +120,9 @@ class StoryContent(models.Model):
                          % (self.section_three_photo))
     three_tag.allow_tags = True
 
+    def __str__(self):
+        return str(self.lake)
+
     class Meta:
         verbose_name = "Story Content"
         verbose_name_plural = "Story Content"
@@ -156,10 +160,12 @@ class LakeStatistics(models.Model):
     historic_high_msl = models.FloatField(default=0, blank=True,
                                           help_text="Feet above Mean Sea"
                                           " Level")
-    historic_high_date = models.DateField(null=True, blank=True)
+    historic_high_date = models.DateField(null=True, blank=True,
+                                          validators=[validate_past_dates])
     historic_low_msl = models.FloatField(default=0, blank=True,
                                          help_text="Feet above Mean Sea Level")
-    historic_low_date = models.DateField(null=True, blank=True)
+    historic_low_date = models.DateField(null=True, blank=True,
+                                         validators=[validate_past_dates])
 
     # dam stats
     dam_height = models.FloatField(default=0, blank=True, help_text="Feet")
@@ -188,7 +194,7 @@ class LakeStatistics(models.Model):
         return self
 
     def set_displays(self):
-        self.stat_defaults = [0.0, 0, "0.0", "", None, "None"]
+        self.stat_defaults = [0.0, 0, "0", "0.0", "", None, "None"]
         self.primary_purposes = str(self.primary_purposes)
         self.general_stats = False
         general_stats = [self.original_name,
@@ -225,6 +231,9 @@ class LakeStatistics(models.Model):
                 self.dam_stats = True
         return self
 
+    def __str__(self):
+        return str(self.lake)
+
     class Meta:
         verbose_name = "Lake Statistics"
         verbose_name_plural = "Lake Statistics"
@@ -242,7 +251,7 @@ class SignificantEvents(models.Model):
                                "events only). Example: '1947-57'")
 
     def __str__(self):
-        return self.event_type + " " + str(self.date)
+        return self.lake + " " + self.event_type + " " + str(self.date)
 
     def as_dict(self):
         return {
