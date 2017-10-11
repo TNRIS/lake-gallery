@@ -293,6 +293,54 @@ class SignificantEventsModelTests(TestCase):
         self.assertEqual(str(SignificantEvents._meta.verbose_name_plural),
                          "Significant Events")
 
+    def test_key_relationship_requirement(self):
+        """
+        Test the 'lake' ForeignKey field requirement
+        """
+        today = datetime.datetime.today()
+        dt = str(today.year) + "-" + str(today.month) + "-" + str(today.day)
+        with self.assertRaises(ValueError) as e:
+            SignificantEvents(lake="lake", event_type='High',
+                              date=dt, height=99.99)
+        assert ('"SignificantEvents.lake" must be a "MajorReservoirs"'
+                ' instance' in str(e.exception))
+
+    def test_requirements(self):
+        """
+        Test the lake, event type, date, and height required
+        """
+        response = SignificantEvents()
+        try:
+            response.full_clean()
+        except ValidationError as e:
+            error = dict(e)
+            self.assertEqual(error['lake'], ['This field cannot be null.'])
+            self.assertEqual(error['date'], ['This field cannot be null.'])
+            self.assertEqual(error['height'], ['This field cannot be null.'])
+
+    def test_dictionary_method(self):
+        """
+        Test the dictionary method as a response with date, height, and drought
+        """
+        today = datetime.datetime.today()
+        dt = str(today.year) + "-" + str(today.month) + "-" + str(today.day)
+
+        lake_name = "Lake Travis"
+        MajorReservoirs(res_lbl=lake_name, geom=test_geom).save()
+        m = MajorReservoirs.objects.get(res_lbl=lake_name)
+
+        response = SignificantEvents(lake=m, date=dt, height=99.99)
+        dictionary = response.as_dict()
+        self.assertIs(isinstance(dictionary, dict), True)
+        self.assertIs(isinstance(dictionary['date'], str), True)
+        self.assertIs(isinstance(dictionary['height'], float), True)
+        self.assertIs(isinstance(dictionary['drought'], str), True)
+        self.assertEqual(dictionary['date'], dt)
+        self.assertEqual(dictionary['height'], 99.99)
+        self.assertEqual(dictionary['drought'], "")
+        # since we're here, might as well test event_type defaults to 'High'
+        self.assertEqual(response.event_type, 'High')
+
 
 class functionTests(TestCase):
 
@@ -489,6 +537,18 @@ class ViewTests(TestCase):
                         geom=test_geom).save()
         m = MajorReservoirs.objects.get(res_lbl='mr one')
         StoryContent(lake=m, summary="text here", history="text there").save()
+        LakeStatistics(lake=m, dam_height=4.3).save()
+        # load up a bunch of significant high and low events
+        # more than the max displayed (10) each
+        today = datetime.datetime.today()
+        dt = str(today.year) + "-" + str(today.month) + "-" + str(today.day)
+        counter = 0
+        while counter < 15:
+            SignificantEvents(lake=m, event_type='High', date=dt,
+                              height=99.99).save()
+            SignificantEvents(lake=m, event_type='Low', date=dt,
+                              drought="1970-71", height=99.99).save()
+            counter += 1
 
         response = self.client.get(reverse('map:story', args=['A', 'mr one']))
         hdr_reg = response.context['header_regions']
@@ -530,6 +590,37 @@ class ViewTests(TestCase):
         self.assertIs('links' in response.context, True)
         self.assertIs(isinstance(response.context['links'], list),
                       True)
+
+        # check that stats is a key in the context
+        self.assertIs('stats' in response.context, True)
+        self.assertIs(isinstance(response.context['stats'],
+                      type(LakeStatistics())), True)
+        ls = LakeStatistics.objects.get(lake=m)
+        ls = ls.string_numbers()
+        ls = ls.set_displays()
+        self.assertEqual(response.context['stats'], ls)
+
+        # check that high events is a key in the context
+        self.assertIs('high_events' in response.context, True)
+        self.assertIs(isinstance(response.context['high_events'], list),
+                      True)
+        # test high events list isn't larger than 10
+        self.assertEqual(len(response.context['high_events']), 10)
+        # test high events list objects don't have drought but does have rank
+        for i in response.context['high_events']:
+            self.assertIs('drought' in i, False)
+            self.assertIs('rank' in i, True)
+
+        # check that low events is a key in the context
+        self.assertIs('low_events' in response.context, True)
+        self.assertIs(isinstance(response.context['low_events'], list),
+                      True)
+        # test low events list isn't larger than 10
+        self.assertEqual(len(response.context['low_events']), 10)
+        # test low events list objects have drought and rank keys
+        for i in response.context['low_events']:
+            self.assertIs('drought' in i, True)
+            self.assertIs('rank' in i, True)
 
     def test_templates(self):
         """

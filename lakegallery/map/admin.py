@@ -147,7 +147,7 @@ class ChannelMarkersAdmin(admin.ModelAdmin):
 
 
 class HazardsAdmin(admin.ModelAdmin):
-    list_display = ('lake', 'hazard_type')
+    list_display = ('lake', 'hazard_type', 'num_buoys')
     ordering = ('lake', 'hazard_type')
     list_per_page = 50
     list_filter = ['lake']
