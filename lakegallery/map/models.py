@@ -263,3 +263,88 @@ class SignificantEvents(models.Model):
     class Meta:
         verbose_name = "Significant Event"
         verbose_name_plural = "Significant Events"
+
+
+"""
+Overlay Layers for stories (points of interest)
+"""
+
+
+class BoatRamps(gismodels.Model):
+    lake = models.ForeignKey(MajorReservoirs)
+    name = models.CharField(max_length=30, blank=True)
+    operator = models.CharField(max_length=50, blank=True)
+
+    geom = gismodels.PointField(srid=4326)
+    objects = gismodels.GeoManager()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Boat Ramp"
+        verbose_name_plural = "Boat Ramps"
+
+
+class ChannelMarkers(gismodels.Model):
+    lake = models.ForeignKey(MajorReservoirs)
+    odd = models.IntegerField(blank=True)
+    marker_id = models.IntegerField(blank=True)
+    year = models.IntegerField(blank=True)
+
+    geom = gismodels.PointField(srid=4326)
+    objects = gismodels.GeoManager()
+
+    def __str__(self):
+        return str(self.lake) + " " + str(self.marker_id)
+
+    class Meta:
+        verbose_name = "Channel Marker"
+        verbose_name_plural = "Channel Markers"
+
+
+class Hazards(gismodels.Model):
+    hazard_choices = (('Hazard', 'Hazard'),
+                      ('No Boats', 'No Boats'),
+                      ('No Wake', 'No Wake'),
+                      ('Rocks', 'Rocks'))
+
+    lake = models.ForeignKey(MajorReservoirs)
+    hazard_type = models.CharField(max_length=35, default='Hazard',
+                                   choices=hazard_choices)
+    num_buoys = models.CharField(max_length=10, blank=True)
+
+    geom = gismodels.PolygonField(srid=4326)
+    objects = gismodels.GeoManager()
+
+    def __str__(self):
+        return str(self.lake) + " " + self.hazard_type
+
+    class Meta:
+        verbose_name = "Hazard"
+        verbose_name_plural = "Hazards"
+
+
+class Parks(gismodels.Model):
+    type_choices = (('Park', 'Park'),
+                    ('Undeveloped Recreation Area',
+                     'Undeveloped Recreation Area'),
+                    ('Preserve', 'Preserve'),
+                    ('Park/Preserve', 'Park/Preserve'))
+
+    lake = models.ForeignKey(MajorReservoirs)
+    park_type = models.CharField(max_length=50, choices=type_choices)
+    name = models.CharField(max_length=100, blank=True)
+    acres = models.FloatField(default=0, blank=True)
+    area = models.FloatField(default=0, blank=True)
+    perimeter = models.FloatField(default=0, blank=True)
+
+    geom = gismodels.PolygonField(srid=4326)
+    objects = gismodels.GeoManager()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Park"
+        verbose_name_plural = "Parks"

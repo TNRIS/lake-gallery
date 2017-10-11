@@ -1,6 +1,7 @@
 from django.contrib.gis import admin
 from .models import (MajorReservoirs, RWPAs, HistoricalAerialLinks,
-                     StoryContent, LakeStatistics, SignificantEvents)
+                     StoryContent, LakeStatistics, SignificantEvents,
+                     BoatRamps, ChannelMarkers, Hazards, Parks)
 
 
 class MajorReservoirsAdmin(admin.OSMGeoAdmin):
@@ -112,12 +113,77 @@ class SignificantEventsAdmin(admin.ModelAdmin):
                 .formfield_for_foreignkey(db_field, request, **kwargs))
 
 
+"""
+Overlay Layers for stories (points of interest)
+"""
+
+
+class BoatRampsAdmin(admin.ModelAdmin):
+    list_display = ('lake', 'name')
+    ordering = ('lake', 'name')
+    list_per_page = 50
+    list_filter = ['lake']
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "lake":
+            kwargs["queryset"] = (MajorReservoirs.objects.all()
+                                  .order_by('res_lbl'))
+        return (super(BoatRampsAdmin, self)
+                .formfield_for_foreignkey(db_field, request, **kwargs))
+
+
+class ChannelMarkersAdmin(admin.ModelAdmin):
+    list_display = ('lake', 'marker_id')
+    ordering = ('lake', 'marker_id')
+    list_per_page = 50
+    list_filter = ['lake']
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "lake":
+            kwargs["queryset"] = (MajorReservoirs.objects.all()
+                                  .order_by('res_lbl'))
+        return (super(ChannelMarkersAdmin, self)
+                .formfield_for_foreignkey(db_field, request, **kwargs))
+
+
+class HazardsAdmin(admin.ModelAdmin):
+    list_display = ('lake', 'hazard_type')
+    ordering = ('lake', 'hazard_type')
+    list_per_page = 50
+    list_filter = ['lake']
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "lake":
+            kwargs["queryset"] = (MajorReservoirs.objects.all()
+                                  .order_by('res_lbl'))
+        return (super(HazardsAdmin, self)
+                .formfield_for_foreignkey(db_field, request, **kwargs))
+
+
+class ParksAdmin(admin.ModelAdmin):
+    list_display = ('lake', 'name', 'park_type')
+    ordering = ('lake', 'name')
+    list_per_page = 50
+    list_filter = ['lake']
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "lake":
+            kwargs["queryset"] = (MajorReservoirs.objects.all()
+                                  .order_by('res_lbl'))
+        return (super(ParksAdmin, self)
+                .formfield_for_foreignkey(db_field, request, **kwargs))
+
+
 admin.site.register(MajorReservoirs, MajorReservoirsAdmin)
 admin.site.register(RWPAs, RWPAsAdmin)
 admin.site.register(HistoricalAerialLinks, HistoricalAerialLinksAdmin)
 admin.site.register(StoryContent, StoryContentAdmin)
 admin.site.register(LakeStatistics, LakeStatisticsAdmin)
 admin.site.register(SignificantEvents, SignificantEventsAdmin)
+admin.site.register(BoatRamps, BoatRampsAdmin)
+admin.site.register(ChannelMarkers, ChannelMarkersAdmin)
+admin.site.register(Hazards, HazardsAdmin)
+admin.site.register(Parks, ParksAdmin)
 
 admin.site.site_header = "Texas Lake Gallery - Administration"
 admin.site.index_title = "Database Tables"
