@@ -14,3 +14,29 @@ layers = {
         "interactivity": ["region", "res_lbl"]
     }
 }
+overlays = {
+    "boatramps": {
+        "table_name": "boatramps",
+        "toc_label": "Boat Ramps",
+        "carto_css": '#layer {marker-width: 7;marker-fill: #cb53ff;marker-fill-opacity: 1;marker-allow-overlap: true;marker-line-width: 1;marker-line-color: #FFFFFF;marker-line-opacity: 1;}',
+        "carto_lbl": '#layer::labels {text-name: [name];text-face-name: "DejaVu Sans Book";text-size: 10;text-fill: #FFFFFF;text-label-position-tolerance: 0;text-halo-radius: 1;text-halo-fill: #6F808D;text-dy: -10;text-allow-overlap: false;text-placement: point;text-placement-type: dummy;}'
+    },
+    "channelmarkers": {
+        "table_name": "channelmarkers",
+        "toc_label": "Channel Markers",
+        "carto_css": '#layer {marker-width: 7;marker-fill: #ffffff;marker-fill-opacity: 0.9;marker-allow-overlap: true;marker-line-width: 1;marker-line-color: #969696;marker-line-opacity: 1;}',
+        "carto_lbl": ''
+    },
+    "hazards": {
+        "table_name": "hazards",
+        "toc_label": "Hazards",
+        "carto_css": '#layer {polygon-fill: ramp([hazard_type], (#ffcbef, #f7d27a, #e1f4a4, #c1c1c1), ("Hazard", "No Boats", "No Wake", "Rocks"), "=");polygon-opacity: 0.66;}#layer::outline {line-width: 1;line-color: #bfbfbf;line-opacity: 0.76;}',
+        "carto_lbl": ''
+    },
+    "parks": {
+        "table_name": "parks",
+        "toc_label": "Parks",
+        "carto_css": '#layer {polygon-fill: #d4ffaf;polygon-opacity: 0.7;}#layer::outline {line-width: 1;line-color: #3dff4a;line-opacity: 0.5;}',
+        "carto_lbl": '#layer::labels {text-name: [name];text-face-name: "DejaVu Sans Book";text-size: 10;text-fill: #FFFFFF;text-label-position-tolerance: 0;text-halo-radius: 1;text-halo-fill: #6F808D;text-dy: -10;text-allow-overlap: false;text-placement: point;text-placement-type: dummy;}'
+    }
+}

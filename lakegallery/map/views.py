@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import Http404
-from .config import layers
+from .config import layers, overlays
 
 from django.shortcuts import render_to_response
 # from django.template import RequestContext
@@ -105,7 +105,7 @@ def story(request, letter, lake):
     context = {'header_regions': labels, 'header_lakes': res,
                'layer': layers['reservoirs'], 'lake': lake, 'links': links,
                'story': c, 'stats': s, 'high_events': high_list,
-               'low_events': low_list}
+               'low_events': low_list, 'overlays': overlays}
 
     return render(request, 'map/story.html', context)
 

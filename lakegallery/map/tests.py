@@ -386,7 +386,7 @@ class ChannelMarkersModelTests(TestCase):
         m = MajorReservoirs.objects.get(res_lbl=lake_name)
 
         marker_id = 21
-        response = ChannelMarkers(lake=m, marker_id=21)
+        response = ChannelMarkers(lake=m, marker_id=marker_id)
         expected = str(response.lake) + " " + str(response.marker_id)
         self.assertEqual(str(response), expected)
 
