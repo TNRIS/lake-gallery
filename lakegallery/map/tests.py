@@ -4,10 +4,11 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from bs4 import BeautifulSoup
 
-from django.contrib.gis.geos import Polygon, MultiPolygon
+from django.contrib.gis.geos import Point, Polygon, MultiPolygon
 
 from .models import (MajorReservoirs, RWPAs, HistoricalAerialLinks,
                      StoryContent, LakeStatistics, SignificantEvents,
+                     BoatRamps, ChannelMarkers, Hazards, Parks,
                      get_upload_path)
 from .views import (get_region_header_list, get_lake_header_list)
 from .validators import validate_past_dates
@@ -15,6 +16,7 @@ import string
 import os
 import datetime
 
+test_point = Point((1, 1), (1, 2))
 p1 = Polygon(((0, 0), (0, 1), (1, 1), (0, 0)))
 p2 = Polygon(((1, 1), (1, 2), (2, 2), (1, 1)))
 test_geom = MultiPolygon(p1, p2)
@@ -340,6 +342,137 @@ class SignificantEventsModelTests(TestCase):
         self.assertEqual(dictionary['drought'], "")
         # since we're here, might as well test event_type defaults to 'High'
         self.assertEqual(response.event_type, 'High')
+
+
+class BoatRampsModelTests(TestCase):
+
+    def test_string_representation(self):
+        """
+        Test the string representation of the model return boat ramp name
+        """
+        lake_name = "Lake Travis"
+        MajorReservoirs(res_lbl=lake_name, geom=test_geom).save()
+        m = MajorReservoirs.objects.get(res_lbl=lake_name)
+
+        response = BoatRamps(lake=m, name="Rampage")
+        self.assertEqual(str(response), response.name)
+
+    def test_verbose_name_representations(self):
+        """
+        Test the name representations are formatted correctly
+        """
+        self.assertEqual(str(BoatRamps._meta.verbose_name), "Boat Ramp")
+        self.assertEqual(str(BoatRamps._meta.verbose_name_plural),
+                         "Boat Ramps")
+
+    def test_key_relationship_requirement(self):
+        """
+        Test the 'lake' ForeignKey field requirement
+        """
+        with self.assertRaises(ValueError) as e:
+            BoatRamps(lake="lake", geom=test_point)
+        assert ('"BoatRamps.lake" must be a "MajorReservoirs"'
+                ' instance' in str(e.exception))
+
+
+class ChannelMarkersModelTests(TestCase):
+
+    def test_string_representation(self):
+        """
+        Test the string representation of the model return lake & marker id
+        """
+        lake_name = "Lake Travis"
+        MajorReservoirs(res_lbl=lake_name, geom=test_geom).save()
+        m = MajorReservoirs.objects.get(res_lbl=lake_name)
+
+        marker_id = 21
+        response = ChannelMarkers(lake=m, marker_id=21)
+        expected = str(response.lake) + " " + str(response.marker_id)
+        self.assertEqual(str(response), expected)
+
+    def test_verbose_name_representations(self):
+        """
+        Test the name representations are formatted correctly
+        """
+        self.assertEqual(str(ChannelMarkers._meta.verbose_name),
+                         "Channel Marker")
+        self.assertEqual(str(ChannelMarkers._meta.verbose_name_plural),
+                         "Channel Markers")
+
+    def test_key_relationship_requirement(self):
+        """
+        Test the 'lake' ForeignKey field requirement
+        """
+        with self.assertRaises(ValueError) as e:
+            ChannelMarkers(lake="lake", geom=test_point)
+        assert ('"ChannelMarkers.lake" must be a "MajorReservoirs"'
+                ' instance' in str(e.exception))
+
+
+class HazardsModelTests(TestCase):
+
+    def test_string_representation(self):
+        """
+        Test the string representation of the model return lake & hazard type
+        """
+        lake_name = "Lake Travis"
+        MajorReservoirs(res_lbl=lake_name, geom=test_geom).save()
+        m = MajorReservoirs.objects.get(res_lbl=lake_name)
+
+        hzd = 'No Wake'
+        response = Hazards(lake=m, hazard_type=hzd)
+        expected = str(response.lake) + " " + response.hazard_type
+        self.assertEqual(str(response), expected)
+
+    def test_verbose_name_representations(self):
+        """
+        Test the name representations are formatted correctly
+        """
+        self.assertEqual(str(Hazards._meta.verbose_name), "Hazard")
+        self.assertEqual(str(Hazards._meta.verbose_name_plural),
+                         "Hazards")
+
+    def test_key_relationship_requirement(self):
+        """
+        Test the 'lake' ForeignKey field requirement
+        """
+        with self.assertRaises(ValueError) as e:
+            Hazards(lake="lake", geom=test_point)
+        assert ('"Hazards.lake" must be a "MajorReservoirs"'
+                ' instance' in str(e.exception))
+
+
+class ParksModelTests(TestCase):
+
+    def test_string_representation(self):
+        """
+        Test the string representation of the model returns park name
+        """
+        lake_name = "Lake Travis"
+        MajorReservoirs(res_lbl=lake_name, geom=test_geom).save()
+        m = MajorReservoirs.objects.get(res_lbl=lake_name)
+
+        park_type = 'Preserve'
+        nm = "Parky-Park"
+        response = Parks(lake=m, park_type=park_type, name=nm)
+        self.assertEqual(str(response), response.name)
+
+    def test_verbose_name_representations(self):
+        """
+        Test the name representations are formatted correctly
+        """
+        self.assertEqual(str(Hazards._meta.verbose_name), "Hazard")
+        self.assertEqual(str(Hazards._meta.verbose_name_plural),
+                         "Hazards")
+
+    def test_key_relationship_requirement(self):
+        """
+        Test the 'lake' ForeignKey field requirement
+        """
+        with self.assertRaises(ValueError) as e:
+            Hazards(lake="lake", geom=test_point)
+        assert ('"Hazards.lake" must be a "MajorReservoirs"'
+                ' instance' in str(e.exception))
 
 
 class functionTests(TestCase):
