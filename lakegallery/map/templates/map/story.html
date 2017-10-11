@@ -275,6 +275,9 @@
 
               function loadOverlay (config) {
                 var css = config.carto_css;
+                if (config.carto_lbl) {
+                  css += config.carto_lbl;
+                }
                 var sql = `select * from ${config.table_name}`;
 
                 var mapconfig = {
@@ -302,6 +305,11 @@
                     layerController.addOverlay(tileLayer, config.toc_label);
                   }
                 })
+              }
+
+              function fireOverlays () {
+                overlay_order = JSON.parse('{{overlay_order}}'.replace(/&#39;/g, '"'));
+                // overlay_order.forEach(loadOverlay(overlayConfig.points[k])
               }
 
               function getTileUrls (config, lakeName) {
@@ -346,14 +354,12 @@
                     tileLayer = new L.tileLayer(url);
                     tileLayer.addTo(map);
                     layerController.addOverlay(tileLayer, '{{ lake }}');
+                    fireOverlays();
                   }
                 })
               }
 
               getTileUrls(resConfig, "{{ lake }}");
-              Object.keys(overlayConfig).forEach(function (key) {
-                loadOverlay(overlayConfig[key]);
-              });
 
               function setupHistoricalSlider(links) {
                 var ticks = [0];

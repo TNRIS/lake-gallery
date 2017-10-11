@@ -14,6 +14,7 @@ layers = {
         "interactivity": ["region", "res_lbl"]
     }
 }
+overlay_order = ["parks", "hazards", "channelmarkers", "boatramps"]
 overlays = {
     "boatramps": {
         "table_name": "boatramps",
@@ -24,14 +25,12 @@ overlays = {
     "channelmarkers": {
         "table_name": "channelmarkers",
         "toc_label": "Channel Markers",
-        "carto_css": '#layer {marker-width: 7;marker-fill: #ffffff;marker-fill-opacity: 0.9;marker-allow-overlap: true;marker-line-width: 1;marker-line-color: #969696;marker-line-opacity: 1;}',
-        "carto_lbl": ''
+        "carto_css": '#layer {marker-width: 7;marker-fill: #ffffff;marker-fill-opacity: 0.9;marker-allow-overlap: true;marker-line-width: 1;marker-line-color: #969696;marker-line-opacity: 1;}'
     },
     "hazards": {
         "table_name": "hazards",
         "toc_label": "Hazards",
-        "carto_css": '#layer {polygon-fill: ramp([hazard_type], (#ffcbef, #f7d27a, #e1f4a4, #c1c1c1), ("Hazard", "No Boats", "No Wake", "Rocks"), "=");polygon-opacity: 0.66;}#layer::outline {line-width: 1;line-color: #bfbfbf;line-opacity: 0.76;}',
-        "carto_lbl": ''
+        "carto_css": '#layer {polygon-fill: ramp([hazard_type], (#ffcbef, #f7d27a, #e1f4a4, #c1c1c1), ("Hazard", "No Boats", "No Wake", "Rocks"), "=");polygon-opacity: 0.66;}#layer::outline {line-width: 1;line-color: #bfbfbf;line-opacity: 0.76;}'
     },
     "parks": {
         "table_name": "parks",
