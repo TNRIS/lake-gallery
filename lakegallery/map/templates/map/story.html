@@ -261,17 +261,17 @@
                   // ,'Grayscale': L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}@2x.png')
               };
 
-              var layerController = L.control.layers(basemaps);
-              layerController.addTo(map);
+              var overlays = {};
+
               basemaps['Google Imagery'].addTo(map);
 
-              var account = 'tnris-flood'
-              var tileLayer;
+              var account = 'tnris-flood';
 
               var resConfig = JSON.parse('{{ layer }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
               var linkConfig = JSON.parse('{{ links }}'.replace(/&#39;/g, '"'));
               var overlayConfig = JSON.parse('{{ overlays }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
-              console.log(overlayConfig);
+              var overlayOrder = JSON.parse('{{overlay_order}}'.replace(/&#39;/g, '"'));
+              var allOverlays = ['Google Imagery', '{{ lake }}'].concat(overlayOrder);
 
               function loadOverlay (config) {
                 var css = config.carto_css;
@@ -301,15 +301,64 @@
                   data: JSON.stringify(mapconfig),
                   success: function(data) {
                     var url = `https://${account}.carto.com/api/v1/map/` + data.layergroupid + '/{z}/{x}/{y}.png'
-                    tileLayer = new L.tileLayer(url);
-                    layerController.addOverlay(tileLayer, config.toc_label);
+                    var tileLayer = new L.tileLayer(url);
+                    // layerController.addOverlay(tileLayer, config.toc_label);
+                    overlays[config.toc_label] = tileLayer;
+                    if (Object.keys(overlays).length == (allOverlays.length - 1)) {
+                      console.log('all loaded');
+                      sortOverlays();
+                    }
                   }
                 })
               }
 
-              function fireOverlays () {
-                overlay_order = JSON.parse('{{overlay_order}}'.replace(/&#39;/g, '"'));
-                // overlay_order.forEach(loadOverlay(overlayConfig.points[k])
+              function sortOverlays () {
+                // console.log(overlays);
+                // var sorted = Object.keys(overlays).sort(function(name1, name2){
+                //     var num = allOverlays.indexOf(name1) - allOverlays.indexOf(name2);
+                //     return num;
+                // });
+                var sortedOverlays = {};
+                var index = 1;
+                function addSortedOverlay () {
+                  if (index < allOverlays.length) {
+                      var layerToLoad = allOverlays[index];
+                      // console.log(layerToLoad);
+                      var overlayData = overlays[layerToLoad];
+                      sortedOverlays[layerToLoad] = overlayData;
+                      ++index;
+                      addSortedOverlay();
+                  }
+                  else {
+                    console.log(index, allOverlays.length);
+                    fireOverlays(sortedOverlays);
+                  }
+                }
+                addSortedOverlay();
+                // var index = 0;
+                // function iterateOrder () {
+                //   if (index < overlay_order.length) {
+                //       var layerToLoad = overlay_order[index];
+                //       console.log(layerToLoad);
+                //       loadOverlay(overlayConfig[layerToLoad]);
+                //       ++index;
+                //       iterateOrder();
+                //   }
+                // }
+                // iterateOrder();
+              }
+
+              function fireOverlays (sortedOverlays) {
+                console.log(sortedOverlays);
+                var layerController = L.control.layers(basemaps, sortedOverlays, {
+                  sortLayers: true,
+                  sortFunction: function (lyr1, lyr2, name1, name2) {
+                    var num = allOverlays.indexOf(name1) - allOverlays.indexOf(name2);
+                    return num;
+                  }
+                });
+                layerController.addTo(map);
+                overlays['{{ lake }}'].addTo(map);
               }
 
               function getTileUrls (config, lakeName) {
@@ -351,15 +400,17 @@
                   data: JSON.stringify(mapconfig),
                   success: function(data) {
                     var url = `https://${account}.carto.com/api/v1/map/` + data.layergroupid + '/{z}/{x}/{y}.png'
-                    tileLayer = new L.tileLayer(url);
-                    tileLayer.addTo(map);
-                    layerController.addOverlay(tileLayer, '{{ lake }}');
-                    fireOverlays();
+                    var tileLayer = new L.tileLayer(url);
+                    overlays['{{ lake }}'] = tileLayer;
+                    // layerController.addOverlay(tileLayer, '{{ lake }}');
                   }
                 })
               }
 
               getTileUrls(resConfig, "{{ lake }}");
+              Object.keys(overlayConfig).forEach(function (key) {
+                loadOverlay(overlayConfig[key]);
+              });
 
               function setupHistoricalSlider(links) {
                 var ticks = [0];
