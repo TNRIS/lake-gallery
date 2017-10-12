@@ -1,5 +1,6 @@
 {% extends 'map/base.html' %}
 {% load leaflet_tags %}
+{% load static %}
 
 {% block content %}
   <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -260,12 +261,12 @@
 
                   // ,'Grayscale': L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}@2x.png')
               };
-
-              var overlays = {};
+              var overlays = {};              
 
               basemaps['Google Imagery'].addTo(map);
 
               var account = 'tnris-flood';
+              var static_url = "{% static 'map/images/' %}";
 
               var resConfig = JSON.parse('{{ layer }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
               var linkConfig = JSON.parse('{{ links }}'.replace(/&#39;/g, '"'));
@@ -304,7 +305,7 @@
                     var tileLayer = new L.tileLayer(url);
                     overlays[config.toc_label] = tileLayer;
                     if (Object.keys(overlays).length == (allOverlays.length - 1)) {
-                      // must resort the overlay object. although objects don't have orders, somehow 
+                      // must re-sort the overlay object. although objects don't have orders, somehow 
                       // leaflet controller recognizes the order in which the layers are added to the
                       // overlay object and z-indexes the layers based off of that. we re-order so 
                       // point are on top of polygons
@@ -321,7 +322,14 @@
                   if (index < allOverlays.length) {
                       var layerToLoad = allOverlays[index];
                       var overlayData = overlays[layerToLoad];
-                      sortedOverlays[layerToLoad] = overlayData;
+                      var htmlName;
+                      // add img to layer control. ***IMG file name must be same as toc_label
+                      if (layerToLoad == "{{ lake }}") {
+                        htmlName = `<span>${layerToLoad}</span><br /><img src="${static_url}Lake.png" />`;
+                      } else {
+                        htmlName = `<span>${layerToLoad}</span><br /><img src="${static_url}${layerToLoad}.png" />`;
+                      }
+                      sortedOverlays[htmlName] = overlayData;
                       ++index;
                       addSortedOverlay();
                   }
