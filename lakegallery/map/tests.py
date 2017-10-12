@@ -755,6 +755,25 @@ class ViewTests(TestCase):
             self.assertIs('drought' in i, True)
             self.assertIs('rank' in i, True)
 
+        # check that overlays and overlay_order are context keys
+        self.assertIs('overlays' in response.context, True)
+        self.assertIs('overlay_order' in response.context, True)
+        # test that overlay_order list matches keys in overlays
+        self.assertEqual(len(response.context['overlay_order']),
+                         len(response.context['overlays'].keys()))
+        for k in response.context['overlays'].keys():
+            self.assertIs(k in response.context['overlay_order'], True)
+        for k in response.context['overlay_order']:
+            self.assertIs(k in response.context['overlays'].keys(), True)
+        # test each overlay at least has table_name, toc_label, carto_css
+        for k in response.context['overlays'].keys():
+            overlay_config = response.context['overlays'][k]
+            self.assertIs('toc_label' in overlay_config.keys(), True)
+            self.assertIs('table_name' in overlay_config.keys(), True)
+            self.assertIs('carto_css' in overlay_config.keys(), True)
+            # test overlay toc_label matches key name
+            self.assertEqual(k, overlay_config['toc_label'])
+
     def test_templates(self):
         """
         Test view templates include required leaflet and html
