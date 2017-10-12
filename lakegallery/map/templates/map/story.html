@@ -305,7 +305,6 @@
                     // layerController.addOverlay(tileLayer, config.toc_label);
                     overlays[config.toc_label] = tileLayer;
                     if (Object.keys(overlays).length == (allOverlays.length - 1)) {
-                      console.log('all loaded');
                       sortOverlays();
                     }
                   }
@@ -313,39 +312,21 @@
               }
 
               function sortOverlays () {
-                // console.log(overlays);
-                // var sorted = Object.keys(overlays).sort(function(name1, name2){
-                //     var num = allOverlays.indexOf(name1) - allOverlays.indexOf(name2);
-                //     return num;
-                // });
                 var sortedOverlays = {};
                 var index = 1;
                 function addSortedOverlay () {
                   if (index < allOverlays.length) {
                       var layerToLoad = allOverlays[index];
-                      // console.log(layerToLoad);
                       var overlayData = overlays[layerToLoad];
                       sortedOverlays[layerToLoad] = overlayData;
                       ++index;
                       addSortedOverlay();
                   }
                   else {
-                    console.log(index, allOverlays.length);
                     fireOverlays(sortedOverlays);
                   }
                 }
                 addSortedOverlay();
-                // var index = 0;
-                // function iterateOrder () {
-                //   if (index < overlay_order.length) {
-                //       var layerToLoad = overlay_order[index];
-                //       console.log(layerToLoad);
-                //       loadOverlay(overlayConfig[layerToLoad]);
-                //       ++index;
-                //       iterateOrder();
-                //   }
-                // }
-                // iterateOrder();
               }
 
               function fireOverlays (sortedOverlays) {
