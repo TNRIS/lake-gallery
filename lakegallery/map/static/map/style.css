@@ -68,16 +68,28 @@ body {
     padding: 8px;
 }
 
-.contentText > div > figure > img {
+.storyPage > div > figure > img {
 	max-width: 100%;
 	height: auto;
 	padding: 8px;
 	cursor: pointer;
 }
 
-.contentText > div > figure > figcaption {
+.storyPage > div > figure > figcaption {
 	font-size: small;
 	font-style: italic;
+}
+
+.storyPage > h2 {
+	margin-top: 20%;
+}
+
+.storyPage {
+	opacity: .4;
+}
+
+.storyPage.focusPage {
+	opacity: 1;
 }
 
 #imagemodal {
@@ -138,6 +150,11 @@ sources {
 
 #rankingFooter {
 	margin-top: 15px;
+}
+
+.pageSpacer {
+	height: 20%;
+	width: 100%;
 }
 
 /*STORY MAP PANEL*/
