@@ -33,13 +33,22 @@ views/templates & redirects
 """
 
 
-def index(request, letter=""):
+def index(request):
+    labels = get_region_header_list()
+    res = get_lake_header_list()
+    context = {'header_regions': labels, 'header_lakes': res,
+               'layers': layers}
+
+    return render(request, 'map/index.html', context)
+
+
+def region(request, letter):
     labels = get_region_header_list()
     res = get_lake_header_list()
     context = {'header_regions': labels, 'header_lakes': res,
                'layers': layers, 'region': letter}
 
-    return render(request, 'map/index.html', context)
+    return render(request, 'map/region.html', context)
 
 
 def redirect_region(request, letter):

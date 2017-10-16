@@ -7,24 +7,14 @@
         function main_map_init (map, options) {
           L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}@2x.png').addTo(map);
           var account = 'tnris-flood'
-          // var tooltip;
           var tileLayer;
           var utfGrid;
-          var outlineLayer;
-          // var defaultBounds;
 
           var rwpasConfig = JSON.parse('{{ layers.rwpas }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
-          var resConfig = JSON.parse('{{ layers.reservoirs }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
 
           function focusRegion (regionLetter) {
             var regionLink = '/' + regionLetter;
-            // window.history.pushState({"url": regionLink}, "Region", regionLink);
             window.location.href = regionLink;
-            // map.eachLayer(function (layer) {
-            //   map.removeLayer(tileLayer);
-            //   map.removeLayer(utfGrid);
-            //   getTileUrls(resConfig, regionLetter);
-            // });
           }
 
           function getTileUrls (config, regionLetter) {
@@ -33,49 +23,6 @@
             var interactivity = config.interactivity;
             
             var sql = `select * from ${config.table_name}`;
-            if (regionLetter) {
-              sql = `select * from ${config.table_name} where region= '${regionLetter}'`;
-
-              $.ajax({
-                crossOrigin: true,
-                type: 'GET',
-                dataType: 'json',
-                contentType: 'application/json',
-                url: `/api/rwpas/${regionLetter}/region`,
-                success: function(data) {
-                  var bb = data.results.features[0].bbox;
-                  map.flyToBounds([[bb[1],bb[0]],[bb[3],bb[2]]]);
-                }
-              })
-
-              var outlineconfig = {
-                "version": "1.3.1",
-                "layers": [{
-                  "type": "mapnik",
-                  "options": {
-                    "cartocss_version": "2.1.1",
-                    "cartocss": '#layer::outline {line-width: 1;line-color: #bc6400;line-opacity: 1;}',
-                    "sql": `select * from rwpas where letter = '${regionLetter}'`,
-                  }
-                }]
-              }
-
-              $.ajax({
-                crossOrigin: true,
-                type: 'POST',
-                dataType: 'json',
-                contentType: 'application/json',
-                url: `https://${account}.carto.com/api/v1/map`,
-                data: JSON.stringify(outlineconfig),
-                success: function(data) {
-                  var url = `https://${account}.carto.com/api/v1/map/` + data.layergroupid + '/{z}/{x}/{y}.png'
-                  outlineLayer = new L.tileLayer(url);
-                  outlineLayer.addTo(map);
-                }
-              })
-
-
-            }
 
             var mapconfig = {
               "version": "1.3.1",
@@ -106,65 +53,21 @@
                 utfGrid = new L.utfGrid(gridUrl);
                 utfGrid.on('mouseover', function (e) {
                   $('.leaflet-container').css('cursor', 'pointer');
-                  // utfGrid.setTooltipContent(e.data[config.label_field]);
                 });
                 utfGrid.on('mouseout', function (e) {
                   $('.leaflet-container').css('cursor', '');
                 });
                 utfGrid.on('click', function (e) {
                   if (e.data) {
-                    if (e.data.letter != null) {
-                      focusRegion(e.data.letter);
-                    }
-                    else if (e.data.res_lbl) {
-                      // handle jump to reservoir story here
-                      var name = encodeURIComponent(e.data.res_lbl);
-                      window.location.href = `/${e.data.region}/${name}`
-                    }
+                    focusRegion(e.data.letter);
                   }
                 });
-                // utfGrid.bindTooltip("", {sticky: true}).addTo(map);
                 utfGrid.addTo(map);
               }
             })
           }
 
-          if ("{{ region }}" == "") {
-            // var bnds = map.getBounds();
-            // defaultBounds = bnds;
-            getTileUrls(rwpasConfig);
-          } else {
-            getTileUrls(resConfig, "{{ region }}");
-          }
-
-          // $(function() { 
-          //   window.history.pushState({"url": window.location.pathname}, "Original", window.location.pathname); 
-          // }); 
-          // $(window).on("popstate", function(e) {
-          //   console.log(e.originalEvent.state);
-          //   // window.location.href = "/";
-          //   if (e.originalEvent.state == null) {
-          //     console.log("nuller");
-          //     window.history.back();
-          //   }
-          //   else if (e.originalEvent.state.url == "/") {
-          //     // window.location.href = e.originalEvent.state.url;
-          //     console.log('home');
-          //     map.removeLayer(tileLayer);
-          //     map.removeLayer(utfGrid);
-          //     map.removeLayer(outlineLayer);
-          //     map.flyToBounds(defaultBounds);
-          //     getTileUrls(rwpasConfig);
-          //   } 
-          //   else {
-          //     console.log(e.originalEvent.state);
-          //     map.removeLayer(tileLayer);
-          //     map.removeLayer(utfGrid);
-          //     getTileUrls(resConfig, e.originalEvent.state.url.charAt(1));
-          //   }
-
-          // });
-
+          getTileUrls(rwpasConfig);
         }
         
         
