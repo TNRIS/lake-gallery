@@ -12,11 +12,15 @@ for r in range(1920, (datetime.datetime.now().year+1)):
 
 
 class MajorReservoirs(gismodels.Model):
+    story_choices = [('disabled', 'disabled'), ('enabled', 'enabled')]
+
     res_name = models.CharField(max_length=50)
     type = models.CharField(max_length=50)
     status = models.CharField(max_length=50)
     res_lbl = models.CharField(max_length=100)
     region = models.CharField(max_length=1)
+    story = models.CharField(max_length=8, choices=story_choices,
+                             default='disabled')
 
     geom = gismodels.MultiPolygonField(srid=4326)
     objects = gismodels.GeoManager()
@@ -95,10 +99,6 @@ class StoryContent(models.Model):
     section_three_content = models.TextField(blank=True)
     section_three_photo = models.ImageField(upload_to=get_upload_path,
                                             blank=True)
-
-    # def save(self, *args, **kwargs):
-    #     self.section_one_nav = self.section_one_nav.lower().replace(" ", "")
-    #     super().save(*args, **kwargs)  # Call the "real" save() method.
 
     def hist_tag(self):
         return mark_safe('<img src="/media/%s" style="max-height:150px;" />'

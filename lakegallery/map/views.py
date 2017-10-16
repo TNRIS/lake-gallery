@@ -21,8 +21,9 @@ def get_region_header_list():
 
 
 def get_lake_header_list():
-    r = MajorReservoirs.objects.values_list('res_lbl', 'region')
-    res = [{'name': n[0], 'region': n[1]} for n in r]
+    r = MajorReservoirs.objects.values_list('res_lbl', 'region', 'story')
+    res = [{'name': n[0], 'region': n[1], 'class': n[2]} for n
+           in r]
     res.sort(key=lambda x: x['name'])
     return res
 

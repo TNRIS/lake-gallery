@@ -5,8 +5,8 @@ from .models import (MajorReservoirs, RWPAs, HistoricalAerialLinks,
 
 
 class MajorReservoirsAdmin(admin.OSMGeoAdmin):
-    list_display = ['region', 'res_lbl']
-    ordering = ['region']
+    list_display = ['res_lbl', 'region', 'story']
+    ordering = ['region', 'res_lbl']
     list_filter = ['region']
 
 

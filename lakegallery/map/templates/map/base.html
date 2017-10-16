@@ -53,7 +53,7 @@
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
               {% for l in header_lakes %}
-                <a class="dropdown-item" href="/{{ l.region }}/{{ l.name }}">{{ l.name }}</a>
+                <a class="dropdown-item {{ l.class }}" href="/{{ l.region }}/{{ l.name }}">{{ l.name }}</a>
               {% endfor %}
             </div>
           </li>

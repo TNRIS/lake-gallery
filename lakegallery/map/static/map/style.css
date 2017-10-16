@@ -33,6 +33,11 @@ body {
     overflow-y: auto;
 }
 
+.dropdown-item.disabled {
+	pointer-events: none;
+	opacity: .4;
+}
+
 /*STORY CONTENT PANEL*/
 .contentPanel {
 	height: calc(100% - 56px);

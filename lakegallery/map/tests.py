@@ -594,9 +594,11 @@ class ViewTests(TestCase):
                                      'letter': region_lt_2}])
         res_list = get_lake_header_list()
         self.assertEqual(res_list, [{'name': res_nm_1,
-                                     'region': res_lt_1},
+                                     'region': res_lt_1,
+                                     'class': 'disabled'},
                                     {'name': res_nm_2,
-                                     'region': res_lt_2}])
+                                     'region': res_lt_2,
+                                     'class': 'disabled'}])
 
     def test_index_context(self):
         """
@@ -646,9 +648,11 @@ class ViewTests(TestCase):
                                     'letter': region_lt_2}])
         hdr_lks = response.context['header_lakes']
         self.assertEqual(hdr_lks, [{'name': res_nm_1,
-                                    'region': res_lt_1},
+                                    'region': res_lt_1,
+                                    'class': 'disabled'},
                                    {'name': res_nm_2,
-                                    'region': res_lt_2}])
+                                    'region': res_lt_2,
+                                    'class': 'disabled'}])
 
     def test_story_context(self):
         """
@@ -691,9 +695,11 @@ class ViewTests(TestCase):
                                     'letter': region_lt_2}])
         hdr_lks = response.context['header_lakes']
         self.assertEqual(hdr_lks, [{'name': res_nm_1,
-                                    'region': res_lt_1},
+                                    'region': res_lt_1,
+                                    'class': 'enabled'},
                                    {'name': res_nm_2,
-                                    'region': res_lt_2}])
+                                    'region': res_lt_2,
+                                    'class': 'disabled'}])
 
         # check the layer info
         config = response.context['layer']
