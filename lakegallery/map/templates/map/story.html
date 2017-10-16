@@ -9,6 +9,7 @@
         <div class="modal-body">
           <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
           <img src="" class="imagepreview" />
+          <p class="imagepreview-caption" style="font-style: italic;"></p>
         </div>
       </div>
     </div>
@@ -453,6 +454,7 @@
             $(function() {
                 $('.picZoom').on('click', function() {
                   $('.imagepreview').attr('src', $(this)[0]['src']);
+                  $('.imagepreview-caption').html($(this).next().html());
                   $('#imagemodal').modal('show');
                 });
             });
