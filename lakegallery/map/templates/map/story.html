@@ -187,6 +187,11 @@
                     {% endif %}
                   </ul>
                 {% endif %}
+                {% if stats.wdft_link %}
+                  <h5>Current Conditions</h5>
+                  <img class="picZoom" src="{{ stats.wdft_link }}/recent-volume.png" />
+                  <p style="text-align: center;">View all current conditions at <a href="{{ stats.wdft_link }}" target="wdft">waterdatafortexas.org</a></p>
+                {% endif %}
 
                 {% if high_events|length > 0 %}
                   <h5 class="rankedHeader">Top {{ high_events|length }} Highest Lake Levels</h5>
@@ -235,9 +240,6 @@
                 {% if low_events|length > 0 or high_events|length > 0 %}
                   <p id="rankingFooter">*Height is represented as feet above mean sea level (MSL)</p>
                 {% endif %}
-                <h5>Current Conditions</h5>
-                <img class="picZoom" src="{{ wdft }}/recent-volume.png" />
-                <p>View all current conditions at <a href="{{ wdft }}" target="wdft">waterdatafortexas.org</a></p>
                 <div class="pageSpacer"></div>
               </div>
             {% endif %}

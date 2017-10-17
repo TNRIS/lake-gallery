@@ -65,7 +65,7 @@ class LakeStatisticsAdmin(admin.ModelAdmin):
     list_display = ['lake']
     ordering = ['lake']
     fieldsets = [
-        (None, {'fields': ['lake']}),
+        (None, {'fields': ['lake', 'wdft_link']}),
         ('General Statistics', {'fields': ['original_name',
                                            'primary_purposes',
                                            'location',

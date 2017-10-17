@@ -181,6 +181,11 @@ class LakeStatistics(models.Model):
     discharge_capacity = models.TextField(blank=True, help_text="typically - "
                                           "Cubic Feet per Second")
 
+    # current conditions
+    wdft_link = models.URLField(null=True, help_text="WDFT lake page link. "
+                                "Ex: https://waterdatafortexas.org/reservoirs"
+                                "/individual/travis")
+
     def string_numbers(self):
         flds = self._meta.get_fields()
         for f in flds:
