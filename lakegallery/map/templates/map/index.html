@@ -12,11 +12,6 @@
 
           var rwpasConfig = JSON.parse('{{ layers.rwpas }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
 
-          function focusRegion (regionLetter) {
-            var regionLink = '/' + regionLetter;
-            window.location.href = regionLink;
-          }
-
           function getTileUrls (config, regionLetter) {
             var css = config.carto_css;
             css += config.carto_lbl;
@@ -59,7 +54,8 @@
                 });
                 utfGrid.on('click', function (e) {
                   if (e.data) {
-                    focusRegion(e.data.letter);
+                    var regionLink = '/' + e.data.letter;
+                    window.location.href = regionLink;
                   }
                 });
                 utfGrid.addTo(map);
