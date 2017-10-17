@@ -4,6 +4,8 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from bs4 import BeautifulSoup
 
+from django.contrib.staticfiles import finders
+
 from django.contrib.gis.geos import Point, Polygon, MultiPolygon
 
 from .models import (MajorReservoirs, RWPAs, HistoricalAerialLinks,
@@ -11,6 +13,7 @@ from .models import (MajorReservoirs, RWPAs, HistoricalAerialLinks,
                      BoatRamps, ChannelMarkers, Hazards, Parks,
                      get_upload_path)
 from .views import (get_region_header_list, get_lake_header_list)
+from .config import overlays
 from .validators import validate_past_dates
 import string
 import os
@@ -654,6 +657,65 @@ class ViewTests(TestCase):
                                     'region': res_lt_2,
                                     'class': 'disabled'}])
 
+    def test_region_context(self):
+        """
+        Test the region template context; config & header lists
+        """
+        # although the header functions are tested above, we will retest them
+        # here to verify they are in the context
+        region_nm_1, region_lt_1 = 'rwpa 1', 'A'
+        region_nm_2, region_lt_2 = 'rwpa 2', 'B'
+        RWPAs(objectid=1, reg_name=region_nm_1, letter=region_lt_1,
+              shape_leng=10, shape_area=2, geom=test_geom).save()
+        RWPAs(objectid=2, reg_name=region_nm_2, letter=region_lt_2,
+              shape_leng=10, shape_area=2, geom=test_geom).save()
+        res_nm_1, res_lt_1 = 'mr 1', 'A'
+        res_nm_2, res_lt_2 = 'mr 2', 'B'
+        MajorReservoirs(res_lbl=res_nm_1, region=res_lt_1,
+                        geom=test_geom).save()
+        MajorReservoirs(res_lbl=res_nm_2, region=res_lt_2,
+                        geom=test_geom).save()
+        m = MajorReservoirs.objects.get(res_lbl='mr 1')
+        StoryContent(lake=m, summary="text here", history="text there").save()
+
+        response = self.client.get(reverse('map:region', args=['A']))
+        hdr_reg = response.context['header_regions']
+        self.assertEqual(hdr_reg, [{'name': region_nm_1,
+                                    'letter': region_lt_1},
+                                   {'name': region_nm_2,
+                                    'letter': region_lt_2}])
+        hdr_lks = response.context['header_lakes']
+        # this also doubles down by testing the 'post_save' signal sent by
+        # editing a StoryContent record and it auto editing the associated
+        # major reservoir to be class=enabled
+        self.assertEqual(hdr_lks, [{'name': res_nm_1,
+                                    'region': res_lt_1,
+                                    'class': 'enabled'},
+                                   {'name': res_nm_2,
+                                    'region': res_lt_2,
+                                    'class': 'disabled'}])
+
+        config = response.context['layers']
+        check_layers = ['rwpas', 'reservoirs']
+        check_keys = ['table_name', 'label_field', 'carto_css',
+                      'carto_lbl', 'interactivity']
+
+        # check that the 2 layers are in config with proper keys
+        for layer in check_layers:
+            self.assertIs(layer in config.keys(), True)
+            # check the keys of those 2 layers
+            layer_info = config[layer]
+            for key in check_keys:
+                self.assertIs(key in layer_info.keys(), True)
+            # check the value type for each key
+            self.assertIs(isinstance(layer_info['table_name'], str), True)
+            self.assertIs(isinstance(layer_info['label_field'], str), True)
+            self.assertIs(isinstance(layer_info['carto_css'], str), True)
+            self.assertIs(isinstance(layer_info['carto_lbl'], str), True)
+            self.assertIs(isinstance(layer_info['interactivity'], list), True)
+            # verify 2 layer fields: 1 for region letter, 1 for name
+            self.assertEqual(len(layer_info['interactivity']), 2)
+
     def test_story_context(self):
         """
         Test the story template context; header lists
@@ -788,6 +850,7 @@ class ViewTests(TestCase):
                              'leaflet/_leaflet_map.html']
         base_template = 'map/base.html'
         index_template = 'map/index.html'
+        region_template = 'map/region.html'
         story_template = 'map/story.html'
 
         # index template
@@ -799,6 +862,16 @@ class ViewTests(TestCase):
         for lt in leaflet_templates:
             self.assertIs(lt in template_names, True)
         self.assertIs(index_template in template_names, True)
+        self.assertIs(base_template in template_names, True)
+
+        # region template
+        response = self.client.get('/A/')
+        template_names = []
+        for t in response.templates:
+            template_names.append(t.name)
+        for lt in leaflet_templates:
+            self.assertIs(lt in template_names, True)
+        self.assertIs(region_template in template_names, True)
         self.assertIs(base_template in template_names, True)
 
         # story template
@@ -816,3 +889,42 @@ class ViewTests(TestCase):
             self.assertIs(lt in template_names, True)
         self.assertIs(story_template in template_names, True)
         self.assertIs(base_template in template_names, True)
+
+
+class SignalTests(TestCase):
+
+    def test_story_content_post_save(self):
+        """
+        Test StoryContent post_save enables and post_delete
+        disables MajorReservoir
+        """
+        res_nm_1, res_lt_1 = 'mr 1', 'A'
+        MajorReservoirs(res_lbl=res_nm_1, region=res_lt_1,
+                        geom=test_geom).save()
+        m = MajorReservoirs.objects.get(res_lbl=res_nm_1)
+        self.assertEqual(m.story, 'disabled')
+        StoryContent(lake=m, summary="text here", history="text there").save()
+        m = MajorReservoirs.objects.get(res_lbl=res_nm_1)
+        self.assertEqual(m.story, 'enabled')
+        s = StoryContent.objects.get(summary="text here")
+        self.assertEqual(s.lake, m)
+        s.delete()
+        m = MajorReservoirs.objects.get(res_lbl=res_nm_1)
+        self.assertEqual(m.story, 'disabled')
+
+
+class StaticFileTests(TestCase):
+
+    def test_legend_images_exist(self):
+        """
+        Test the legend images exist
+        """
+        # iterate the overlays in config, they are the ones to be added
+        # to the map
+        for k in overlays.keys():
+            filename = "map/images/{0}.png".format(k)
+            result = finders.find(filename)
+            self.assertIs(isinstance(result, str), True)
+        # test Lake overlay image as it is not part of the config
+        result = finders.find("map/images/Lake.png")
+        self.assertIs(isinstance(result, str), True)
