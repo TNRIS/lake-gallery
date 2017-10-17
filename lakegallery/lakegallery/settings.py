@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'rest_framework_gis',
     'api',
     'map',
-    'world',
     'leaflet',
     'djgeojson',
     'bootstrap4',
