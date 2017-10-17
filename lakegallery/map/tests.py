@@ -928,3 +928,23 @@ class StaticFileTests(TestCase):
         # test Lake overlay image as it is not part of the config
         result = finders.find("map/images/Lake.png")
         self.assertIs(isinstance(result, str), True)
+
+    def test_css_exists(self):
+        """
+        Test the css file exists
+        """
+        result = finders.find("map/style.css")
+        self.assertIs(isinstance(result, str), True)
+
+    def test_base_images(self):
+        """
+        Test the base html images (logos and such)
+        """
+        response = self.client.get('/')
+        soup = BeautifulSoup(response.content, "html.parser")
+        imgs = soup.findAll('img')
+        img_srcs = [i['src'] for i in imgs]
+        for s in img_srcs:
+            fixed_path = s.replace(settings.STATIC_URL, "")
+            result = finders.find(fixed_path)
+            self.assertIs(isinstance(result, str), True)
