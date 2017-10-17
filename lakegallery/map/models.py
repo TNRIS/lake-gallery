@@ -244,7 +244,7 @@ class SignificantEvents(models.Model):
     event_type = models.CharField(max_length=4,
                                   choices=[('High', 'High'), ('Low', 'Low')],
                                   default='High')
-    date = models.DateField()
+    date = models.DateField(validators=[validate_past_dates])
     height = models.FloatField(help_text="Feet above mean sea level")
     drought = models.CharField(max_length=9, blank=True,
                                help_text="Year range of drought (low "
