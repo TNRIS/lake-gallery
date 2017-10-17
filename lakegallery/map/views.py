@@ -112,11 +112,8 @@ def story(request, letter, lake):
     except:
         low_list = []
 
-    print(lake)
-    # lake 0' the pines apstrophe
     wdft = (lake.lower().replace("lake", "").replace("reservoir", "")
             .strip().replace(" ", "-"))
-    print(wdft)
     wdft = ("https://waterdatafortexas.org/reservoirs/individual/"
             "{0}".format(wdft))
 
