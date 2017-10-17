@@ -112,11 +112,19 @@ def story(request, letter, lake):
     except:
         low_list = []
 
+    print(lake)
+    # lake 0' the pines apstrophe
+    wdft = (lake.lower().replace("lake", "").replace("reservoir", "")
+            .strip().replace(" ", "-"))
+    print(wdft)
+    wdft = ("https://waterdatafortexas.org/reservoirs/individual/"
+            "{0}".format(wdft))
+
     context = {'header_regions': labels, 'header_lakes': res,
                'layer': layers['reservoirs'], 'lake': lake, 'links': links,
                'story': c, 'stats': s, 'high_events': high_list,
                'low_events': low_list, 'overlays': overlays,
-               'overlay_order': overlay_order}
+               'overlay_order': overlay_order, 'wdft': wdft}
 
     return render(request, 'map/story.html', context)
 
