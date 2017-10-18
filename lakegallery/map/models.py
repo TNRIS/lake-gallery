@@ -78,46 +78,108 @@ def get_upload_path(instance, filename):
 class StoryContent(models.Model):
     lake = models.OneToOneField(MajorReservoirs, primary_key=True)
     summary = models.TextField()
+    summary_photo_main = models.ImageField(upload_to=get_upload_path,
+                                           blank=True)
     history = models.TextField()
+    history_photo_main = models.ImageField(upload_to=get_upload_path,
+                                           blank=True)
     history_photo = models.ImageField(upload_to=get_upload_path,
                                       blank=True)
 
     section_one_nav = models.CharField(max_length=25, blank=True)
     section_one_header = models.CharField(max_length=50, blank=True)
+    section_one_photo_main = models.ImageField(upload_to=get_upload_path,
+                                               blank=True)
     section_one_content = models.TextField(blank=True)
     section_one_photo = models.ImageField(upload_to=get_upload_path,
                                           blank=True)
 
     section_two_nav = models.CharField(max_length=25, blank=True)
     section_two_header = models.CharField(max_length=50, blank=True)
+    section_two_photo_main = models.ImageField(upload_to=get_upload_path,
+                                               blank=True)
     section_two_content = models.TextField(blank=True)
     section_two_photo = models.ImageField(upload_to=get_upload_path,
                                           blank=True)
 
     section_three_nav = models.CharField(max_length=25, blank=True)
     section_three_header = models.CharField(max_length=50, blank=True)
+    section_three_photo_main = models.ImageField(upload_to=get_upload_path,
+                                                 blank=True)
     section_three_content = models.TextField(blank=True)
     section_three_photo = models.ImageField(upload_to=get_upload_path,
                                             blank=True)
 
+    def summ_main_tag(self):
+        if self.summary_photo_main != "":
+            return mark_safe('<img src="/media/%s" style="max-height:150px;"'
+                             ' />' % (self.summary_photo_main))
+        else:
+            return self.summary_photo_main
+    summ_main_tag.allow_tags = True
+
+    def hist_main_tag(self):
+        if self.history_photo_main != "":
+            return mark_safe('<img src="/media/%s" style="max-height:150px;"'
+                             ' />' % (self.history_photo_main))
+        else:
+            return self.history_photo_main
+    hist_main_tag.allow_tags = True
+
     def hist_tag(self):
-        return mark_safe('<img src="/media/%s" style="max-height:150px;" />'
-                         % (self.history_photo))
+        if self.history_photo != "":
+            return mark_safe('<img src="/media/%s" style="max-height:150px;"'
+                             ' />' % (self.history_photo))
+        else:
+            return self.history_photo
     hist_tag.allow_tags = True
 
+    def one_main_tag(self):
+        if self.section_one_photo_main != "":
+            return mark_safe('<img src="/media/%s" style="max-height:150px;"'
+                             ' />' % (self.section_one_photo_main))
+        else:
+            return self.section_one_photo_main
+    one_main_tag.allow_tags = True
+
     def one_tag(self):
-        return mark_safe('<img src="/media/%s" style="max-height:150px;" />'
-                         % (self.section_one_photo))
+        if self.section_one_photo != "":
+            return mark_safe('<img src="/media/%s" style="max-height:150px;"'
+                             ' />' % (self.section_one_photo))
+        else:
+            return self.section_one_photo
     one_tag.allow_tags = True
 
+    def two_main_tag(self):
+        if self.section_two_photo_main != "":
+            return mark_safe('<img src="/media/%s" style="max-height:150px;"'
+                             ' />' % (self.section_two_photo_main))
+        else:
+            return self.section_two_photo_main
+    two_main_tag.allow_tags = True
+
     def two_tag(self):
-        return mark_safe('<img src="/media/%s" style="max-height:150px;" />'
-                         % (self.section_two_photo))
+        if self.section_two_photo != "":
+            return mark_safe('<img src="/media/%s" style="max-height:150px;"'
+                             ' />' % (self.section_two_photo))
+        else:
+            return self.section_two_photo
     two_tag.allow_tags = True
 
+    def three_main_tag(self):
+        if self.section_three_photo_main != "":
+            return mark_safe('<img src="/media/%s" style="max-height:150px;"'
+                             ' />' % (self.section_three_photo_main))
+        else:
+            return self.section_three_photo_main
+    three_main_tag.allow_tags = True
+
     def three_tag(self):
-        return mark_safe('<img src="/media/%s" style="max-height:150px;" />'
-                         % (self.section_three_photo))
+        if self.section_three_photo != "":
+            return mark_safe('<img src="/media/%s" style="max-height:150px;"'
+                             ' />' % (self.section_three_photo))
+        else:
+            return self.section_three_photo
     three_tag.allow_tags = True
 
     def __str__(self):

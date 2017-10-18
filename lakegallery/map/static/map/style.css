@@ -73,6 +73,10 @@ body {
     padding: 8px;
 }
 
+.storyPage > div > figure {
+	text-align: center;
+}
+
 .storyPage > div > figure > img {
 	max-width: 100%;
 	height: auto;
@@ -110,10 +114,19 @@ body {
     	text-align: center;
 	}
 
+	.modal-content {
+		max-height: 90%;
+	}
+
+	.modal-body {
+		max-height: 90%;
+	}
+
 	.modal-body > img {
 		margin: 0 auto;
 		display: block;
 		max-width: 100%;
+		max-height: 80vh;
 	}
 }
 
