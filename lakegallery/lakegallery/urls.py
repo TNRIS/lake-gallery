@@ -16,7 +16,6 @@ Including another URLconf
 from django.conf.urls import (include, url, handler400, handler403,
                               handler404, handler500)
 from django.contrib.gis import admin
-# from django.conf.urls.static import static
 from django.conf import settings
 from api.api import router
 
@@ -32,4 +31,3 @@ urlpatterns = [
         namespace='rest_framework')),
     url(r'^admin/', admin.site.urls),
 ]
-# urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
