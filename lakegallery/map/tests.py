@@ -151,9 +151,27 @@ class StoryContentModelTests(TestCase):
         good_url = settings.MEDIA_URL + os.path.join(lake_name, test_file)
         s = StoryContent(lake=m)
 
+        # summary main tag
+        s.summary_photo_main = get_upload_path(s, test_file)
+        soup = BeautifulSoup(s.summ_main_tag(), "html.parser")
+        src = soup.findAll('img')[0]['src']
+        self.assertEqual(src, good_url)
+
+        # history main tag
+        s.history_photo_main = get_upload_path(s, test_file)
+        soup = BeautifulSoup(s.hist_main_tag(), "html.parser")
+        src = soup.findAll('img')[0]['src']
+        self.assertEqual(src, good_url)
+
         # history tag
         s.history_photo = get_upload_path(s, test_file)
         soup = BeautifulSoup(s.hist_tag(), "html.parser")
+        src = soup.findAll('img')[0]['src']
+        self.assertEqual(src, good_url)
+
+        # section one main tag
+        s.section_one_photo_main = get_upload_path(s, test_file)
+        soup = BeautifulSoup(s.one_main_tag(), "html.parser")
         src = soup.findAll('img')[0]['src']
         self.assertEqual(src, good_url)
 
@@ -163,9 +181,21 @@ class StoryContentModelTests(TestCase):
         src = soup.findAll('img')[0]['src']
         self.assertEqual(src, good_url)
 
+        # section two main tag
+        s.section_two_photo_main = get_upload_path(s, test_file)
+        soup = BeautifulSoup(s.two_main_tag(), "html.parser")
+        src = soup.findAll('img')[0]['src']
+        self.assertEqual(src, good_url)
+
         # section two tag
         s.section_two_photo = get_upload_path(s, test_file)
         soup = BeautifulSoup(s.two_tag(), "html.parser")
+        src = soup.findAll('img')[0]['src']
+        self.assertEqual(src, good_url)
+
+        # section three main tag
+        s.section_three_photo_main = get_upload_path(s, test_file)
+        soup = BeautifulSoup(s.three_main_tag(), "html.parser")
         src = soup.findAll('img')[0]['src']
         self.assertEqual(src, good_url)
 
