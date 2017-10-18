@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'leaflet',
     'djgeojson',
     'bootstrap4',
+    'storages',
     'multiselectfield',
 ]
 
@@ -130,10 +131,30 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# AWS Bucket Settings for Static & Media
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+
+# AWS_ACCESS_KEY_ID = secrets.aws_access_key_id
+# AWS_SECRET_ACCESS_KEY = secrets.aws_secret_access_key
+AWS_STORAGE_BUCKET_NAME = secrets.aws_storage_bucket_name
+AWS_S3_REGION_NAME = secrets.aws_s3_region_name
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+
+STATICFILES_LOCATION = 'static'
+STATICFILES_STORAGE = 'custom_storages.StaticStorage'
+
+MEDIAFILES_LOCATION = 'media'
+DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
+
+STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, STATICFILES_LOCATION)
+MEDIA_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
+
+# STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 REST_FRAMEWORK = {

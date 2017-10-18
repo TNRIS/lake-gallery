@@ -19,8 +19,13 @@ Built with:
 
 5. make a copy of the secrets-sample.py, remove the '-sample' from the name, and manually fill in the values
 
+It is suggested to use your locally configured AWS CLI when working locally. If this is already set up, you can ignore the AWS Key & Secret in the secrets.py file. If not, you will need to populate them in secrets.py and uncomment these parameters within the app's settings.py
+
 ## Develop
 * `cd ./lakegallery` and run `python mange.py runserver` to run the app locally. Will be available at `localhost:8000`.
+* The app pulls/references all static files for all apps from the configured S3 bucket.
+  * This means that when adding new, removing unused, or editing existing files requires running `python manage.py collectstatic` for those changes to be available (even in local builds).
+  * This also means that if the app is in production, running this will overwrite the same files used in production. **NOT GOOD** and will need to be re-setup in the future to avoid this possibility.
 
 
 ## Notes
