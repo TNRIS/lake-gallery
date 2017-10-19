@@ -23,7 +23,6 @@
     <link rel="stylesheet" type="text/css" href="{% static 'map/bootstrap-slider/css/bootstrap-slider.min.css' %}" />
     <script type="text/javascript" src="{% static 'map/bootstrap-slider/bootstrap-slider.min.js' %}"></script>
 
-    <base href="{% get_media_prefix %}">
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark">
@@ -44,7 +43,7 @@
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
               {% for r in header_regions %}
-                <a class="dropdown-item" href="http://{{ request.get_host }}/{{ r.letter }}">{{ r.name }}</a>
+                <a class="dropdown-item" href="/{{ r.letter }}">{{ r.name }}</a>
               {% endfor %}
             </div>
           </li>
@@ -54,7 +53,7 @@
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
               {% for l in header_lakes %}
-                <a class="dropdown-item {{ l.class }}" href="http://{{ request.get_host }}/{{ l.region }}/{{ l.name }}">{{ l.name }}</a>
+                <a class="dropdown-item {{ l.class }}" href="/{{ l.region }}/{{ l.name }}">{{ l.name }}</a>
               {% endfor %}
             </div>
           </li>

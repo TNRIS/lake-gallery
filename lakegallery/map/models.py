@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.contrib.gis.db import models as gismodels
 from django.utils.safestring import mark_safe
@@ -112,72 +113,81 @@ class StoryContent(models.Model):
 
     def summ_main_tag(self):
         if self.summary_photo_main != "":
-            return mark_safe('<img src="/media/%s" style="max-height:150px;"'
-                             ' />' % (self.summary_photo_main))
+            src = "%s%s" % (settings.MEDIA_URL, self.summary_photo_main)
+            return mark_safe('<img src="%s" style="max-height:150px;" />'
+                             '<p>%s</p>' % (src, src))
         else:
             return self.summary_photo_main
     summ_main_tag.allow_tags = True
 
     def hist_main_tag(self):
         if self.history_photo_main != "":
-            return mark_safe('<img src="/media/%s" style="max-height:150px;"'
-                             ' />' % (self.history_photo_main))
+            src = "%s%s" % (settings.MEDIA_URL, self.history_photo_main)
+            return mark_safe('<img src="%s" style="max-height:150px;" />'
+                             '<p>%s</p>' % (src, src))
         else:
             return self.history_photo_main
     hist_main_tag.allow_tags = True
 
     def hist_tag(self):
         if self.history_photo != "":
-            return mark_safe('<img src="/media/%s" style="max-height:150px;"'
-                             ' />' % (self.history_photo))
+            src = "%s%s" % (settings.MEDIA_URL, self.history_photo)
+            return mark_safe('<img src="%s" style="max-height:150px;" />'
+                             '<p>%s</p>' % (src, src))
         else:
             return self.history_photo
     hist_tag.allow_tags = True
 
     def one_main_tag(self):
         if self.section_one_photo_main != "":
-            return mark_safe('<img src="/media/%s" style="max-height:150px;"'
-                             ' />' % (self.section_one_photo_main))
+            src = "%s%s" % (settings.MEDIA_URL, self.section_one_photo_main)
+            return mark_safe('<img src="%s" style="max-height:150px;" />'
+                             '<p>%s</p>' % (src, src))
         else:
             return self.section_one_photo_main
     one_main_tag.allow_tags = True
 
     def one_tag(self):
         if self.section_one_photo != "":
-            return mark_safe('<img src="/media/%s" style="max-height:150px;"'
-                             ' />' % (self.section_one_photo))
+            src = "%s%s" % (settings.MEDIA_URL, self.section_one_photo)
+            return mark_safe('<img src="%s" style="max-height:150px;" />'
+                             '<p>%s</p>' % (src, src))
         else:
             return self.section_one_photo
     one_tag.allow_tags = True
 
     def two_main_tag(self):
         if self.section_two_photo_main != "":
-            return mark_safe('<img src="/media/%s" style="max-height:150px;"'
-                             ' />' % (self.section_two_photo_main))
+            src = "%s%s" % (settings.MEDIA_URL, self.section_two_photo_main)
+            return mark_safe('<img src="%s" style="max-height:150px;" />'
+                             '<p>%s</p>' % (src, src))
         else:
             return self.section_two_photo_main
     two_main_tag.allow_tags = True
 
     def two_tag(self):
         if self.section_two_photo != "":
-            return mark_safe('<img src="/media/%s" style="max-height:150px;"'
-                             ' />' % (self.section_two_photo))
+            src = "%s%s" % (settings.MEDIA_URL, self.section_two_photo)
+            return mark_safe('<img src="%s" style="max-height:150px;" />'
+                             '<p>%s</p>' % (src, src))
         else:
             return self.section_two_photo
     two_tag.allow_tags = True
 
     def three_main_tag(self):
         if self.section_three_photo_main != "":
-            return mark_safe('<img src="/media/%s" style="max-height:150px;"'
-                             ' />' % (self.section_three_photo_main))
+            src = "%s%s" % (settings.MEDIA_URL, self.section_three_photo_main)
+            return mark_safe('<img src="%s" style="max-height:150px;" />'
+                             '<p>%s</p>' % (src, src))
         else:
             return self.section_three_photo_main
     three_main_tag.allow_tags = True
 
     def three_tag(self):
         if self.section_three_photo != "":
-            return mark_safe('<img src="/media/%s" style="max-height:150px;"'
-                             ' />' % (self.section_three_photo))
+            src = "%s%s" % (settings.MEDIA_URL, self.section_three_photo)
+            return mark_safe('<img src="%s" style="max-height:150px;" />'
+                             '<p>%s</p>' % (src, src))
         else:
             return self.section_three_photo
     three_tag.allow_tags = True
