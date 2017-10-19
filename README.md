@@ -22,10 +22,14 @@ Built with:
 It is suggested to use your locally configured AWS CLI when working locally. If this is already set up, you can ignore the AWS Key & Secret in the secrets.py file. If not, you will need to populate them in secrets.py and uncomment these parameters within the app's settings.py
 
 ## Develop
-* `cd ./lakegallery` and run `python mange.py runserver` to run the app locally. Will be available at `localhost:8000`.
-* The app pulls/references all static files for all apps from the configured S3 bucket.
-  * This means that when adding new, removing unused, or editing existing files requires running `python manage.py collectstatic` for those changes to be available (even in local builds).
-  * This also means that if the app is in production, running this will overwrite the same files used in production. **NOT GOOD** and will need to be re-setup in the future to avoid this possibility.
+1. `cd ./lakegallery` and run `make run-dev` to run the app locally and reference local static files. Will be available at `localhost:8000`. Media files will still be referenced from the production S3 bucket.
+
+## Production Build
+In production, the app pulls/references all static files for all apps from the configured S3 bucket. Run **Deploy** Step 1 to upload push local static files into S3. **VERY DANGEROUS** if app is currently deployed as you will be overwriting the production static files!
+1. `cd ./lakegallery` and run `make run-prod` to run the app locally and reference prod s3 static files. Will be available at `localhost:8000`.
+
+## Deploy
+1. `cd ./lakegallery` and run `make push-static` to compile all static files and overwrite those in S3. **VERY DANGEROUS** if app is currently deployed as you will be overwriting the production static files!
 
 
 ## Notes
