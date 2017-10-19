@@ -66,6 +66,16 @@ body {
 	background-color: #3C5163;
 }
 
+@media (max-width: 991px) {
+	#navbar-contentPanel {
+		display: none;
+	}
+
+	.contentText {
+		height: 100% !important;
+	}
+}
+
 .contentText {
 	height: calc(100% - 43px);
 	overflow: hidden;
