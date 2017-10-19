@@ -5,6 +5,7 @@ from django.utils.safestring import mark_safe
 from multiselectfield import MultiSelectField
 from .validators import validate_past_dates
 import os
+import boto3
 
 import datetime
 YEAR_CHOICES = []
@@ -74,6 +75,13 @@ class HistoricalAerialLinks(models.Model):
 
 def get_upload_path(instance, filename):
     return os.path.join(str(instance.lake), filename)
+
+
+def remove_s3_media(file):
+    if str(file) != "":
+        client = boto3.client('s3')
+        key = os.path.join('media', str(file))
+        client.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=key)
 
 
 class StoryContent(models.Model):
@@ -191,6 +199,20 @@ class StoryContent(models.Model):
         else:
             return self.section_three_photo
     three_tag.allow_tags = True
+
+    def save(self, *args, **kw):
+        old = type(self).objects.get(pk=self.pk) if self.pk else None
+        super(StoryContent, self).save(*args, **kw)
+        photo_fields = ['summary_photo_main',
+                        'history_photo_main', 'history_photo',
+                        'section_one_photo_main', 'section_one_photo',
+                        'section_two_photo_main', 'section_two_photo',
+                        'section_three_photo_main', 'section_three_photo']
+        for p in photo_fields:
+            old_attr = getattr(old, p)
+            new_attr = getattr(self, p)
+            if old and old_attr != new_attr:
+                remove_s3_media(old_attr)
 
     def __str__(self):
         return str(self.lake)
