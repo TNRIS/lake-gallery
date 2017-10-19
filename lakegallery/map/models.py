@@ -201,18 +201,23 @@ class StoryContent(models.Model):
     three_tag.allow_tags = True
 
     def save(self, *args, **kw):
-        old = type(self).objects.get(pk=self.pk) if self.pk else None
+        try:
+            old = type(self).objects.get(pk=self.pk) if self.pk else None
+        except:
+            old = None
         super(StoryContent, self).save(*args, **kw)
-        photo_fields = ['summary_photo_main',
-                        'history_photo_main', 'history_photo',
-                        'section_one_photo_main', 'section_one_photo',
-                        'section_two_photo_main', 'section_two_photo',
-                        'section_three_photo_main', 'section_three_photo']
-        for p in photo_fields:
-            old_attr = getattr(old, p)
-            new_attr = getattr(self, p)
-            if old and old_attr != new_attr:
-                remove_s3_media(old_attr)
+
+        if old is not None:
+            photo_fields = ['summary_photo_main',
+                            'history_photo_main', 'history_photo',
+                            'section_one_photo_main', 'section_one_photo',
+                            'section_two_photo_main', 'section_two_photo',
+                            'section_three_photo_main', 'section_three_photo']
+            for p in photo_fields:
+                old_attr = getattr(old, p)
+                new_attr = getattr(self, p)
+                if old and old_attr != new_attr:
+                    remove_s3_media(old_attr)
 
     def __str__(self):
         return str(self.lake)

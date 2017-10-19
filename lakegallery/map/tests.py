@@ -872,6 +872,12 @@ class ViewTests(TestCase):
             # test overlay toc_label matches key name
             self.assertEqual(k, overlay_config['toc_label'])
 
+        # check that overlay query in context equaling lake id
+        self.assertIs('overlay_query' in response.context, True)
+        self.assertIs(isinstance(response.context['overlay_query'], int),
+                      True)
+        self.assertEqual(response.context['overlay_query'], m.id)
+
     def test_templates(self):
         """
         Test view templates include required leaflet and html

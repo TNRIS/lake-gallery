@@ -116,7 +116,7 @@ def story(request, letter, lake):
                'layer': layers['reservoirs'], 'lake': lake, 'links': links,
                'story': c, 'stats': s, 'high_events': high_list,
                'low_events': low_list, 'overlays': overlays,
-               'overlay_order': overlay_order}
+               'overlay_order': overlay_order, 'overlay_query': m.id}
 
     return render(request, 'map/story.html', context)
 
