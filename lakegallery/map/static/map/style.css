@@ -260,9 +260,10 @@ div.slider-handle.min-slider-handle.round {
 }
 
 #mobileStoryToggler {
-	margin-top: 1%;
+	margin-top: 11px;
 	pointer-events:auto;
 	background-color: #FFFFFF;
+	border: .5px solid rgba(0,0,0,0.2);
 }
 
 #mobileStoryPanelContainer {
@@ -280,6 +281,7 @@ div.slider-handle.min-slider-handle.round {
 
 .carousel-indicators {
 	top: 60px;
+	bottom: auto;
 }
 
 .carousel-indicators > li {
