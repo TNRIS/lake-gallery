@@ -50,199 +50,12 @@
             </ul>
           </nav>
           <div class="contentText" data-spy="scroll" data-target="#navbar-contentPanel" data-offset="100">
-            <div class="storyPage">
-              <h2 id="Story" style="margin-top:0;">{{ lake }} Story Map</h2>
-              <div>{{ story.summary|safe }}</div>
-              <div class="pageSpacer"></div>
-            </div>
-            {% if story.history %}
-              <div class="storyPage">
-                <h2 id="History">History of {{ lake }}</h2>
-                <div>{{ story.history|safe }}</div>
-                <div class="pageSpacer"></div>
-              </div>
-            {% endif %}
-            {% if stats.general_stats %}
-              <div class="storyPage">
-                <h2 id="Statistics">{{ lake }} Statistics</h2>
-                <ul class="statsList">
-                  {% if stats.original_name not in stats.stat_defaults %}
-                    <li>
-                      <span class="statLabel">Original Name:</span>
-                      {{ stats.original_name }}
-                    </li>
-                  {% endif %}
-                  {% if stats.primary_purposes not in stats.stat_defaults %}
-                    <li>
-                      <span class="statLabel">Primary Purposes:</span>
-                      {{ stats.primary_purposes }}
-                    </li>
-                  {% endif %}
-                  {% if stats.location not in stats.stat_defaults %}
-                    <li>
-                      <span class="statLabel">Location:</span>
-                      {{ stats.location }}
-                    </li>
-                  {% endif %}
-                  {% if stats.construction_dates not in stats.stat_defaults %}
-                    <li>
-                      <span class="statLabel">Construction Dates:</span>
-                      {{ stats.construction_dates }}
-                    </li>
-                  {% endif %}
-                  {% if stats.length_of_lake not in stats.stat_defaults %}
-                    <li>
-                      <span class="statLabel">Length of Lake:</span>
-                      {{ stats.length_of_lake }} miles
-                    </li>
-                  {% endif %}
-                  {% if stats.miles_of_shoreline not in stats.stat_defaults %}
-                    <li>
-                      <span class="statLabel">Miles of Shoreline:</span>
-                      {{ stats.miles_of_shoreline }} miles
-                    </li>
-                  {% endif %}
-                  {% if stats.maximum_width not in stats.stat_defaults %}
-                    <li>
-                      <span class="statLabel">Maximum Width:</span>
-                      {{ stats.maximum_width }} miles
-                    </li>
-                  {% endif %}
-                  {% if stats.lake_area not in stats.stat_defaults %}
-                    <li>
-                      <span class="statLabel">Lake Area:</span>
-                      {{ stats.lake_area }} acres
-                    </li>
-                  {% endif %}
-                  {% if stats.lake_capacity not in stats.stat_defaults %}
-                    <li>
-                      <span class="statLabel">Lake Capacity:</span>
-                      {{ stats.lake_capacity }} acre-feet
-                    </li>
-                  {% endif %}
-                  {% if stats.full_elevation_msl not in stats.stat_defaults %}
-                    <li>
-                      <span class="statLabel">Full Elevation:</span>
-                      {{ stats.full_elevation_msl }} mean sea level (msl) ({{ stats.full_elevation_gal }} gallons of water)
-                    </li>
-                  {% endif %}
-                  {% if stats.maximum_depth not in stats.stat_defaults %}
-                    <li>
-                      <span class="statLabel">Maximum Depth:</span>
-                      {{ stats.maximum_depth }} ft
-                    </li>
-                  {% endif %}
-                  {% if stats.average_depth not in stats.stat_defaults %}
-                    <li>
-                      <span class="statLabel">Average Depth:</span>
-                      {{ stats.average_depth }} ft
-                    </li>
-                  {% endif %}
-                  {% if stats.historic_high_msl not in stats.stat_defaults %}
-                    <li>
-                      <span class="statLabel">Historic High:</span>
-                      {{ stats.historic_high_msl }} feet msl on {{ stats.historic_high_date }}
-                    </li>
-                  {% endif %}
-                  {% if stats.historic_low_msl not in stats.stat_defaults %}
-                    <li>
-                      <span class="statLabel">Historic Low:</span>
-                      {{ stats.historic_low_msl }} feet msl on {{ stats.historic_low_date }}
-                    </li>
-                  {% endif %}
-                </ul>
-                {% if stats.dam_stats %}
-                  <h5>Dam Statistics</h5>
-                  <ul class="statsList">
-                    {% if stats.dam_height not in stats.stat_defaults %}
-                      <li>
-                        <span class="statLabel">Dam Dimensions:</span>
-                        {{ stats.dam_height }} feet high, {{ stats.dam_width }} feet long
-                      </li>
-                    {% endif %}
-                    {% if stats.spillway_elevation not in stats.stat_defaults %}
-                      <li>
-                        <span class="statLabel">Spillway Elevation:</span>
-                        {{ stats.spillway_elevation }} feet above msl
-                      </li>
-                    {% endif %}
-                    {% if stats.top_of_dam not in stats.stat_defaults %}
-                      <li>
-                        <span class="statLabel">Top of Dam:</span>
-                        {{ stats.top_of_dam }} feet above msl
-                      </li>
-                    {% endif %}
-                    {% if stats.num_of_floodgates not in stats.stat_defaults %}
-                      <li>
-                        <span class="statLabel">Number of Floodgates:</span>
-                        {{ stats.num_of_floodgates }}
-                      </li>
-                    {% endif %}
-                    {% if stats.discharge_capacity not in stats.stat_defaults %}
-                      <li>
-                        <span class="statLabel">Total Discharge Capacity:</span>
-                        <br />
-                        {{ stats.discharge_capacity|safe }}
-                      </li>
-                    {% endif %}
-                  </ul>
-                {% endif %}
-                {% if stats.wdft_link %}
-                  <h5>Current Conditions</h5>
-                  <img class="picZoom" src="{{ stats.wdft_link }}/recent-volume.png" />
-                  <p style="text-align: center;">View all current conditions at <a href="{{ stats.wdft_link }}" target="wdft">waterdatafortexas.org</a></p>
-                {% endif %}
 
-                {% if high_events|length > 0 %}
-                  <h5 class="rankedHeader">Top {{ high_events|length }} Highest Lake Levels</h5>
-                  <table class="table rankedEvents">
-                    <thead>
-                      <tr>
-                        <th>Rank</th>
-                        <th>Date</th>
-                        <th>Height*</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {% for e in high_events %}
-                        <tr>
-                          <th scope="row">{{ e.rank }}</th>
-                          <td>{{ e.date }}</td>
-                          <td>{{ e.height }}</td>
-                        </tr>
-                      {% endfor %}
-                    </tbody>
-                  </table>
-                {% endif %}
-                {% if low_events|length > 0 %}
-                  <h5 class="rankedHeader">Top {{ low_events|length }} Lowest Lake Levels</h5>
-                  <table class="table rankedEvents">
-                    <thead>
-                      <tr>
-                        <th>Rank</th>
-                        <th>Drought</th>
-                        <th>Date</th>
-                        <th>Height*</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {% for e in low_events %}
-                        <tr>
-                          <th scope="row">{{ e.rank }}</th>
-                          <td>{{ e.drought }}</td>
-                          <td>{{ e.date }}</td>
-                          <td>{{ e.height }}</td>
-                        </tr>
-                      {% endfor %}
-                    </tbody>
-                  </table>
-                {% endif %}
-                {% if low_events|length > 0 or high_events|length > 0 %}
-                  <p id="rankingFooter">*Height is represented as feet above mean sea level (MSL)</p>
-                {% endif %}
-                <div class="pageSpacer"></div>
-              </div>
-            {% endif %}
+
+
+
+            
+            
 
             {% if story.section_one_header %}
               <div class="storyPage">
@@ -277,7 +90,228 @@
       </div>
       <div class="collapse" id="mobileStoryPanelContainer">
         <div class="col-12 mobileStoryPanel">
-          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+
+
+          <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="false">
+            <ol class="carousel-indicators">
+              <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+              <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+              <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner" role="listbox">
+              <div class="carousel-item active">
+                <div class="mobileStoryPage">
+                  <h2 class="mobilePageHeader" id="Story">{{ lake }} Story Map</h2>
+                  <div>{{ story.summary|safe }}</div>
+                </div>
+              </div>
+              {% if story.history %}
+                <div class="carousel-item">
+                  <div class="mobileStoryPage">
+                    <h2 class="mobilePageHeader" id="History">History of {{ lake }}</h2>
+                    <div>{{ story.history|safe }}</div>
+                  </div>
+                </div>
+              {% endif %}
+              {% if stats.general_stats %}
+                <div class="carousel-item">
+                  <div class="mobileStoryPage">
+                    <h2 class="mobilePageHeader" id="Statistics">{{ lake }} Statistics</h2>
+                    <ul class="statsList">
+                      {% if stats.original_name not in stats.stat_defaults %}
+                        <li>
+                          <span class="statLabel">Original Name:</span>
+                          {{ stats.original_name }}
+                        </li>
+                      {% endif %}
+                      {% if stats.primary_purposes not in stats.stat_defaults %}
+                        <li>
+                          <span class="statLabel">Primary Purposes:</span>
+                          {{ stats.primary_purposes }}
+                        </li>
+                      {% endif %}
+                      {% if stats.location not in stats.stat_defaults %}
+                        <li>
+                          <span class="statLabel">Location:</span>
+                          {{ stats.location }}
+                        </li>
+                      {% endif %}
+                      {% if stats.construction_dates not in stats.stat_defaults %}
+                        <li>
+                          <span class="statLabel">Construction Dates:</span>
+                          {{ stats.construction_dates }}
+                        </li>
+                      {% endif %}
+                      {% if stats.length_of_lake not in stats.stat_defaults %}
+                        <li>
+                          <span class="statLabel">Length of Lake:</span>
+                          {{ stats.length_of_lake }} miles
+                        </li>
+                      {% endif %}
+                      {% if stats.miles_of_shoreline not in stats.stat_defaults %}
+                        <li>
+                          <span class="statLabel">Miles of Shoreline:</span>
+                          {{ stats.miles_of_shoreline }} miles
+                        </li>
+                      {% endif %}
+                      {% if stats.maximum_width not in stats.stat_defaults %}
+                        <li>
+                          <span class="statLabel">Maximum Width:</span>
+                          {{ stats.maximum_width }} miles
+                        </li>
+                      {% endif %}
+                      {% if stats.lake_area not in stats.stat_defaults %}
+                        <li>
+                          <span class="statLabel">Lake Area:</span>
+                          {{ stats.lake_area }} acres
+                        </li>
+                      {% endif %}
+                      {% if stats.lake_capacity not in stats.stat_defaults %}
+                        <li>
+                          <span class="statLabel">Lake Capacity:</span>
+                          {{ stats.lake_capacity }} acre-feet
+                        </li>
+                      {% endif %}
+                      {% if stats.full_elevation_msl not in stats.stat_defaults %}
+                        <li>
+                          <span class="statLabel">Full Elevation:</span>
+                          {{ stats.full_elevation_msl }} mean sea level (msl) ({{ stats.full_elevation_gal }} gallons of water)
+                        </li>
+                      {% endif %}
+                      {% if stats.maximum_depth not in stats.stat_defaults %}
+                        <li>
+                          <span class="statLabel">Maximum Depth:</span>
+                          {{ stats.maximum_depth }} ft
+                        </li>
+                      {% endif %}
+                      {% if stats.average_depth not in stats.stat_defaults %}
+                        <li>
+                          <span class="statLabel">Average Depth:</span>
+                          {{ stats.average_depth }} ft
+                        </li>
+                      {% endif %}
+                      {% if stats.historic_high_msl not in stats.stat_defaults %}
+                        <li>
+                          <span class="statLabel">Historic High:</span>
+                          {{ stats.historic_high_msl }} feet msl on {{ stats.historic_high_date }}
+                        </li>
+                      {% endif %}
+                      {% if stats.historic_low_msl not in stats.stat_defaults %}
+                        <li>
+                          <span class="statLabel">Historic Low:</span>
+                          {{ stats.historic_low_msl }} feet msl on {{ stats.historic_low_date }}
+                        </li>
+                      {% endif %}
+                    </ul>
+                    {% if stats.dam_stats %}
+                      <h5>Dam Statistics</h5>
+                      <ul class="statsList">
+                        {% if stats.dam_height not in stats.stat_defaults %}
+                          <li>
+                            <span class="statLabel">Dam Dimensions:</span>
+                            {{ stats.dam_height }} feet high, {{ stats.dam_width }} feet long
+                          </li>
+                        {% endif %}
+                        {% if stats.spillway_elevation not in stats.stat_defaults %}
+                          <li>
+                            <span class="statLabel">Spillway Elevation:</span>
+                            {{ stats.spillway_elevation }} feet above msl
+                          </li>
+                        {% endif %}
+                        {% if stats.top_of_dam not in stats.stat_defaults %}
+                          <li>
+                            <span class="statLabel">Top of Dam:</span>
+                            {{ stats.top_of_dam }} feet above msl
+                          </li>
+                        {% endif %}
+                        {% if stats.num_of_floodgates not in stats.stat_defaults %}
+                          <li>
+                            <span class="statLabel">Number of Floodgates:</span>
+                            {{ stats.num_of_floodgates }}
+                          </li>
+                        {% endif %}
+                        {% if stats.discharge_capacity not in stats.stat_defaults %}
+                          <li>
+                            <span class="statLabel">Total Discharge Capacity:</span>
+                            <br />
+                            {{ stats.discharge_capacity|safe }}
+                          </li>
+                        {% endif %}
+                      </ul>
+                    {% endif %}
+                    {% if stats.wdft_link %}
+                      <h5>Current Conditions</h5>
+                      <img class="picZoom" src="{{ stats.wdft_link }}/recent-volume.png" />
+                      <p style="text-align: center;">View all current conditions at <a href="{{ stats.wdft_link }}" target="wdft">waterdatafortexas.org</a></p>
+                    {% endif %}
+
+                    {% if high_events|length > 0 %}
+                      <h5 class="rankedHeader">Top {{ high_events|length }} Highest Lake Levels</h5>
+                      <table class="table rankedEvents">
+                        <thead>
+                          <tr>
+                            <th>Rank</th>
+                            <th>Date</th>
+                            <th>Height*</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for e in high_events %}
+                            <tr>
+                              <th scope="row">{{ e.rank }}</th>
+                              <td>{{ e.date }}</td>
+                              <td>{{ e.height }}</td>
+                            </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    {% endif %}
+                    {% if low_events|length > 0 %}
+                      <h5 class="rankedHeader">Top {{ low_events|length }} Lowest Lake Levels</h5>
+                      <table class="table rankedEvents">
+                        <thead>
+                          <tr>
+                            <th>Rank</th>
+                            <th>Drought</th>
+                            <th>Date</th>
+                            <th>Height*</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for e in low_events %}
+                            <tr>
+                              <th scope="row">{{ e.rank }}</th>
+                              <td>{{ e.drought }}</td>
+                              <td>{{ e.date }}</td>
+                              <td>{{ e.height }}</td>
+                            </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    {% endif %}
+                    {% if low_events|length > 0 or high_events|length > 0 %}
+                      <p id="rankingFooter">*Height is represented as feet above mean sea level (MSL)</p>
+                    {% endif %}
+                  </div>
+            
+                </div>
+              {% endif %}
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+              <p>
+                <img src="{% static 'map/images/glyphicons-arrow-left.png' %}"/>
+                <span class="sr-only">Previous</span>
+              </p>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+              <p>
+                <img src="{% static 'map/images/glyphicons-arrow-right.png' %}"/>
+                <span class="sr-only">Next</span>
+              </p>
+            </a>
+          </div>
+
+
         </div>
       </div>
       <div class="col-12 mobileMapPanel">
@@ -484,23 +518,13 @@
             }
 
             // setup picture modal event to populate image in modal dynamically
-            // setup page effect on story
-            var prevPage = $("#Story").parent();
             $(function() {
                 $('.picZoom').on('click', function() {
                   $('.imagepreview').attr('src', $(this)[0]['src']);
                   $('.imagepreview-caption').html($(this).next().html());
                   $('#imagemodal').modal('show');
                 });
-
-                prevPage.addClass("focusPage");
-                $('.contentText').on('activate.bs.scrollspy', function (e) {
-                  var activeSection = $("#storyNav").find("li.nav-item a.nav-link.active").attr("href"); 
-                  prevPage.removeClass("focusPage");
-                  $(activeSection).parent().addClass("focusPage");
-                  prevPage = $(activeSection).parent();
-                });
-            });            
+            });
         </script>
       </div>
     </div>

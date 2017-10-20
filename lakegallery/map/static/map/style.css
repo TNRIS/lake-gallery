@@ -250,27 +250,69 @@ div.slider-handle.min-slider-handle.round {
 	max-width: 100% !important;
 }
 
-/*STORY*/
+/*STORY PAGE FRAMEWORK*/
 .togglerWrapper {
     text-align: center;
     width: 100%;
     position: absolute;
-    z-index: 17;
+    z-index: 102;
     pointer-events: none;
 }
 
 #mobileStoryToggler {
-	margin-top: 10px;
+	margin-top: 1%;
 	pointer-events:auto;
 	background-color: #FFFFFF;
 }
 
 #mobileStoryPanelContainer {
-	z-index: 16;
+	z-index: 101;
 	background-color: white;
 	max-height: 100%;
+	width: 100%;
 }
 
+.col-12.mobileStoryPanel {
+	padding-left: 0;
+	padding-right: 0;
+	height: 100%;
+}
+
+.carousel-indicators {
+	top: 60px;
+}
+
+.carousel-indicators > li {
+	background-color: #3C5163;
+}
+
+.carousel-indicators > li.active {
+	background-color: #699CD0;
+}
+
+.carousel-control-next > p {
+	padding: 5px;
+	position: absolute;
+	top: 10px;
+}
+
+.carousel-control-prev > p {
+	padding: 5px;
+	position: absolute;
+	top: 10px;
+}
+
+/*STORY PAGES*/
+.mobileStoryPage {
+	min-height: 90%;
+	padding-left: 10%;
+	padding-right: 10%;
+}
+
+.mobileStoryPage > h2 {
+	margin-top: 68px;
+	text-align: center;
+}
 
 /*MAP*/
 .mobileMapPanel {
