@@ -25,21 +25,21 @@
         <div class="col-12 mobileStoryPanel">
           <div id="mobileCarouselIndicators" class="carousel slide" data-ride="carousel" data-interval="false">
             <ol class="carousel-indicators">
-              <li data-target="#mobileCarouselIndicators" data-slide-to="0" class="active"></li>
+              <li data-target="#mobileCarouselIndicators" class="active"></li>
               {% if story.history %}
-                <li data-target="#mobileCarouselIndicators" data-slide-to="1"></li>
+                <li data-target="#mobileCarouselIndicators"></li>
               {% endif %}
               {% if stats.general_stats %}
-                <li data-target="#mobileCarouselIndicators" data-slide-to="2"></li>
+                <li data-target="#mobileCarouselIndicators"></li>
               {% endif %}
               {% if story.section_one_header %}
-                <li data-target="#mobileCarouselIndicators" data-slide-to="3"></li>
+                <li data-target="#mobileCarouselIndicators"></li>
               {% endif %}
               {% if story.section_two_header %}
-                <li data-target="#mobileCarouselIndicators" data-slide-to="4"></li>
+                <li data-target="#mobileCarouselIndicators"></li>
               {% endif %}
               {% if story.section_three_header %}
-                <li data-target="#mobileCarouselIndicators" data-slide-to="5"></li>
+                <li data-target="#mobileCarouselIndicators"></li>
               {% endif %}
             </ol>
             <div class="carousel-inner" role="listbox">
@@ -509,6 +509,13 @@
                     img.addClass('closed');
                   }
                 });
+
+                // $(".carousel-inner").swiperight(function() {  
+                //   $(this).parent().carousel('prev');  
+                // });  
+                // $(".carousel-inner").swipeleft(function() {  
+                //   $(this).parent().carousel('next');  
+                // });
             });
         </script>
       </div>
