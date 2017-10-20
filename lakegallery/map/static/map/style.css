@@ -292,6 +292,14 @@ div.slider-handle.min-slider-handle.round {
 	background-color: #699CD0;
 }
 
+.carousel-control-next {
+	opacity: 1;
+}
+
+.carousel-control-prev {
+	opacity: 1;
+}
+
 .carousel-control-next > p {
 	padding: 5px;
 	position: absolute;
@@ -314,6 +322,15 @@ div.slider-handle.min-slider-handle.round {
 .mobileStoryPage > h2 {
 	margin-top: 68px;
 	text-align: center;
+}
+
+.mobileStoryPage > div > figure {
+	text-align: center;
+}
+
+.mobileStoryPage > div > figure > figcaption {
+	font-size: small;
+	font-style: italic;
 }
 
 /*MAP*/

@@ -16,73 +16,6 @@
   </div>
   <div class="container" id="mobileContainer">
     <div class="row">
-        <!-- <div class="col-4 contentPanel">
-          <nav id="navbar-contentPanel" class="navbar navbar-light bg-light">
-            <ul id="storyNav" class="nav nav-pills">
-              <li class="nav-item">
-                <a class="nav-link" href="#Story">Story</a>
-              </li>
-              {% if story.history %}
-                <li class="nav-item">
-                  <a class="nav-link" href="#History">History</a>
-                </li>
-              {% endif %}
-              {% if stats.general_stats %}
-                <li class="nav-item">
-                  <a class="nav-link" href="#Statistics">Statistics</a>
-                </li>
-              {% endif %}
-              {% if story.section_one_header %}
-                <li class="nav-item">
-                  <a class="nav-link" href="#{{ story.section_one_nav|cut:' ' }}">{{ story.section_one_nav }}</a>
-                </li>
-              {% endif %}
-              {% if story.section_two_header %}
-                <li class="nav-item">
-                  <a class="nav-link" href="#{{ story.section_two_nav|cut:' ' }}">{{ story.section_two_nav }}</a>
-                </li>
-              {% endif %}
-              {% if story.section_three_header %}
-                <li class="nav-item">
-                  <a class="nav-link" href="#{{ story.section_three_nav|cut:' ' }}">{{ story.section_three_nav }}</a>
-                </li>
-              {% endif %}
-            </ul>
-          </nav>
-          <div class="contentText" data-spy="scroll" data-target="#navbar-contentPanel" data-offset="100">
-
-
-
-
-            
-            
-
-            {% if story.section_one_header %}
-              <div class="storyPage">
-                <h2 id="{{ story.section_one_nav|cut:' ' }}">{{ story.section_one_header }}</h2>
-                <div>{{ story.section_one_content|safe }}</div>
-                <div class="pageSpacer"></div>
-              </div>
-            {% endif %}
-
-            {% if story.section_two_header %}
-              <div class="storyPage">
-                <h2 id="{{ story.section_two_nav|cut:' ' }}">{{ story.section_two_header }}</h2>
-                <div>{{ story.section_two_content|safe }}</div>
-                <div class="pageSpacer"></div>
-              </div>
-            {% endif %}
-
-            {% if story.section_three_header %}
-              <div class="storyPage">
-                <h2 id="{{ story.section_three_nav|cut:' ' }}">{{ story.section_three_header }}</h2>
-                <div>{{ story.section_three_content|safe }}</div>
-              </div>
-            {% endif %}
-
-          </div>
-        
-        </div> -->
       <div class="togglerWrapper">
         <button class="btn" type="button" data-toggle="collapse" data-target="#mobileStoryPanelContainer" aria-expanded="false" aria-controls="mobileStoryPanelContainer" id="mobileStoryToggler">
           <img id="togglerImg" class="closed" src="{% static 'map/images/glyphicons-book-open.png' %}"/>
@@ -90,13 +23,24 @@
       </div>
       <div class="collapse" id="mobileStoryPanelContainer">
         <div class="col-12 mobileStoryPanel">
-
-
           <div id="mobileCarouselIndicators" class="carousel slide" data-ride="carousel" data-interval="false">
             <ol class="carousel-indicators">
               <li data-target="#mobileCarouselIndicators" data-slide-to="0" class="active"></li>
-              <li data-target="#mobileCarouselIndicators" data-slide-to="1"></li>
-              <li data-target="#mobileCarouselIndicators" data-slide-to="2"></li>
+              {% if story.history %}
+                <li data-target="#mobileCarouselIndicators" data-slide-to="1"></li>
+              {% endif %}
+              {% if stats.general_stats %}
+                <li data-target="#mobileCarouselIndicators" data-slide-to="2"></li>
+              {% endif %}
+              {% if story.section_one_header %}
+                <li data-target="#mobileCarouselIndicators" data-slide-to="3"></li>
+              {% endif %}
+              {% if story.section_two_header %}
+                <li data-target="#mobileCarouselIndicators" data-slide-to="4"></li>
+              {% endif %}
+              {% if story.section_three_header %}
+                <li data-target="#mobileCarouselIndicators" data-slide-to="5"></li>
+              {% endif %}
             </ol>
             <div class="carousel-inner" role="listbox">
               <div class="carousel-item active">
@@ -294,6 +238,33 @@
                     {% endif %}
                   </div>
             
+                </div>
+              {% endif %}
+
+              {% if story.section_one_header %}
+                <div class="carousel-item">
+                  <div class="mobileStoryPage">
+                    <h2 class="mobilePageHeader" id="{{ story.section_one_nav|cut:' ' }}">{{ story.section_one_header }}</h2>
+                    <div>{{ story.section_one_content|safe }}</div>
+                  </div>
+                </div>
+              {% endif %}
+
+              {% if story.section_two_header %}
+                <div class="carousel-item">
+                  <div class="mobileStoryPage">
+                    <h2 class="mobilePageHeader" id="{{ story.section_two_nav|cut:' ' }}">{{ story.section_two_header }}</h2>
+                    <div>{{ story.section_two_content|safe }}</div>
+                  </div>
+                </div>
+              {% endif %}
+
+              {% if story.section_three_header %}
+                <div class="carousel-item">
+                  <div class="mobileStoryPage">
+                    <h2 class="mobilePageHeader" id="{{ story.section_three_nav|cut:' ' }}">{{ story.section_three_header }}</h2>
+                    <div>{{ story.section_three_content|safe }}</div>
+                  </div>
                 </div>
               {% endif %}
             </div>
