@@ -496,6 +496,7 @@
                   $('#imagemodal').modal('show');
                 });
 
+                // swap out story toggler icon for map button
                 $('#mobileStoryToggler').on('click', function() {
                   var img = $('#togglerImg');
                   var className = img[0]['className'];
@@ -509,13 +510,6 @@
                     img.addClass('closed');
                   }
                 });
-
-                // $(".carousel-inner").swiperight(function() {  
-                //   $(this).parent().carousel('prev');  
-                // });  
-                // $(".carousel-inner").swipeleft(function() {  
-                //   $(this).parent().carousel('next');  
-                // });
             });
         </script>
       </div>
