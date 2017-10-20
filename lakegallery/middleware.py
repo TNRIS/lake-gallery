@@ -6,10 +6,7 @@ class MobileDetectionMiddleware(object):
     Useful middleware to detect if the user is
     on a mobile device.
     """
-    def __init__(self, get_response):
-        self.get_response = get_response
-
-    def __call__(self, request):
+    def process_request(self, request):
         is_mobile = False
         is_tablet = False
         is_phone = False
@@ -26,4 +23,3 @@ class MobileDetectionMiddleware(object):
         request.is_mobile = is_mobile
         request.is_tablet = is_tablet
         request.is_phone = is_phone
-        return self.get_response(request)

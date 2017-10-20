@@ -119,10 +119,10 @@ def story(request, letter, lake):
                'overlay_order': overlay_order, 'overlay_query': m.id}
 
     print(request.is_mobile)
-    print(request.is_tablet)
-    print(request.is_phone)
-
-    return render(request, 'map/story.html', context)
+    if request.is_mobile is False:
+        return render(request, 'map/story.html', context)
+    else:
+        return render(request, 'map/story_mobile.html', context)
 
 
 """

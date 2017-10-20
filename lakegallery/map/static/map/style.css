@@ -194,7 +194,7 @@ sources {
 
 /*STORY MAP PANEL*/
 .leaflet-container {
-    height: calc(100% - 56px);
+    height: 100%;
     width: 100%;
 }
 
@@ -237,6 +237,32 @@ div.slider-handle.min-slider-handle.round {
 
 #storyMap {
 	z-index: 10;
+	height: calc(100% - 56px);
 }
 
+/*STORY MOBILE */
+#mobileContainer {
+	height: calc(100% - 56px);
+	margin: 0;
+	width: 100% !important;
+}
 
+.mobileStoryToggler {
+	position: absolute;
+	z-index: 15;
+}
+
+.mobileStoryPanelContainer {
+	z-index: 15;
+}
+
+.mobileMapPanel {
+	position: absolute;
+	padding: 0;
+	height: calc(100% - 56px);
+}
+
+#mobileStoryMap {
+	z-index: 10;
+	height: 100%;
+}

@@ -1,0 +1,506 @@
+{% extends 'map/base.html' %}
+{% load leaflet_tags %}
+{% load static %}
+
+{% block content %}
+  <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">              
+        <div class="modal-body">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <img src="" class="imagepreview" />
+          <p class="imagepreview-caption" style="font-style: italic;"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container" id="mobileContainer">
+    <div class="row">
+        <!-- <div class="col-4 contentPanel">
+          <nav id="navbar-contentPanel" class="navbar navbar-light bg-light">
+            <ul id="storyNav" class="nav nav-pills">
+              <li class="nav-item">
+                <a class="nav-link" href="#Story">Story</a>
+              </li>
+              {% if story.history %}
+                <li class="nav-item">
+                  <a class="nav-link" href="#History">History</a>
+                </li>
+              {% endif %}
+              {% if stats.general_stats %}
+                <li class="nav-item">
+                  <a class="nav-link" href="#Statistics">Statistics</a>
+                </li>
+              {% endif %}
+              {% if story.section_one_header %}
+                <li class="nav-item">
+                  <a class="nav-link" href="#{{ story.section_one_nav|cut:' ' }}">{{ story.section_one_nav }}</a>
+                </li>
+              {% endif %}
+              {% if story.section_two_header %}
+                <li class="nav-item">
+                  <a class="nav-link" href="#{{ story.section_two_nav|cut:' ' }}">{{ story.section_two_nav }}</a>
+                </li>
+              {% endif %}
+              {% if story.section_three_header %}
+                <li class="nav-item">
+                  <a class="nav-link" href="#{{ story.section_three_nav|cut:' ' }}">{{ story.section_three_nav }}</a>
+                </li>
+              {% endif %}
+            </ul>
+          </nav>
+          <div class="contentText" data-spy="scroll" data-target="#navbar-contentPanel" data-offset="100">
+            <div class="storyPage">
+              <h2 id="Story" style="margin-top:0;">{{ lake }} Story Map</h2>
+              <div>{{ story.summary|safe }}</div>
+              <div class="pageSpacer"></div>
+            </div>
+            {% if story.history %}
+              <div class="storyPage">
+                <h2 id="History">History of {{ lake }}</h2>
+                <div>{{ story.history|safe }}</div>
+                <div class="pageSpacer"></div>
+              </div>
+            {% endif %}
+            {% if stats.general_stats %}
+              <div class="storyPage">
+                <h2 id="Statistics">{{ lake }} Statistics</h2>
+                <ul class="statsList">
+                  {% if stats.original_name not in stats.stat_defaults %}
+                    <li>
+                      <span class="statLabel">Original Name:</span>
+                      {{ stats.original_name }}
+                    </li>
+                  {% endif %}
+                  {% if stats.primary_purposes not in stats.stat_defaults %}
+                    <li>
+                      <span class="statLabel">Primary Purposes:</span>
+                      {{ stats.primary_purposes }}
+                    </li>
+                  {% endif %}
+                  {% if stats.location not in stats.stat_defaults %}
+                    <li>
+                      <span class="statLabel">Location:</span>
+                      {{ stats.location }}
+                    </li>
+                  {% endif %}
+                  {% if stats.construction_dates not in stats.stat_defaults %}
+                    <li>
+                      <span class="statLabel">Construction Dates:</span>
+                      {{ stats.construction_dates }}
+                    </li>
+                  {% endif %}
+                  {% if stats.length_of_lake not in stats.stat_defaults %}
+                    <li>
+                      <span class="statLabel">Length of Lake:</span>
+                      {{ stats.length_of_lake }} miles
+                    </li>
+                  {% endif %}
+                  {% if stats.miles_of_shoreline not in stats.stat_defaults %}
+                    <li>
+                      <span class="statLabel">Miles of Shoreline:</span>
+                      {{ stats.miles_of_shoreline }} miles
+                    </li>
+                  {% endif %}
+                  {% if stats.maximum_width not in stats.stat_defaults %}
+                    <li>
+                      <span class="statLabel">Maximum Width:</span>
+                      {{ stats.maximum_width }} miles
+                    </li>
+                  {% endif %}
+                  {% if stats.lake_area not in stats.stat_defaults %}
+                    <li>
+                      <span class="statLabel">Lake Area:</span>
+                      {{ stats.lake_area }} acres
+                    </li>
+                  {% endif %}
+                  {% if stats.lake_capacity not in stats.stat_defaults %}
+                    <li>
+                      <span class="statLabel">Lake Capacity:</span>
+                      {{ stats.lake_capacity }} acre-feet
+                    </li>
+                  {% endif %}
+                  {% if stats.full_elevation_msl not in stats.stat_defaults %}
+                    <li>
+                      <span class="statLabel">Full Elevation:</span>
+                      {{ stats.full_elevation_msl }} mean sea level (msl) ({{ stats.full_elevation_gal }} gallons of water)
+                    </li>
+                  {% endif %}
+                  {% if stats.maximum_depth not in stats.stat_defaults %}
+                    <li>
+                      <span class="statLabel">Maximum Depth:</span>
+                      {{ stats.maximum_depth }} ft
+                    </li>
+                  {% endif %}
+                  {% if stats.average_depth not in stats.stat_defaults %}
+                    <li>
+                      <span class="statLabel">Average Depth:</span>
+                      {{ stats.average_depth }} ft
+                    </li>
+                  {% endif %}
+                  {% if stats.historic_high_msl not in stats.stat_defaults %}
+                    <li>
+                      <span class="statLabel">Historic High:</span>
+                      {{ stats.historic_high_msl }} feet msl on {{ stats.historic_high_date }}
+                    </li>
+                  {% endif %}
+                  {% if stats.historic_low_msl not in stats.stat_defaults %}
+                    <li>
+                      <span class="statLabel">Historic Low:</span>
+                      {{ stats.historic_low_msl }} feet msl on {{ stats.historic_low_date }}
+                    </li>
+                  {% endif %}
+                </ul>
+                {% if stats.dam_stats %}
+                  <h5>Dam Statistics</h5>
+                  <ul class="statsList">
+                    {% if stats.dam_height not in stats.stat_defaults %}
+                      <li>
+                        <span class="statLabel">Dam Dimensions:</span>
+                        {{ stats.dam_height }} feet high, {{ stats.dam_width }} feet long
+                      </li>
+                    {% endif %}
+                    {% if stats.spillway_elevation not in stats.stat_defaults %}
+                      <li>
+                        <span class="statLabel">Spillway Elevation:</span>
+                        {{ stats.spillway_elevation }} feet above msl
+                      </li>
+                    {% endif %}
+                    {% if stats.top_of_dam not in stats.stat_defaults %}
+                      <li>
+                        <span class="statLabel">Top of Dam:</span>
+                        {{ stats.top_of_dam }} feet above msl
+                      </li>
+                    {% endif %}
+                    {% if stats.num_of_floodgates not in stats.stat_defaults %}
+                      <li>
+                        <span class="statLabel">Number of Floodgates:</span>
+                        {{ stats.num_of_floodgates }}
+                      </li>
+                    {% endif %}
+                    {% if stats.discharge_capacity not in stats.stat_defaults %}
+                      <li>
+                        <span class="statLabel">Total Discharge Capacity:</span>
+                        <br />
+                        {{ stats.discharge_capacity|safe }}
+                      </li>
+                    {% endif %}
+                  </ul>
+                {% endif %}
+                {% if stats.wdft_link %}
+                  <h5>Current Conditions</h5>
+                  <img class="picZoom" src="{{ stats.wdft_link }}/recent-volume.png" />
+                  <p style="text-align: center;">View all current conditions at <a href="{{ stats.wdft_link }}" target="wdft">waterdatafortexas.org</a></p>
+                {% endif %}
+
+                {% if high_events|length > 0 %}
+                  <h5 class="rankedHeader">Top {{ high_events|length }} Highest Lake Levels</h5>
+                  <table class="table rankedEvents">
+                    <thead>
+                      <tr>
+                        <th>Rank</th>
+                        <th>Date</th>
+                        <th>Height*</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for e in high_events %}
+                        <tr>
+                          <th scope="row">{{ e.rank }}</th>
+                          <td>{{ e.date }}</td>
+                          <td>{{ e.height }}</td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                {% endif %}
+                {% if low_events|length > 0 %}
+                  <h5 class="rankedHeader">Top {{ low_events|length }} Lowest Lake Levels</h5>
+                  <table class="table rankedEvents">
+                    <thead>
+                      <tr>
+                        <th>Rank</th>
+                        <th>Drought</th>
+                        <th>Date</th>
+                        <th>Height*</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for e in low_events %}
+                        <tr>
+                          <th scope="row">{{ e.rank }}</th>
+                          <td>{{ e.drought }}</td>
+                          <td>{{ e.date }}</td>
+                          <td>{{ e.height }}</td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                {% endif %}
+                {% if low_events|length > 0 or high_events|length > 0 %}
+                  <p id="rankingFooter">*Height is represented as feet above mean sea level (MSL)</p>
+                {% endif %}
+                <div class="pageSpacer"></div>
+              </div>
+            {% endif %}
+
+            {% if story.section_one_header %}
+              <div class="storyPage">
+                <h2 id="{{ story.section_one_nav|cut:' ' }}">{{ story.section_one_header }}</h2>
+                <div>{{ story.section_one_content|safe }}</div>
+                <div class="pageSpacer"></div>
+              </div>
+            {% endif %}
+
+            {% if story.section_two_header %}
+              <div class="storyPage">
+                <h2 id="{{ story.section_two_nav|cut:' ' }}">{{ story.section_two_header }}</h2>
+                <div>{{ story.section_two_content|safe }}</div>
+                <div class="pageSpacer"></div>
+              </div>
+            {% endif %}
+
+            {% if story.section_three_header %}
+              <div class="storyPage">
+                <h2 id="{{ story.section_three_nav|cut:' ' }}">{{ story.section_three_header }}</h2>
+                <div>{{ story.section_three_content|safe }}</div>
+              </div>
+            {% endif %}
+
+          </div>
+        
+        </div> -->
+      <button class="btn" type="button" data-toggle="collapse" data-target="#mobileStoryPanelContainer" aria-expanded="false" aria-controls="mobileStoryPanelContainer" id="mobileStoryToggler">
+        Story
+      </button>
+      <div class="collapse" id="mobileStoryPanelContainer">
+        <div class="col-12 mobileStoryPanel">
+          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+        </div>
+      </div>
+      <div class="col-12 mobileMapPanel">
+        <input id="historicalSlider" type="text" style="display:none;"/>
+        {% leaflet_map "mobileStoryMap" callback="main_map_init" %}
+        <script type="text/javascript">
+            
+            function main_map_init (map, options) {
+              var basemaps = {
+                  'Google Imagery': L.tileLayer.wms('https://txgi.tnris.org/login/path/source-blonde-xray-cheese/wms', {
+                      layers: 'texas',
+                      attribution: 'Google'
+                  })
+
+                  // ,'Grayscale': L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}@2x.png')
+              };
+              var overlays = {};              
+
+              basemaps['Google Imagery'].addTo(map);
+
+              var account = 'tnris-flood';
+              var static_url = "{% static 'map/images/' %}";
+
+              var resConfig = JSON.parse('{{ layer }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
+              var linkConfig = JSON.parse('{{ links }}'.replace(/&#39;/g, '"'));
+              var overlayConfig = JSON.parse('{{ overlays }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
+              var overlayOrder = JSON.parse('{{overlay_order}}'.replace(/&#39;/g, '"'));
+              var allOverlays = ['Google Imagery', '{{ lake }}'].concat(overlayOrder);
+              var overlayQueryId = "{{ overlay_query }}";
+
+              function loadOverlay (config) {
+                var css = config.carto_css;
+                if (config.carto_lbl) {
+                  css += config.carto_lbl;
+                }
+                var sql = `select * from ${config.table_name} where lake_id = ${overlayQueryId}`;
+
+                var mapconfig = {
+                  "version": "1.3.1",
+                  "layers": [{
+                    "type": "mapnik",
+                    "options": {
+                      "cartocss_version": "2.1.1",
+                      "cartocss": css,
+                      "sql": sql
+                    }
+                  }]
+                }
+
+                $.ajax({
+                  crossOrigin: true,
+                  type: 'POST',
+                  dataType: 'json',
+                  contentType: 'application/json',
+                  url: `https://${account}.carto.com/api/v1/map`,
+                  data: JSON.stringify(mapconfig),
+                  success: function(data) {
+                    var url = `https://${account}.carto.com/api/v1/map/` + data.layergroupid + '/{z}/{x}/{y}.png'
+                    var tileLayer = new L.tileLayer(url);
+                    overlays[config.toc_label] = tileLayer;
+                    if (Object.keys(overlays).length == (allOverlays.length - 1)) {
+                      // must re-sort the overlay object. although objects don't have orders, somehow 
+                      // leaflet controller recognizes the order in which the layers are added to the
+                      // overlay object and z-indexes the layers based off of that. we re-order so 
+                      // point are on top of polygons
+                      sortOverlays();
+                    }
+                  }
+                })
+              }
+
+              function sortOverlays () {
+                var sortedOverlays = {};
+                var index = 1;
+                function addSortedOverlay () {
+                  if (index < allOverlays.length) {
+                      var layerToLoad = allOverlays[index];
+                      var overlayData = overlays[layerToLoad];
+                      var htmlName;
+                      // add img to layer control. ***IMG file name must be same as toc_label
+                      if (layerToLoad == "{{ lake }}") {
+                        htmlName = `<span>${layerToLoad}</span><br /><img src="${static_url}Lake.png" />`;
+                      } else {
+                        htmlName = `<span>${layerToLoad}</span><br /><img src="${static_url}${layerToLoad}.png" />`;
+                      }
+                      sortedOverlays[htmlName] = overlayData;
+                      ++index;
+                      addSortedOverlay();
+                  }
+                  else {
+                    fireOverlays(sortedOverlays);
+                  }
+                }
+                addSortedOverlay();
+              }
+
+              function fireOverlays (sortedOverlays) {
+                var layerController = L.control.layers(basemaps, sortedOverlays, {
+                  sortLayers: true,
+                  sortFunction: function (lyr1, lyr2, name1, name2) {
+                    var num = allOverlays.indexOf(name1) - allOverlays.indexOf(name2);
+                    return num;
+                  }
+                });
+                layerController.addTo(map);
+                overlays['{{ lake }}'].addTo(map);
+              }
+
+              function getTileUrls (config, lakeName) {
+                var css = config.carto_css;
+                // var interactivity = config.interactivity;
+                var sql = `select * from ${config.table_name} where res_lbl = '${lakeName}'`;
+
+                $.ajax({
+                  crossOrigin: true,
+                  type: 'GET',
+                  dataType: 'json',
+                  contentType: 'application/json',
+                  url: `/api/reservoirs/${lakeName}/name`,
+                  success: function(data) {
+                    var bb = data.results.features[0].bbox;
+                    map.flyToBounds([[bb[1],bb[0]],[bb[3],bb[2]]]);
+                  }
+                })
+
+                var mapconfig = {
+                  "version": "1.3.1",
+                  "layers": [{
+                    "type": "mapnik",
+                    "options": {
+                      "cartocss_version": "2.1.1",
+                      "cartocss": css,
+                      "sql": sql
+                      // "interactivity": interactivity
+                    }
+                  }]
+                }
+
+                $.ajax({
+                  crossOrigin: true,
+                  type: 'POST',
+                  dataType: 'json',
+                  contentType: 'application/json',
+                  url: `https://${account}.carto.com/api/v1/map`,
+                  data: JSON.stringify(mapconfig),
+                  success: function(data) {
+                    var url = `https://${account}.carto.com/api/v1/map/` + data.layergroupid + '/{z}/{x}/{y}.png'
+                    var tileLayer = new L.tileLayer(url);
+                    overlays['{{ lake }}'] = tileLayer;
+                  }
+                })
+              }
+
+              // add lake separately from other overlays since it needs multiple ajax calls
+              // also, so that we can get the map bounds moving without waiting for all overlays
+              // to load
+              getTileUrls(resConfig, "{{ lake }}");
+              Object.keys(overlayConfig).forEach(function (key) {
+                loadOverlay(overlayConfig[key]);
+              });
+
+              function setupHistoricalSlider(links) {
+                var ticks = [0];
+                var labels = ['Off'];
+                links.map(function(l, index) {
+                  ticks.push(index + 1);
+                  labels.push(l.year);
+                });
+                var len = ticks.length;
+                
+                $("#historicalSlider").slider({
+                  ticks: ticks,
+                  ticks_labels: labels,
+                  ticks_snap_bounds: 1,
+                  value: 0
+                });
+                var active = false;
+                var secondBasemap;
+                var historicalLayer;
+                var sideBySideControl;
+                $("#historicalSlider").on('slideStop', function(e) {
+                  if (active == true) {
+                    map.removeLayer(secondBasemap);
+                    map.removeLayer(historicalLayer);
+                    map.removeControl(sideBySideControl);
+                  }
+                  if (e.value != 0) {
+                    secondBasemap = L.tileLayer.wms('https://txgi.tnris.org/login/path/source-blonde-xray-cheese/wms', {
+                        layers: 'texas',
+                        attribution: 'Google'
+                      }).addTo(map);
+                    var position = e.value - 1;
+                    historicalLayer = L.esri.tiledMapLayer({'url':linkConfig[position]['link']}).addTo(map);
+                    sideBySideControl = L.control.sideBySide(basemaps['Google Imagery'], [secondBasemap, historicalLayer]).addTo(map);
+                    active = true;
+                  }
+                });
+
+              }
+              if (linkConfig.length > 0) {
+                $("#historicalSlider").css('display', 'block');
+                setupHistoricalSlider(linkConfig);
+              }
+            }
+
+            // setup picture modal event to populate image in modal dynamically
+            // setup page effect on story
+            var prevPage = $("#Story").parent();
+            $(function() {
+                $('.picZoom').on('click', function() {
+                  $('.imagepreview').attr('src', $(this)[0]['src']);
+                  $('.imagepreview-caption').html($(this).next().html());
+                  $('#imagemodal').modal('show');
+                });
+
+                prevPage.addClass("focusPage");
+                $('.contentText').on('activate.bs.scrollspy', function (e) {
+                  var activeSection = $("#storyNav").find("li.nav-item a.nav-link.active").attr("href"); 
+                  prevPage.removeClass("focusPage");
+                  $(activeSection).parent().addClass("focusPage");
+                  prevPage = $(activeSection).parent();
+                });
+            });            
+        </script>
+      </div>
+    </div>
+  </div>
+{% endblock %}
