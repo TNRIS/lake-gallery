@@ -510,6 +510,18 @@
                     img.addClass('closed');
                   }
                 });
+
+                // enable swipe on carousel
+                var carouselElement = document.getElementById("mobileCarouselIndicators");
+                var hammertime = new Hammer(carouselElement);
+                hammertime.on('swipe', function(ev) {
+                  if (ev.direction == 2) {
+                    $("#mobileCarouselIndicators").carousel('next');
+                  }
+                  else if (ev.direction == 4) {
+                    $("#mobileCarouselIndicators").carousel('prev');
+                  }
+                });
             });
         </script>
       </div>
