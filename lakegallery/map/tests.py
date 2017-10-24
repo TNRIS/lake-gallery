@@ -1,8 +1,9 @@
-from django.test import TestCase
+from django.test import Client, TestCase
 from django.urls import reverse
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from bs4 import BeautifulSoup
+from django.http import HttpRequest
 
 from django.contrib.staticfiles import finders
 
@@ -15,6 +16,9 @@ from .models import (MajorReservoirs, RWPAs, HistoricalAerialLinks,
 from .views import (get_region_header_list, get_lake_header_list)
 from .config import overlays
 from .validators import validate_past_dates
+
+from middleware import MobileDetectionMiddleware
+
 import string
 import os
 import datetime
@@ -888,6 +892,7 @@ class ViewTests(TestCase):
         index_template = 'map/index.html'
         region_template = 'map/region.html'
         story_template = 'map/story.html'
+        story_mobile_template = 'map/story_mobile.html'
 
         # index template
         response = self.client.get('/')
@@ -924,6 +929,22 @@ class ViewTests(TestCase):
         for lt in leaflet_templates:
             self.assertIs(lt in template_names, True)
         self.assertIs(story_template in template_names, True)
+        self.assertIs(base_template in template_names, True)
+
+        # story mobile template
+        ipad_user_agent = ('Mozilla/5.0 (iPad; CPU OS 7_0_6 like Mac OS X) '
+                           'AppleWebKit/537.51.1 (KHTML, like Gecko) Coast/2'
+                           '.0.5.71150 Mobile/11B651 Safari/7534.48.3')
+        response = self.client.get('/A/Lake%20Tester',
+                                   HTTP_USER_AGENT=ipad_user_agent,
+                                   HTTP_ACCEPT="*/*")
+        template_names = []
+        for t in response.templates:
+            template_names.append(t.name)
+
+        for lt in leaflet_templates:
+            self.assertIs(lt in template_names, True)
+        self.assertIs(story_mobile_template in template_names, True)
         self.assertIs(base_template in template_names, True)
 
 
@@ -984,3 +1005,38 @@ class StaticFileTests(TestCase):
             fixed_path = s.replace(settings.STATIC_URL, "")
             result = finders.find(fixed_path)
             self.assertIs(isinstance(result, str), True)
+
+
+class MiddlewareTests(TestCase):
+
+    def test_mobile_detection(self):
+        """
+        Test the mobile detection middleware for story template
+        """
+        lake_name = "Lake Travis"
+        lake_region = "K"
+        MajorReservoirs(res_lbl=lake_name, region=lake_region,
+                        geom=test_geom).save()
+        m = MajorReservoirs.objects.get(res_lbl=lake_name)
+        StoryContent(lake=m)
+
+        ipad_user_agent = ('Mozilla/5.0 (iPad; CPU OS 7_0_6 like Mac OS X) '
+                           'AppleWebKit/537.51.1 (KHTML, like Gecko) Coast/2'
+                           '.0.5.71150 Mobile/11B651 Safari/7534.48.3')
+        r = '/' + lake_region + '/' + lake_name
+
+        req = HttpRequest()
+        req.path = r
+        req.META['HTTP_USER_AGENT'] = ipad_user_agent
+        req.META['HTTP_ACCEPT'] = '*/*'
+        middleware = MobileDetectionMiddleware()
+        req = middleware.process_request(req)
+        self.assertIs(req.is_mobile, True)
+
+        req = HttpRequest()
+        req.path = r
+        req.META['HTTP_USER_AGENT'] = 'Mozilla/5.0'
+        req.META['HTTP_ACCEPT'] = '*/*'
+        middleware = MobileDetectionMiddleware()
+        req = middleware.process_request(req)
+        self.assertIs(req.is_mobile, False)

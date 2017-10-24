@@ -23,3 +23,4 @@ class MobileDetectionMiddleware(object):
         request.is_mobile = is_mobile
         request.is_tablet = is_tablet
         request.is_phone = is_phone
+        return request
