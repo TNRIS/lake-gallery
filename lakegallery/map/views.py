@@ -130,28 +130,57 @@ error code handling
 
 
 def bad_request(request):
-    context = {'code': 400, 'text': 'Bad Request'}
+    labels = get_region_header_list()
+    res = get_lake_header_list()
+
+    snark = "Maybe this story book is in a different language?"
+
+    context = {'header_regions': labels, 'header_lakes': res,
+               'code': 400, 'text': 'Bad Request',
+               'snark': snark}
     response = render_to_response('map/error.html', context)
     response.status_code = 400
     return response
 
 
 def permission_denied(request):
-    context = {'code': 403, 'text': 'Permission Denied'}
+    labels = get_region_header_list()
+    res = get_lake_header_list()
+
+    snark = "Sorry, this story book is locked down."
+
+    context = {'header_regions': labels, 'header_lakes': res,
+               'code': 403, 'text': 'Permission Denied',
+               'snark': snark}
     response = render_to_response('map/error.html', context)
     response.status_code = 403
     return response
 
 
 def page_not_found(request):
-    context = {'code': 404, 'text': 'Page Not Found'}
+    labels = get_region_header_list()
+    res = get_lake_header_list()
+
+    snark = ("Seems like you're looking for a page that's not in this story "
+             "book.")
+
+    context = {'header_regions': labels, 'header_lakes': res,
+               'code': 404, 'text': 'Page Not Found',
+               'snark': snark}
     response = render_to_response('map/error.html', context)
     response.status_code = 404
     return response
 
 
 def server_error(request):
-    context = {'code': 500, 'text': 'Server Error'}
+    labels = get_region_header_list()
+    res = get_lake_header_list()
+
+    snark = "Looks like the bookshelf fell out from under this story book."
+
+    context = {'header_regions': labels, 'header_lakes': res,
+               'code': 500, 'text': 'Server Error',
+               'snark': snark}
     response = render_to_response('map/error.html', context)
     response.status_code = 500
     return response

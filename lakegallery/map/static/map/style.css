@@ -344,3 +344,13 @@ div.slider-handle.min-slider-handle.round {
 	z-index: 10;
 	height: 100%;
 }
+
+/*--------------- ERROR PAGES ---------------*/
+
+#errorDiv {
+	text-align: center;
+}
+
+.errorDisplay {
+	margin-top: 20px;
+}
