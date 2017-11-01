@@ -38,6 +38,11 @@ body {
 	opacity: .4;
 }
 
+/*INDEX & REGION TEMPLATE MAP*/
+#main {
+	height: calc(100% - 56px);
+}
+
 /*--------------- STORY DESKTOP ---------------*/
 
 /*STORY CONTENT PANEL*/
