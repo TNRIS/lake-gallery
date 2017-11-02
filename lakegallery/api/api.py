@@ -1,6 +1,7 @@
 from rest_framework import routers
 from .views import (UserViewSet, GroupViewSet,
-                    ReservoirsViewSet, RWPAsViewSet)
+                    ReservoirsViewSet, RWPAsViewSet,
+                    RWPAsReservoirsViewSet)
 from rest_framework_extensions.routers import NestedRouterMixin
 
 
@@ -13,14 +14,8 @@ groups_route = router.register(r'groups', GroupViewSet)
 reservoirs_router = router.register(r'reservoirs', ReservoirsViewSet)
 rwpas_router = router.register(r'rwpas', RWPAsViewSet)
 
-# reservoirs nested routes
-# reservoirs_router.register(
-#     'region', ReservoirsViewSet,
-#     base_name='reservoirs-region',
-#     parents_query_lookups=['region'])
-
 # rwpas nested routes
-# rwpas_router.register(
-#     'region', RWPAsViewSet,
-#     base_name='rwpas-region',
-#     parents_query_lookups=['letter'])
+rwpas_router.register(
+    'reservoirs', RWPAsReservoirsViewSet,
+    base_name='rwpas-reservoirs',
+    parents_query_lookups=['region'])

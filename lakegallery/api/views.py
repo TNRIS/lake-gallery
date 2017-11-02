@@ -40,3 +40,11 @@ class RWPAsViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
     serializer_class = RWPAsSerializer
     lookup_field = 'letter'
     queryset = RWPAs.objects.all().order_by('letter')
+
+
+class RWPAsReservoirsViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
+    """
+    API endpoint that returns the reservoirs for the specified region
+    """
+    serializer_class = ReservoirsSerializer
+    queryset = MajorReservoirs.objects.all().order_by('res_lbl')
