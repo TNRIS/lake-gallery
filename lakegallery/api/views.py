@@ -26,15 +26,17 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 class ReservoirsViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
     """
-    API endpoint that allows MajorReservoirs to be viewed or edited.
+    API endpoint that allows MajorReservoirs to be listed or detailed
     """
-    queryset = MajorReservoirs.objects.get_queryset().order_by('res_lbl')
     serializer_class = ReservoirsSerializer
+    lookup_field = 'res_lbl'
+    queryset = MajorReservoirs.objects.all().order_by('res_lbl')
 
 
 class RWPAsViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
     """
-    API endpoint that allows RWPAs to be viewed or edited.
+    API endpoint that allows RWPAs regions to be listed or detailed
     """
-    queryset = RWPAs.objects.get_queryset().order_by('letter')
     serializer_class = RWPAsSerializer
+    lookup_field = 'letter'
+    queryset = RWPAs.objects.all().order_by('letter')

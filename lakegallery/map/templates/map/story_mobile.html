@@ -401,7 +401,7 @@
                   type: 'GET',
                   dataType: 'json',
                   contentType: 'application/json',
-                  url: `/api/reservoirs/${lakeName}/name`,
+                  url: `/api/reservoirs/${lakeName}`,
                   success: function(data) {
                     var bb = data.results.features[0].bbox;
                     map.flyToBounds([[bb[1],bb[0]],[bb[3],bb[2]]]);

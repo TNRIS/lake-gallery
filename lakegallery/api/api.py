@@ -14,18 +14,13 @@ reservoirs_router = router.register(r'reservoirs', ReservoirsViewSet)
 rwpas_router = router.register(r'rwpas', RWPAsViewSet)
 
 # reservoirs nested routes
-reservoirs_router.register(
-    'region', ReservoirsViewSet,
-    base_name='reservoirs-region',
-    parents_query_lookups=['region'])
-
-reservoirs_router.register(
-    'name', ReservoirsViewSet,
-    base_name='reservoirs-name',
-    parents_query_lookups=['res_lbl'])
+# reservoirs_router.register(
+#     'region', ReservoirsViewSet,
+#     base_name='reservoirs-region',
+#     parents_query_lookups=['region'])
 
 # rwpas nested routes
-rwpas_router.register(
-    'region', RWPAsViewSet,
-    base_name='rwpas-region',
-    parents_query_lookups=['letter'])
+# rwpas_router.register(
+#     'region', RWPAsViewSet,
+#     base_name='rwpas-region',
+#     parents_query_lookups=['letter'])
