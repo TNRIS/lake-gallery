@@ -45,4 +45,4 @@ class ReservoirURLSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = MajorReservoirs
-        fields = ('res_lbl', 'region', 'url')
+        fields = ('res_lbl', 'url')
