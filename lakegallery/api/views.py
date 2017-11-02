@@ -49,4 +49,5 @@ class RWPAsReservoirsViewSet(NestedViewSetMixin,
     API endpoint that returns the reservoirs for the specified region w/ URLs
     """
     serializer_class = ReservoirURLSerializer
+    lookup_field = 'res_lbl'
     queryset = MajorReservoirs.objects.all().order_by('res_lbl')
