@@ -712,7 +712,9 @@ class ViewTests(TestCase):
         m = MajorReservoirs.objects.get(res_lbl='mr 1')
         StoryContent(lake=m, summary="text here", history="text there").save()
 
-        response = self.client.get(reverse('map:region', args=['A']))
+        request_region = 'A'
+        response = self.client.get(reverse('map:region',
+                                   args=[request_region]))
         hdr_reg = response.context['header_regions']
         self.assertEqual(hdr_reg, [{'name': region_nm_1,
                                     'letter': region_lt_1},
@@ -749,6 +751,17 @@ class ViewTests(TestCase):
             self.assertIs(isinstance(layer_info['interactivity'], list), True)
             # verify 2 layer fields: 1 for region letter, 1 for name
             self.assertEqual(len(layer_info['interactivity']), 2)
+
+        # check context region passed through view function
+        self.assertIs('region' in response.context, True)
+        self.assertEqual(response.context['region'], request_region)
+
+        # check the extent in context
+        self.assertIs('extent' in response.context, True)
+        self.assertIs(isinstance(response.context['extent'], list), True)
+        self.assertEqual(len(response.context['extent']), 4)
+        for coordinate in response.context['extent']:
+            self.assertIs(type(coordinate), float)
 
     def test_story_context(self):
         """
@@ -796,6 +809,13 @@ class ViewTests(TestCase):
                                    {'name': res_nm_2,
                                     'region': res_lt_2,
                                     'class': 'disabled'}])
+
+        # check the extent in context
+        self.assertIs('extent' in response.context, True)
+        self.assertIs(isinstance(response.context['extent'], list), True)
+        self.assertEqual(len(response.context['extent']), 4)
+        for coordinate in response.context['extent']:
+            self.assertIs(type(coordinate), float)
 
         # check the layer info
         config = response.context['layer']
@@ -906,6 +926,8 @@ class ViewTests(TestCase):
         self.assertIs(base_template in template_names, True)
 
         # region template
+        RWPAs(objectid=1, reg_name='Test Region', letter='A',
+              shape_leng=10, shape_area=2, geom=test_geom).save()
         response = self.client.get('/A/')
         template_names = []
         for t in response.templates:
