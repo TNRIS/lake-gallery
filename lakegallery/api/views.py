@@ -36,4 +36,4 @@ class RWPAsReservoirsViewSet(NestedViewSetMixin,
     serializer_class = ReservoirURLSerializer
     lookup_field = 'res_lbl'
     queryset = MajorReservoirs.objects.all().order_by('res_lbl')
-    filter_fields = ('res_lbl', 'url')
+    filter_fields = ('res_lbl', )
