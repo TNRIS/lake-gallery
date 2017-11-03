@@ -7,6 +7,8 @@ from django.shortcuts import render_to_response
 from .models import (MajorReservoirs, RWPAs, HistoricalAerialLinks,
                      StoryContent, LakeStatistics, SignificantEvents)
 
+from django.contrib.gis.geos import GEOSGeometry
+
 
 """
 utility functions
@@ -45,8 +47,12 @@ def index(request):
 def region(request, letter):
     labels = get_region_header_list()
     res = get_lake_header_list()
+
+    r = RWPAs.objects.get(letter=letter)
+    ext = list(GEOSGeometry(r.geom).extent)
+
     context = {'header_regions': labels, 'header_lakes': res,
-               'layers': layers, 'region': letter}
+               'layers': layers, 'region': letter, 'extent': ext}
 
     return render(request, 'map/region.html', context)
 
@@ -68,6 +74,9 @@ def story(request, letter, lake):
     m = MajorReservoirs.objects.get(res_lbl=lake)
     if m.region != letter:
         raise Http404()
+
+    ext = list(GEOSGeometry(m.geom).extent)
+
     n = HistoricalAerialLinks.objects.filter(lake=m)
     links = [obj.as_dict() for obj in n]
     links.sort(key=lambda x: x['year'])
@@ -112,7 +121,7 @@ def story(request, letter, lake):
     except:
         low_list = []
 
-    context = {'header_regions': labels, 'header_lakes': res,
+    context = {'header_regions': labels, 'header_lakes': res, 'extent': ext,
                'layer': layers['reservoirs'], 'lake': lake, 'links': links,
                'story': c, 'stats': s, 'high_events': high_list,
                'low_events': low_list, 'overlays': overlays,
