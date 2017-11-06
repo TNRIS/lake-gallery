@@ -1,0 +1,12 @@
+{% extends "rest_framework/base.html" %}
+{% load static %}
+
+
+{% block title %}Texas Lake Gallery API{% endblock %}
+
+{% block branding %}
+	<link rel="stylesheet" href="{% static 'rest_framework/api_style.css' %}" type="text/css">
+	<a class="navbar-brand" rel="nofollow" href="/"><img class="apiHeaderLogo" src="{% static 'map/images/texas_solid.png' %}" />Texas Lake Gallery</a>
+{% endblock %}
+
+{% block bootstrap_navbar_variant %}lake-api-header{% endblock %}

@@ -11,7 +11,7 @@ from map.models import MajorReservoirs, RWPAs
 
 class ReservoirsViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
     """
-    API endpoint that allows MajorReservoirs to be listed or detailed
+    API endpoint that allows Major Reservoirs to be listed or detailed
     """
     serializer_class = ReservoirsSerializer
     lookup_field = 'res_lbl'

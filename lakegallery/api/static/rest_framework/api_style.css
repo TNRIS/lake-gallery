@@ -1,0 +1,36 @@
+.lake-api-header {
+	background-color: #3C5163;
+	border: 0;
+	color: white;
+}
+
+.navbar-brand {
+	padding-top: 5px;
+	color: white;
+}
+
+.navbar-brand > img {
+	display: inline;
+}
+
+.navbar-brand:hover {
+	color: #F7F7F9;
+}
+
+.apiHeaderLogo {
+	max-height: 40px;
+	margin-right: 8px;
+	margin-left: 8px;
+}
+
+.nav.navbar-nav.pull-right > li.dropdown.open > a {
+	background-color: #496177;
+}
+
+ul.nav.navbar-nav.pull-right > li > a {
+	background-color: #3C5163;
+}
+
+ul.nav.navbar-nav.pull-right > li > a:hover {
+	background-color: #496177;
+}
