@@ -1,0 +1,10 @@
+{% extends "rest_framework/login_base.html" %}
+{% load static %}
+
+{% block title %}Texas Lake Gallery API Login{% endblock %}
+
+{% block branding %}
+	<link rel="stylesheet" href="{% static 'rest_framework/api_style.css' %}" type="text/css">
+	<div class="loginLogo"><img class="apiHeaderLogo" src="{% static 'rest_framework/texas_colored.png' %}" /></div>
+    <h3 class="loginHeader">Texas Lake Gallery<br />Rest API</h3>
+{% endblock %}

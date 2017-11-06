@@ -1,3 +1,4 @@
+/*BROWSABLE REST API PAGE*/
 .lake-api-header {
 	background-color: #3C5163;
 	border: 0;
@@ -32,5 +33,25 @@ ul.nav.navbar-nav.pull-right > li > a {
 }
 
 ul.nav.navbar-nav.pull-right > li > a:hover {
+	background-color: #496177;
+}
+
+/*LOGIN PAGE*/
+.loginHeader {
+	margin: 15px 0 20px;
+	text-align: center;
+	color: #3C5163;
+}
+
+.loginLogo {
+	text-align: center;
+	color: #3C5163;
+}
+
+#submit-id-submit {
+	background-color: #3C5163;
+}
+
+#submit-id-submit:hover {
 	background-color: #496177;
 }
