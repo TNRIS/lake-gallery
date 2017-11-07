@@ -20,17 +20,13 @@ djangorestframework==3.6.4
 docutils==0.14
 drf-extensions==0.3.1
 first==2.0.1
-futures==3.1.1            # via s3transfer
 jmespath==0.9.3
-Markdown==2.6.9
+markdown==2.6.9
 olefile==0.44
-Pillow==4.2.1
+pillow==4.2.1
 pip-tools==1.10.1
 psycopg2==2.7.3.1
 python-dateutil==2.6.1
 pytz==2017.2
 s3transfer==0.1.11
 six==1.10.0
-
-# The following packages are considered to be unsafe in a requirements file:
-# setuptools                # via pip-tools
