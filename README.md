@@ -34,6 +34,8 @@ In production, the app pulls/references all static files for all apps from the c
 ## Deploy
 1. run `make push-static` to compile all static files and overwrite those in S3. **VERY DANGEROUS** if app is currently deployed as you will be overwriting the production static files!
 
+make sure debug = false in settings.py
+
 
 ## Notes
 * [Django Tutorial](https://docs.djangoproject.com/en/1.11/intro/)

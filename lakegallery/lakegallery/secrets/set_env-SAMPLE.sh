@@ -1,4 +1,7 @@
 #!/bin/bash
+
+export SECRET_KEY=''
+
 export DB_NAME=''
 export DB_USER=''
 export DB_PASSWORD=''
