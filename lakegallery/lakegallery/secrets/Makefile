@@ -12,7 +12,7 @@ FORCE:
 	aws s3 cp $@ s3://$(SECRETS_BUCKET)/$(APP_NAME)/.vault/$(notdir $@)
 
 push-secrets: \
-	.vault/.push/secrets.py
+	.vault/.push/set_env.sh
 
 .vault/.pull/%: FORCE
 	mkdir -p $(dir $@)
@@ -23,4 +23,4 @@ secrets/%: .vault/.pull/%
 	mv $< ./$(notdir $@)
 
 pull-secrets: \
-	secrets/secrets.py
+	secrets/set_env.sh

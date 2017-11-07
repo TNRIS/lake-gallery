@@ -103,3 +103,4 @@ ENV/
 secrets.py
 vault-password.txt
 .vault/*
+set_env.sh

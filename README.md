@@ -19,9 +19,9 @@ Built with:
   
   or
 
-5. make a copy of the secrets-sample.py, remove the '-sample' from the name, and manually fill in the values
+5. make a copy of the set_env-SAMPLE.sh, remove the '-SAMPLE' from the name, and manually fill in the values. Then run `. set_env.sh` from said secrets folder
 
-It is suggested to use your locally configured AWS CLI when working locally. If this is already set up, you can ignore the AWS Key & Secret in the secrets.py file. If not, you will need to populate them in secrets.py and uncomment these parameters within the app's settings.py
+You will need to use your configured AWS CLI when working locally. If not already set up, you will need to install the AWS CLI and configure it with an access key and secret key.
 
 ## Develop
 1. run `make run-dev` to run the app locally and reference local static files. Will be available at `localhost:8000`. Media files will still be referenced from the production S3 bucket.

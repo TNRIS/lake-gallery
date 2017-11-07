@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
-from lakegallery.secrets import secrets
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -87,12 +86,12 @@ WSGI_APPLICATION = 'lakegallery.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': secrets.db_engine,
-        'NAME': secrets.db_name,
-        'USER': secrets.db_user,
-        'PASSWORD': secrets.db_password,
-        'HOST': secrets.db_host,
-        'PORT': secrets.db_port,
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT'),
     }
 }
 
@@ -138,10 +137,8 @@ AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
 
-# AWS_ACCESS_KEY_ID = secrets.aws_access_key_id
-# AWS_SECRET_ACCESS_KEY = secrets.aws_secret_access_key
-AWS_STORAGE_BUCKET_NAME = secrets.aws_storage_bucket_name
-AWS_S3_REGION_NAME = secrets.aws_s3_region_name
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME')
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
 MEDIAFILES_LOCATION = 'media'

@@ -1,10 +1,13 @@
+.PHONY: run-dev run-prod
 
 run-dev:
-	LAKE_GALLERY_MODE='DEVELOPMENT' \
+	LAKE_GALLERY_MODE='DEVELOPMENT' && \
+	. ./lakegallery/secrets/set_env.sh && \
 	python manage.py runserver
 
 run-prod:
-	LAKE_GALLERY_MODE='PRODUCTION' \
+	LAKE_GALLERY_MODE='PRODUCTION' && \
+	. ./lakegallery/secrets/set_env.sh && \
 	python manage.py runserver
 
 push-static:
