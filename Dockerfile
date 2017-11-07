@@ -4,7 +4,16 @@ FROM ubuntu:xenial
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update
-RUN apt-get install -y python3 python3-pip python3-venv python3-dev nginx supervisor curl
+
+# setup locale for utf-8 decoding before major installations
+RUN apt-get install -y locales
+
+RUN locale-gen en_US.UTF-8  
+ENV LANG en_US.UTF-8  
+ENV LANGUAGE en_US:en  
+ENV LC_ALL en_US.UTF-8
+
+RUN apt-get install -y python3 python3-pip python3-venv nginx supervisor curl
 
 # Setup python 3 virtualenv
 RUN mkdir /envs/
@@ -12,6 +21,8 @@ RUN python3 -m venv /envs/lake-gallery
 ENV PATH /envs/lake-gallery/bin:$PATH
 # upgrade pip
 RUN pip3 install -U pip
+RUN python3 --version
+RUN pip3 --version
 
 
 # install awscli
