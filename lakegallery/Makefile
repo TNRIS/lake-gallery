@@ -11,7 +11,8 @@ run-prod:
 	python manage.py runserver
 
 push-static:
-	LAKE_GALLERY_MODE='PRODUCTION' \
+	export LAKE_GALLERY_MODE='PRODUCTION' && \
+	. ./lakegallery/secrets/set_env.sh && \
 	python manage.py collectstatic
 
 run-tests:

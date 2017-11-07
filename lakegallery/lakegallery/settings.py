@@ -149,7 +149,7 @@ STATICFILES_LOCATION = 'static'
 
 LAKE_GALLERY_MODE = os.environ.get('LAKE_GALLERY_MODE')
 print('**** Project running in %s mode ****' % LAKE_GALLERY_MODE)
-if LAKE_GALLERY_MODE == "PRODUCTION":
+if LAKE_GALLERY_MODE == 'PRODUCTION':
     # For PROD - References prod static files in AWS
     STATICFILES_STORAGE = 'custom_storages.StaticStorage'
     STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN,
