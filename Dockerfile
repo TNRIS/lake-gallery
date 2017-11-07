@@ -4,12 +4,15 @@ FROM ubuntu:xenial
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update
-RUN apt-get install -y python3 python3-pip python3-venv nginx supervisor curl
+RUN apt-get install -y python3 python3-pip python3-venv python3-dev nginx supervisor curl
 
 # Setup python 3 virtualenv
 RUN mkdir /envs/
 RUN python3 -m venv /envs/lake-gallery
 ENV PATH /envs/lake-gallery/bin:$PATH
+# upgrade pip
+RUN pip3 install -U pip
+
 
 # install awscli
 RUN pip3 install awscli
