@@ -13,7 +13,7 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en  
 ENV LC_ALL en_US.UTF-8
 
-RUN apt-get install -y python3 python3-pip python3-venv nginx supervisor curl
+RUN apt-get install -y python3 python3-pip python3-venv gdal-bin nginx supervisor curl
 
 # Setup python 3 virtualenv
 RUN mkdir /envs/

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 export SECRET_KEY=`/envs/lake-gallery/bin/aws ssm get-parameters --name /apps/lake_gallery/secret_key --with-decryption --region us-east-1 --output text | awk '{print $4}'`
 
