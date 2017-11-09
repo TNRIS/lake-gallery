@@ -5,10 +5,10 @@
 
 <html>
   <head>
+    <title>Texas Lake Gallery</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Texas Lake Gallery</title>
 
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'map/favicon/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'map/favicon/favicon-32x32.png' %}">
@@ -18,6 +18,19 @@
     <link rel="shortcut icon" href="{% static 'map/favicon/favicon.ico' %}">
     <meta name="msapplication-config" content="{% static 'map/favicon/browserconfig.xml' %}">
     <meta name="theme-color" content="#3c5163">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-491601-15"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-491601-15');
+    </script>
 
     {% leaflet_js %}
     {% leaflet_css %}
