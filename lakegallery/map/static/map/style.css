@@ -40,14 +40,14 @@ body {
 
 /*INDEX & REGION TEMPLATE MAP*/
 #main {
-	height: calc(100% - 56px);
+	height: calc(100vh - 56px);
 }
 
 /*--------------- STORY DESKTOP ---------------*/
 
 /*STORY CONTENT PANEL*/
 .contentPanel {
-	height: calc(100% - 56px);
+	height: calc(100vh - 56px);
 	padding: 0;
 }
 
@@ -79,7 +79,7 @@ body {
 	}
 
 	.contentText {
-		height: 100% !important;
+		height: 100vh !important;
 	}
 }
 
@@ -244,13 +244,13 @@ div.slider-handle.min-slider-handle.round {
 
 #storyMap {
 	z-index: 10;
-	height: calc(100% - 56px);
+	height: calc(100vh - 56px);
 }
 
 /*--------------- STORY MOBILE ---------------*/
 
 #mobileContainer {
-	height: calc(100% - 56px);
+	height: calc(100vh - 56px);
 	margin: 0;
 	max-width: 100% !important;
 }
@@ -342,7 +342,7 @@ div.slider-handle.min-slider-handle.round {
 .mobileMapPanel {
 	position: absolute;
 	padding: 0;
-	height: calc(100% - 56px);
+	height: calc(100vh - 56px);
 }
 
 #mobileStoryMap {
