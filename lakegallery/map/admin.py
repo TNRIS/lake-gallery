@@ -194,5 +194,4 @@ admin.site.register(ChannelMarkers, ChannelMarkersAdmin)
 admin.site.register(Hazards, HazardsAdmin)
 admin.site.register(Parks, ParksAdmin)
 
-admin.site.site_header = "Texas Lake Gallery - Administration"
 admin.site.index_title = "Database Tables"
