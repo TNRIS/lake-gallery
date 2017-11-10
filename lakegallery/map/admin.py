@@ -127,7 +127,7 @@ Overlay Layers for stories (points of interest)
 """
 
 
-class BoatRampsAdmin(admin.ModelAdmin):
+class BoatRampsAdmin(admin.OSMGeoAdmin):
     list_display = ('lake', 'name')
     ordering = ('lake', 'name')
     list_per_page = 50
@@ -141,7 +141,7 @@ class BoatRampsAdmin(admin.ModelAdmin):
                 .formfield_for_foreignkey(db_field, request, **kwargs))
 
 
-class ChannelMarkersAdmin(admin.ModelAdmin):
+class ChannelMarkersAdmin(admin.OSMGeoAdmin):
     list_display = ('lake', 'marker_id')
     ordering = ('lake', 'marker_id')
     list_per_page = 50
@@ -155,7 +155,7 @@ class ChannelMarkersAdmin(admin.ModelAdmin):
                 .formfield_for_foreignkey(db_field, request, **kwargs))
 
 
-class HazardsAdmin(admin.ModelAdmin):
+class HazardsAdmin(admin.OSMGeoAdmin):
     list_display = ('lake', 'hazard_type', 'num_buoys')
     ordering = ('lake', 'hazard_type')
     list_per_page = 50
@@ -169,7 +169,7 @@ class HazardsAdmin(admin.ModelAdmin):
                 .formfield_for_foreignkey(db_field, request, **kwargs))
 
 
-class ParksAdmin(admin.ModelAdmin):
+class ParksAdmin(admin.OSMGeoAdmin):
     list_display = ('lake', 'name', 'park_type')
     ordering = ('lake', 'name')
     list_per_page = 50
