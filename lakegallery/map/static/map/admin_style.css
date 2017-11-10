@@ -33,3 +33,11 @@ body {
 table > caption {
 	background-color: #3C5163 !important;
 } 
+
+fieldset.module.aligned > h2 {
+	background-color: #3C5163 !important;
+}
+
+#changelist-filter > h2 {
+	background-color: #3C5163 !important;
+}

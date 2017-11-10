@@ -33,6 +33,7 @@ class MajorReservoirs(gismodels.Model):
     class Meta:
         verbose_name = "Major Reservoir"
         verbose_name_plural = "Major Reservoirs"
+        ordering = ['res_lbl']
 
 
 class RWPAs(gismodels.Model):
