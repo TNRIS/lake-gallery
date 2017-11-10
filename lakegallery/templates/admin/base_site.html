@@ -1,9 +1,17 @@
 {% extends "admin/base.html" %}
+{% load static %}
 
 {% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
 
+{% block extrastyle %}{{ block.super }}
+	<link rel="stylesheet" type="text/css" href="{% static 'map/admin_style.css' %}" />
+{% endblock %}
+
 {% block branding %}
-<h1 id="site-name"><a href="{% url 'admin:index' %}">Texas Lake Gallery - Administration</a></h1>
+	<h1 id="site-name">
+		<img class="adminHeaderLogo" src="{% static 'map/images/texas_solid.png' %}" />
+		<a id="brandTitle" href="{% url 'admin:index' %}">Texas Lake Gallery - Administration</a>
+	</h1>
 {% endblock %}
 
 {% block nav-global %}{% endblock %}
