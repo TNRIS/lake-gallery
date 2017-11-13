@@ -43,6 +43,22 @@ body {
 	height: calc(100vh - 56px);
 }
 
+#instructionModal > .modal-dialog {
+	display: block;
+}
+
+.modal-footer > label {
+	cursor: pointer;
+}
+
+.modal-footer > label > input {
+	cursor: pointer;
+}
+
+.modal-footer > button {
+	cursor: pointer;
+}
+
 /*--------------- STORY DESKTOP ---------------*/
 
 /*STORY CONTENT PANEL*/

@@ -2,6 +2,25 @@
 {% load leaflet_tags %}
 
 {% block content %}
+    <div id="instructionModal" class="modal fade">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <h5 class="modal-title">Welcome to the Texas Lake Gallery!</h5>
+            <p>
+            Lakes are grouped by the Region within which they reside. Click a Region in the map to view the available lakes and reservoirs.
+            </p>
+          </div>
+          <div class="modal-footer">
+            <label class="form-check-label">
+              <input id="modalHideCheckbox" class="form-check-input" type="checkbox" value="">
+              Don't show this message again
+            </label>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
     {% leaflet_map "main" callback="main_map_init" %}
     <script type="text/javascript">
         function main_map_init (map, options) {
@@ -66,6 +85,19 @@
           getTileUrls(rwpasConfig);
         }
         
-        
+        // show modal on load if localstorage doesn't say they've opt'd out
+        $(function() {
+          if (!localStorage.lakeGalleryModal) {
+            $('#instructionModal').modal({
+              show: true
+            });
+
+            $('#instructionModal').on('hide.bs.modal', function (e) {
+              if ($('#modalHideCheckbox').is(":checked")) {
+                localStorage.setItem('lakeGalleryModal', 'hide');
+              }
+            });
+          }
+        });  
     </script> 
 {% endblock %}
