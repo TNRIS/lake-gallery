@@ -47,15 +47,20 @@ body {
 	display: block;
 }
 
-.modal-footer > label {
+.modal-body > div {
+	float: right;
+	padding: 20px;
+}
+
+.modal-body > div > label {
 	cursor: pointer;
 }
 
-.modal-footer > label > input {
+.modal-body > div > label > input {
 	cursor: pointer;
 }
 
-.modal-footer > button {
+.modal-body > div > button {
 	cursor: pointer;
 }
 
