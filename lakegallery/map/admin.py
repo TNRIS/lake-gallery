@@ -33,30 +33,34 @@ class StoryContentAdmin(admin.ModelAdmin):
     list_display = ['lake']
     ordering = ['lake']
     fieldsets = [
-        (None, {'fields': ['lake', 'summary',
-                           ('summary_photo_main', 'summ_main_tag'),
-                           'history',
-                           ('history_photo_main', 'hist_main_tag'),
-                           ('history_photo', 'hist_tag')]}),
-        ('Additional Section 1', {'fields':
-                                  ['section_one_nav',
-                                   'section_one_header',
-                                   ('section_one_photo_main', 'one_main_tag'),
-                                   'section_one_content',
-                                   ('section_one_photo', 'one_tag')]}),
-        ('Additional Section 2', {'fields':
-                                  ['section_two_nav',
-                                   'section_two_header',
-                                   ('section_two_photo_main', 'two_main_tag'),
-                                   'section_two_content',
-                                   ('section_two_photo', 'two_tag')]}),
-        ('Additional Section 3', {'fields':
-                                  ['section_three_nav',
-                                   'section_three_header',
-                                   ('section_three_photo_main',
-                                    'three_main_tag'),
-                                   'section_three_content',
-                                   ('section_three_photo', 'three_tag')]}),
+        ('Main "Story" Page', {'fields': ['lake', 'summary',
+                                          ('summary_photo_main',
+                                           'summ_main_tag')]}),
+        ('History Page', {'fields': ['history',
+                                     ('history_photo_main', 'hist_main_tag'),
+                                     ('history_photo', 'hist_tag')]}),
+        ('Additional Page 1', {'fields':
+                               ['section_one_nav',
+                                'section_one_header',
+                                ('section_one_photo_main',
+                                 'one_main_tag'),
+                                'section_one_content',
+                                ('section_one_photo', 'one_tag')]}),
+        ('Additional Page 2', {'fields':
+                               ['section_two_nav',
+                                'section_two_header',
+                                ('section_two_photo_main',
+                                 'two_main_tag'),
+                                'section_two_content',
+                                ('section_two_photo', 'two_tag')]}),
+        ('Additional Page 3', {'fields':
+                               ['section_three_nav',
+                                'section_three_header',
+                                ('section_three_photo_main',
+                                 'three_main_tag'),
+                                'section_three_content',
+                                ('section_three_photo',
+                                 'three_tag')]}),
     ]
     readonly_fields = ('summ_main_tag', 'hist_main_tag', 'hist_tag',
                        'one_main_tag', 'one_tag', 'two_main_tag', 'two_tag',
