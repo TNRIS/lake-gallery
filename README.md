@@ -1,4 +1,4 @@
-# lake-gallery
+# Texas Lake Gallery
 Web Map for exploring the history of Texas lakes
 
 `cd ./lakegallery` as all commands are run from the ~/lake-gallery/lakegallery/ directory
