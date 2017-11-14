@@ -47,6 +47,10 @@ body {
 	display: block;
 }
 
+.modal-body > img {
+	padding: 40px;
+}
+
 .modal-body > div {
 	float: right;
 	padding: 20px;

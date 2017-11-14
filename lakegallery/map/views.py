@@ -8,6 +8,7 @@ from .models import (MajorReservoirs, RWPAs, HistoricalAerialLinks,
                      StoryContent, LakeStatistics, SignificantEvents)
 
 from django.contrib.gis.geos import GEOSGeometry
+from django.conf import settings
 
 
 """
@@ -39,7 +40,7 @@ def index(request):
     labels = get_region_header_list()
     res = get_lake_header_list()
     context = {'header_regions': labels, 'header_lakes': res,
-               'layers': layers}
+               'layers': layers, 'version': settings.VERSION}
 
     return render(request, 'map/index.html', context)
 
