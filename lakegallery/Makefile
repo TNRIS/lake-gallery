@@ -18,4 +18,4 @@ push-static:
 run-tests:
 	export LAKE_GALLERY_MODE='DEVELOPMENT' && \
 	. ./lakegallery/secrets/set_env.sh && \
-	python manage.py test map
+	python manage.py test map.tests

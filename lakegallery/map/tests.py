@@ -690,6 +690,9 @@ class ViewTests(TestCase):
                                    {'name': res_nm_2,
                                     'region': res_lt_2,
                                     'class': 'disabled'}])
+        # check the version number in the context
+        self.assertIs('version' in response.context, True)
+        self.assertEqual(response.context['version'], settings.VERSION)
 
     def test_region_context(self):
         """
