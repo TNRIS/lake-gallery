@@ -284,7 +284,7 @@ class LakeStatistics(models.Model):
     # current conditions
     wdft_link = models.URLField(null=True, help_text="WDFT lake page link. "
                                 "Ex: https://waterdatafortexas.org/reservoirs"
-                                "/individual/travis")
+                                "/individual/travis", blank=True)
 
     def string_numbers(self):
         flds = self._meta.get_fields()
