@@ -5,7 +5,7 @@ Web Map for exploring the history of Texas lakes
 
 ## Setup
 Built with:
-* Python 3.5 (virtual environment suggested)
+* Python 3.5 ([virtual environment](https://howchoo.com/g/nwewzjmzmjc/a-guide-to-python-virtual-environments-with-virtualenvwrapper) suggested)
 * PostgreSQL 9.5.2
   * Amazon RDS Instance
 * [Django](https://docs.djangoproject.com/en/1.11/topics/install/)
@@ -31,7 +31,7 @@ You will need to use your configured AWS CLI when working locally. If not alread
 
 ## Local Production Build
 
-In production, the app pulls/references all static files for all apps from the configured S3 bucket. Run **Deploy** Step 1 to upload push local static files into S3. **VERY DANGEROUS** if app is currently deployed as you will be overwriting the production static files!
+In production, the app pulls/references all static files for all apps from the configured S3 bucket. Run **Deployment Prep** section's Step 1 to upload/push local static files into S3. **VERY DANGEROUS** if app is currently deployed as you will be overwriting the production static files!
 1. Make sure `DEBUG = True` in ~/lake-gallery/lakegallery/lakegallery/settings.py
 1. run `make run-prod` to run the app locally and reference prod s3 static files. Will be available at `localhost:8000`.
 
