@@ -50,11 +50,11 @@ body {
 
 @media (min-width: 576px) {
 	#instructionModalContent {
-		max-height:	none;
+		overflow: auto;
 	}
 
 	#instructionModalContent > .modal-body {
-		max-height:	none;
+		overflow: auto;
 	}
 }
 
