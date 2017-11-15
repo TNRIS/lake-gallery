@@ -45,6 +45,17 @@ body {
 
 #instructionModal > .modal-dialog {
 	display: block;
+	text-align: center;
+}
+
+@media (min-width: 576px) {
+	#instructionModalContent {
+		max-height:	none;
+	}
+
+	#instructionModalContent > .modal-body {
+		max-height:	none;
+	}
 }
 
 .modal-body > img {
