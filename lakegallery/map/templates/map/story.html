@@ -453,6 +453,10 @@
                     historicalLayer = L.esri.tiledMapLayer({'url':linkConfig[position]['link']}).addTo(map);
                     sideBySideControl = L.control.sideBySide(basemaps['Google Imagery'], [secondBasemap, historicalLayer]).addTo(map);
                     active = true;
+
+                    $('input.leaflet-sbs-range').mousedown(function(e){
+                        e.stopPropagation();
+                    });
                   }
                 });
 
