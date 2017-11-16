@@ -407,17 +407,18 @@
                     var url = `https://${account}.carto.com/api/v1/map/` + data.layergroupid + '/{z}/{x}/{y}.png'
                     var tileLayer = new L.tileLayer(url);
                     overlays['{{ lake }}'] = tileLayer;
+
+                    // we added lake separately from other overlays since it uses a seperate config
+                    // also, so that we could get the map bounds moving without waiting for all overlays
+                    // to load
+                    Object.keys(overlayConfig).forEach(function (key) {
+                      loadOverlay(overlayConfig[key]);
+                    });
                   }
                 })
               }
-
-              // add lake separately from other overlays since it needs multiple ajax calls
-              // also, so that we can get the map bounds moving without waiting for all overlays
-              // to load
+              
               getTileUrls(resConfig, "{{ lake }}");
-              Object.keys(overlayConfig).forEach(function (key) {
-                loadOverlay(overlayConfig[key]);
-              });
 
               function setupHistoricalSlider(links) {
                 var ticks = [0];
