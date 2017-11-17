@@ -329,7 +329,9 @@
                   data: JSON.stringify(mapconfig),
                   success: function(data) {
                     var url = `https://${account}.carto.com/api/v1/map/` + data.layergroupid + '/{z}/{x}/{y}.png'
-                    var tileLayer = new L.tileLayer(url);
+                    var tileLayer = new L.tileLayer(url, {
+                      attribution: '<a href="https://www.lcra.org" target="_blank">LCRA</a>'
+                    });
                     overlays[config.toc_label] = tileLayer;
                     if (Object.keys(overlays).length == (allOverlays.length - 1)) {
                       // must re-sort the overlay object. although objects don't have orders, somehow 
