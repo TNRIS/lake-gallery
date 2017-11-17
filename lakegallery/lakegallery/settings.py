@@ -196,6 +196,10 @@ LEAFLET_CONFIG = {
         'ESRI': {
             'js': 'map/esri/esri-leaflet.js',
             'auto-include': True
+        },
+        'WMTS': {
+            'js': 'map/leaflet_wmts/leaflet-tilelayer-wmts.js',
+            'auto-include': True
         }
     },
     'TILES': []

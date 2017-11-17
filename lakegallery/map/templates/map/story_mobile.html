@@ -292,9 +292,12 @@
             
             function main_map_init (map, options) {
               var basemaps = {
-                  'Google Imagery': L.tileLayer.wms('https://txgi.tnris.org/login/path/source-blonde-xray-cheese/wms', {
-                      layers: 'texas',
-                      attribution: 'Google'
+                  'Google Imagery': new L.TileLayer.WMTS('https://txgi.tnris.org/login/path/source-blonde-xray-cheese/wmts', {
+                      layer: 'texas',
+                      style: "default",
+                      tilematrixSet: "0to20",
+                      format: "image/png",
+                      attribution: '<a href="https://tnris.org/texas-imagery-service/" target="_blank">Google</a>'
                   })
 
                   // ,'Grayscale': L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}@2x.png')
