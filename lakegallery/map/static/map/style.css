@@ -38,6 +38,15 @@ body {
 	opacity: .4;
 }
 
+/*LEAFLET FOR ALL*/
+.leaflet-control-layers-base > label > div > input {
+	display: none;
+}
+
+.leaflet-control-layers-base > label > div {
+	text-align: center;
+}
+
 /*INDEX & REGION TEMPLATE MAP*/
 #main {
 	height: calc(100vh - 56px);
