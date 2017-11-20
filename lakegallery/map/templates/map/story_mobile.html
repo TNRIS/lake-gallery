@@ -18,7 +18,7 @@
     <div class="row">
       <div class="togglerWrapper">
         <button class="btn" type="button" data-toggle="collapse" data-target="#mobileStoryPanelContainer" aria-expanded="false" aria-controls="mobileStoryPanelContainer" id="mobileStoryToggler">
-          <img id="togglerImg" class="closed" src="{% static 'map/images/glyphicons-book-open.png' %}"/>
+          <img id="togglerImg" class="closed" src="{% static 'map/images/arrow-down.png' %}"/>
         </button>
       </div>
       <div class="collapse" id="mobileStoryPanelContainer">
@@ -517,11 +517,11 @@
                   var className = img[0]['className'];
                   var static_url = "{% static 'map/images/' %}";
                   if (className == 'closed') {
-                    img.attr('src', static_url + "glyphicons-globe.png");
+                    img.attr('src', static_url + "arrow-up.png");
                     img.removeClass('closed');
                   }
                   else {
-                    img.attr('src', static_url + "glyphicons-book-open.png");
+                    img.attr('src', static_url + "arrow-down.png");
                     img.addClass('closed');
                   }
                 });
