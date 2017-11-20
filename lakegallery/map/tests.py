@@ -823,7 +823,7 @@ class ViewTests(TestCase):
         # check the layer info
         config = response.context['layer']
         check_keys = ['table_name', 'label_field', 'carto_css',
-                      'carto_lbl', 'interactivity']
+                      'carto_lbl', 'interactivity', 'carto_story_css']
         # check the keys of the layer config
         for key in check_keys:
             self.assertIs(key in config.keys(), True)
@@ -833,6 +833,7 @@ class ViewTests(TestCase):
         self.assertIs(isinstance(config['carto_css'], str), True)
         self.assertIs(isinstance(config['carto_lbl'], str), True)
         self.assertIs(isinstance(config['interactivity'], list), True)
+        self.assertIs(isinstance(config['carto_story_css'], str), True)
         # verify 2 layer fields: 1 for region letter, 1 for name
         self.assertEqual(len(config['interactivity']), 2)
 

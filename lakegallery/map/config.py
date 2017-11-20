@@ -11,7 +11,8 @@ layers = {
         "label_field": "res_lbl",
         "carto_css": '#layer{polygon-fill: ramp([story], (#005dff, #acacac), ("enabled", "disabled"), "=");polygon-opacity: 1;}#layer::outline{[story="enabled"]{line-width: 7.5;line-color: #5491f2;line-opacity: 0.5;}[story="disabled"]{line-width: 6;line-color: #515151;line-opacity: 0.2;}}#layer::outline {[story="enabled"]{line-width: 15;line-color: #c4d5f2;line-opacity: 0.5;}}',
         "carto_lbl": '#layer::labels {[story="enabled"]{text-name: [res_lbl];text-face-name: "DejaVu Sans Book";text-size: 12;text-fill: #FFFFFF;text-label-position-tolerance: 0;text-halo-radius: 1;text-halo-fill: #6f808d;text-dy: -10;text-allow-overlap: true;text-placement: point;text-placement-type: dummy;}}',
-        "interactivity": ["region", "res_lbl"]
+        "interactivity": ["region", "res_lbl"],
+        "carto_story_css": '#layer{[story="enabled"]{polygon-fill: #5491f2;polygon-opacity: 0.25;}[story="disabled"]{polygon-fill: #acacac;polygon-opacity: 1;}}#layer::outline{[story="enabled"]{line-width: 2;line-color: #5491f2;line-opacity: 0.4;}[story="disabled"]{line-width: 2;line-color: #515151;line-opacity: 0.2;}}'
     }
 }
 # overlays dict key name must equal key[toc_label] which must also equal

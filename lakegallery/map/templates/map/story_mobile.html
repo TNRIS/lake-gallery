@@ -397,7 +397,7 @@
               }
 
               function getTileUrls (config, lakeName) {
-                var css = config.carto_css;
+                var css = config.carto_story_css;
                 // var interactivity = config.interactivity;
                 var sql = `select * from ${config.table_name} where res_lbl = '${lakeName}'`;
                 var bb = {{ extent }};
