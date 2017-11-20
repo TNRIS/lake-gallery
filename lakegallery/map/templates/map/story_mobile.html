@@ -302,7 +302,8 @@
 
                   // ,'Grayscale': L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}@2x.png')
               };
-              var overlays = {};              
+              var overlays = {};
+              var lakeLayer;
 
               basemaps['Google Imagery'].addTo(map);
 
@@ -425,8 +426,8 @@
                   data: JSON.stringify(mapconfig),
                   success: function(data) {
                     var url = `https://${account}.carto.com/api/v1/map/` + data.layergroupid + '/{z}/{x}/{y}.png'
-                    var tileLayer = new L.tileLayer(url);
-                    overlays['{{ lake }}'] = tileLayer;
+                    lakeLayer = new L.tileLayer(url);
+                    overlays['{{ lake }}'] = lakeLayer;
 
                     // we added lake separately from other overlays since it uses a seperate config
                     // also, so that we could get the map bounds moving without waiting for all overlays
@@ -461,10 +462,14 @@
                   ticks_snap_bounds: 1,
                   value: 0
                 });
+                var slideStart;
                 var active = false;
                 var secondBasemap;
                 var historicalLayer;
                 var sideBySideControl;
+                $("#historicalSlider").on('change', function(e) {
+                  slideStart = e.value.oldValue;
+                });
                 $("#historicalSlider").on('slideStop', function(e) {
                   if (active == true) {
                     map.removeLayer(secondBasemap);
@@ -472,6 +477,10 @@
                     map.removeControl(sideBySideControl);
                   }
                   if (e.value != 0) {
+                    if (slideStart == 0) {
+                      lakeLayer.remove();
+                    }
+
                     secondBasemap = new L.TileLayer.WMTS('https://txgi.tnris.org/login/path/source-blonde-xray-cheese/wmts', {
                       layer: 'texas',
                       style: "default",
