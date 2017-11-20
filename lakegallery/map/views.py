@@ -80,6 +80,8 @@ def story(request, letter, lake):
 
     n = HistoricalAerialLinks.objects.filter(lake=m)
     links = [obj.as_dict() for obj in n]
+    links.append({'year': 2015, 'link': 'https://webservices.tnris.org/arcgis/services/TOP/TOP15_NC_CIR_50cm/ImageServer/WMSServer'})
+    links.append({'year': 2016, 'link': 'https://webservices.tnris.org/arcgis/services/NAIP/NAIP16_NC_CIR_1m/ImageServer/WMSServer'})
     links.sort(key=lambda x: x['year'])
 
     try:
