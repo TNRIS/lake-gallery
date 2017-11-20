@@ -200,6 +200,11 @@ LEAFLET_CONFIG = {
         'WMTS': {
             'js': 'map/leaflet_wmts/leaflet-tilelayer-wmts.js',
             'auto-include': True
+        },
+        'EASYBUTTON': {
+            'js': 'map/leaflet_easybutton/easy-button.js',
+            'css': 'map/leaflet_easybutton/easy-button.css',
+            'auto-include': True
         }
     },
     'TILES': []

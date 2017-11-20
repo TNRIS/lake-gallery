@@ -403,6 +403,9 @@
                 var sql = `select * from ${config.table_name} where res_lbl = '${lakeName}'`;
                 var bb = {{ extent }};
                 map.flyToBounds([[bb[1],bb[0]],[bb[3],bb[2]]]);
+                L.easyButton("<img src={% static 'map/images/home.png' %} />", function(btn, map){
+                  map.flyToBounds([[bb[1],bb[0]],[bb[3],bb[2]]]);
+                }).addTo(map);
 
                 var mapconfig = {
                   "version": "1.3.1",
