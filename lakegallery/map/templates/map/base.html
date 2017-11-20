@@ -65,6 +65,7 @@
               Regions
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item" href="/" style="font-weight:bold;">Region Selector Map</a>
               {% for r in header_regions %}
                 <a class="dropdown-item" href="/{{ r.letter }}">{{ r.name }}</a>
               {% endfor %}
