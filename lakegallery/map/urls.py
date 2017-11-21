@@ -8,5 +8,6 @@ urlpatterns = [
     url(r'^([a-p]{1})/([\w|\W]+)$', views.redirect_story),
     url(r'^([A-P]{1})/$', views.region, name='region'),
     url(r'^([a-p]{1})/$', views.redirect_region),
+    url(r'^about/$', views.about, name='about'),
     url(r'^$', views.index, name='index')
 ]

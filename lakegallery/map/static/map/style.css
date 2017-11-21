@@ -19,6 +19,7 @@ body {
 
 .navbar-brand {
 	padding: 0;
+	text-shadow: 2px 2px 4px #383838;
 }
 
 .headerLogo {

@@ -50,8 +50,8 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark">
 
-      <a class="navbar-brand" href="/">
-        <img class="headerLogo" src="{% static 'map/images/texas_solid.png' %}" />
+      <a class="navbar-brand" href="{% url 'map:index' %}">
+        <img class="headerLogo" src="{% static 'map/images/twdb_splash2.png' %}" />
         Texas Lake Gallery
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,9 +84,13 @@
               {% endfor %}
             </div>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'map:about' %}">
+              About
+            </a>
+          </li>
         </ul>
-        <a href="https://www.twdb.texas.gov/"><img class="headerLogo" src="{% static 'map/images/twdb.png' %}" /></a>
-        <a href="https://tnris.org/"><img class="headerLogo" src="{% static 'map/images/tnris.png' %}" /></a>
+        
       </div>
     </nav>
 
