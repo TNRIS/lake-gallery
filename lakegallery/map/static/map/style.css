@@ -97,6 +97,33 @@ body {
 	cursor: pointer;
 }
 
+/*ABOUT PAGE*/
+#aboutTitleBlock {
+	margin-top: 20px;
+	text-align: center;
+}
+
+#aboutLogoBlock {
+	margin-top: 10px;
+	text-align: center;
+}
+
+#aboutLogoLine {
+	color: white;
+	padding: 8px 0 8px 0;
+	background-color: #3C5163;
+	border-radius: 10px;
+}
+
+#aboutLogoLine > div.row {
+	width: 100%;
+	margin: 0;
+}
+
+#aboutLogoLine > div.row > div.col {
+	padding: 0;
+}
+
 /*--------------- STORY DESKTOP ---------------*/
 
 /*STORY CONTENT PANEL*/

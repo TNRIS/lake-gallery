@@ -2,9 +2,28 @@
 {% load static %}
 
 {% block content %}
-  <div>
-  stuff
-    <a href="https://www.twdb.texas.gov/"><img class="headerLogo" src="{% static 'map/images/twdb.png' %}" /></a>
-    <a href="https://tnris.org/"><img class="headerLogo" src="{% static 'map/images/tnris.png' %}" /></a>
+  <div class="container">
+    <div id="aboutTitleBlock" class="row">
+      <div class="col">
+        <h1 style="text-shadow: 1px 1px 1px #383838;">About the Texas Lake Gallery</h1>
+        <h6>v{{ version }}</h6>
+      </div>
+    </div>
+    <div id="aboutLogoBlock" class="row">
+      <div class="col"></div>
+      <div id="aboutLogoLine" class="col-6">
+      <div class="row">
+        <div class="col">
+          developed by <a href="https://tnris.org/"><img class="headerLogo" src="{% static 'map/images/tnris.png' %}" /></a>
+          </div><div class="col">
+          a product of the <a href="https://www.twdb.texas.gov/"><img class="headerLogo" src="{% static 'map/images/twdb.png' %}" /></a>
+          </div>
+        </div>
+      </div>
+      <div class="col"></div>
+    </div>
+    <div class="row">
+
+    </div>
   </div>
 {% endblock %}
