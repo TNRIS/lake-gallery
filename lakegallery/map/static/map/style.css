@@ -115,12 +115,12 @@ body {
 	border-radius: 10px;
 }
 
-#aboutLogoLine > div.row {
+#aboutLogoLine > div {
 	width: 100%;
 	margin: 0;
 }
 
-#aboutLogoLine > div.row > div.col {
+#aboutLogoLine > div > div {
 	padding: 0;
 }
 
