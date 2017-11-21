@@ -98,14 +98,34 @@ body {
 }
 
 /*ABOUT PAGE*/
+#aboutPage > div.row {
+	padding: 20px;
+}
+
 #aboutTitleBlock {
 	margin-top: 20px;
 	text-align: center;
+	padding: 0 !important;
+}
+
+#tableOfContents > ol {
+	margin: 10px;
+}
+
+#tableOfContents > ol > li > a {
+	color: #3C5163;
+	font-weight: bold;
+}
+
+#tableOfContents > ol > li > a:hover {
+	background-color: lightgray;
 }
 
 #aboutLogoBlock {
 	margin-top: 10px;
+	margin-bottom: 15px;
 	text-align: center;
+	padding: 0 !important;
 }
 
 #aboutLogoLine {
@@ -121,7 +141,13 @@ body {
 }
 
 #aboutLogoLine > div > div {
-	padding: 0;
+	padding: 8px 0 8px 0;
+}
+
+@media (min-width: 1200px) {
+	.container {
+		max-width: 960px;
+	}
 }
 
 /*--------------- STORY DESKTOP ---------------*/
