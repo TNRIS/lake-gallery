@@ -48,9 +48,11 @@ body {
 }
 
 .easy-button-button {
-	padding-left: 0;
-	padding-right: 0;
-	padding-top: 3px;
+	padding: 0;
+}
+
+.easy-button-button > span > img {
+	height: 100%;
 }
 
 /*INDEX & REGION TEMPLATE MAP*/
