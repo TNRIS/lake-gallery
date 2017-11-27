@@ -604,6 +604,15 @@ class URLTests(TestCase):
         response = self.client.get('/' + lake_region.lower() + '/' + lake_name)
         self.assertEqual(response.status_code, 302)
 
+    def test_about(self):
+        """
+        Test the about page URL
+        """
+        response = self.client.get('/about/')
+        self.assertEqual(response.status_code, 200)
+        response = self.client.get('/about')
+        self.assertEqual(response.status_code, 301)
+
 
 class ViewTests(TestCase):
 
@@ -906,6 +915,41 @@ class ViewTests(TestCase):
                       True)
         self.assertEqual(response.context['overlay_query'], m.id)
 
+    def test_about_context(self):
+        """
+        Test the about template context; config & header lists
+        """
+        # although the header functions are tested above, we will retest them
+        # here to verify they are in the context
+        region_nm_1, region_lt_1 = 'rwpa 1', 'A'
+        region_nm_2, region_lt_2 = 'rwpa 2', 'B'
+        RWPAs(objectid=1, reg_name=region_nm_1, letter=region_lt_1,
+              shape_leng=10, shape_area=2, geom=test_geom).save()
+        RWPAs(objectid=2, reg_name=region_nm_2, letter=region_lt_2,
+              shape_leng=10, shape_area=2, geom=test_geom).save()
+        res_nm_1, res_lt_1 = 'mr 1', 'A'
+        res_nm_2, res_lt_2 = 'mr 2', 'B'
+        MajorReservoirs(res_lbl=res_nm_1, region=res_lt_1,
+                        geom=test_geom).save()
+        MajorReservoirs(res_lbl=res_nm_2, region=res_lt_2,
+                        geom=test_geom).save()
+        response = self.client.get(reverse('map:about'))
+        hdr_reg = response.context['header_regions']
+        self.assertEqual(hdr_reg, [{'name': region_nm_1,
+                                    'letter': region_lt_1},
+                                   {'name': region_nm_2,
+                                    'letter': region_lt_2}])
+        hdr_lks = response.context['header_lakes']
+        self.assertEqual(hdr_lks, [{'name': res_nm_1,
+                                    'region': res_lt_1,
+                                    'class': 'disabled'},
+                                   {'name': res_nm_2,
+                                    'region': res_lt_2,
+                                    'class': 'disabled'}])
+        # check the version number in the context
+        self.assertIs('version' in response.context, True)
+        self.assertEqual(response.context['version'], settings.VERSION)
+
     def test_templates(self):
         """
         Test view templates include required leaflet and html
@@ -917,6 +961,7 @@ class ViewTests(TestCase):
         region_template = 'map/region.html'
         story_template = 'map/story.html'
         story_mobile_template = 'map/story_mobile.html'
+        about_template = 'map/about.html'
 
         # index template
         response = self.client.get('/')
@@ -971,6 +1016,14 @@ class ViewTests(TestCase):
         for lt in leaflet_templates:
             self.assertIs(lt in template_names, True)
         self.assertIs(story_mobile_template in template_names, True)
+        self.assertIs(base_template in template_names, True)
+
+        # about template
+        response = self.client.get('/about/')
+        template_names = []
+        for t in response.templates:
+            template_names.append(t.name)
+        self.assertIs(about_template in template_names, True)
         self.assertIs(base_template in template_names, True)
 
 

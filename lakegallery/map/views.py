@@ -140,7 +140,7 @@ def about(request):
     labels = get_region_header_list()
     res = get_lake_header_list()
     context = {'header_regions': labels, 'header_lakes': res,
-               'layers': layers, 'version': settings.VERSION}
+               'version': settings.VERSION}
 
     return render(request, 'map/about.html', context)
 
