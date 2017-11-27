@@ -19,11 +19,12 @@ body {
 }
 
 .adminHeaderLogo {
-	max-height: 40px;
+	max-height: 30px;
 }
 
 #brandTitle {
 	color: white !important;
+	text-shadow: 2px 2px 4px #383838;
 }
 
 .breadcrumbs {
