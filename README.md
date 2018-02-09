@@ -41,7 +41,7 @@ In production, the app pulls/references all static files for all apps from the c
 
 1. Make sure `DEBUG = False` in ~/lake-gallery/lakegallery/lakegallery/settings.py
 1. run `make push-static` to compile all static files and overwrite those in S3. **VERY DANGEROUS** if app is currently deployed as you will be overwriting the production static files!
-1. `pip freeze > requirements.txt`, `pip freeze > requirements.in`, Compile the python requirements `pip-compile --output-file requirements.txt requirements.in` from ~/lake-gallery/lakegallery/
+1. `pip freeze > requirements.txt` to save dependencies
 1. head over to the deployments repo to execute the actual application deployment
 
 
