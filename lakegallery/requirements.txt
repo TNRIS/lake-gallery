@@ -22,5 +22,5 @@ pip-tools==1.11.0
 psycopg2==2.7.4
 python-dateutil==2.6.1
 pytz==2018.3
-s3transfer==0.1.11
+s3transfer==0.1.12
 six==1.10.0
