@@ -5,7 +5,7 @@
 {% block content %}
   <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">              
+      <div class="modal-content">
         <div class="modal-body">
           <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
           <img src="" class="imagepreview" />
@@ -123,7 +123,10 @@
                   {% if stats.full_elevation_msl not in stats.stat_defaults %}
                     <li>
                       <span class="statLabel">Full Elevation:</span>
-                      {{ stats.full_elevation_msl }} mean sea level (msl) ({{ stats.full_elevation_gal }} gallons of water)
+                      {{ stats.full_elevation_msl }} mean sea level (msl)
+                      {% if stats.full_elevation_gal not in stats.stat_defaults %}
+                        ({{ stats.full_elevation_gal }} gallons of water)
+                      {% endif %}
                     </li>
                   {% endif %}
                   {% if stats.maximum_depth not in stats.stat_defaults %}
@@ -154,10 +157,18 @@
                 {% if stats.dam_stats %}
                   <h5>Dam Statistics</h5>
                   <ul class="statsList">
-                    {% if stats.dam_height not in stats.stat_defaults %}
+                    {% if stats.dam_height not in stats.stat_defaults or stats.dam_width not in stats.stat_defaults %}
                       <li>
                         <span class="statLabel">Dam Dimensions:</span>
-                        {{ stats.dam_height }} feet high, {{ stats.dam_width }} feet long
+                        {% if stats.dam_height not in stats.stat_defaults %}
+                          {{ stats.dam_height }} feet high
+                        {% endif %}
+                        {% if stats.dam_height not in stats.stat_defaults and stats.dam_width not in stats.stat_defaults %}
+                          ,
+                        {% endif %}
+                        {% if stats.dam_width not in stats.stat_defaults %}
+                          {{ stats.dam_width }} feet long
+                        {% endif %}
                       </li>
                     {% endif %}
                     {% if stats.spillway_elevation not in stats.stat_defaults %}
@@ -268,13 +279,13 @@
             {% endif %}
 
           </div>
-        
+
         </div>
       <div class="col-8 mapPanel">
         <input id="historicalSlider" type="text" style="display:none;"/>
         {% leaflet_map "storyMap" callback="main_map_init" %}
         <script type="text/javascript">
-            
+
             function main_map_init (map, options) {
               var basemaps = {
                   'Google Imagery': new L.TileLayer.WMTS('https://txgi.tnris.org/login/path/source-blonde-xray-cheese/wmts', {
@@ -335,9 +346,9 @@
                     });
                     overlays[config.toc_label] = tileLayer;
                     if (Object.keys(overlays).length == (allOverlays.length - 1)) {
-                      // must re-sort the overlay object. although objects don't have orders, somehow 
+                      // must re-sort the overlay object. although objects don't have orders, somehow
                       // leaflet controller recognizes the order in which the layers are added to the
-                      // overlay object and z-indexes the layers based off of that. we re-order so 
+                      // overlay object and z-indexes the layers based off of that. we re-order so
                       // point are on top of polygons
                       sortOverlays();
                     }
@@ -443,7 +454,7 @@
                   }
                 });
                 var len = ticks.length;
-                
+
                 $("#historicalSlider").slider({
                   ticks: ticks,
                   ticks_labels: labels,
@@ -483,7 +494,7 @@
                     else {
                       historicalLayer = L.esri.tiledMapLayer({'url':linkConfig[position]['link']}).addTo(map);
                     }
-                    
+
                     sideBySideControl = L.control.sideBySide(basemaps['Google Imagery'], [secondBasemap, historicalLayer]).addTo(map);
                     active = true;
 
@@ -512,12 +523,12 @@
 
                 prevPage.addClass("focusPage");
                 $('.contentText').on('activate.bs.scrollspy', function (e) {
-                  var activeSection = $("#storyNav").find("li.nav-item a.nav-link.active").attr("href"); 
+                  var activeSection = $("#storyNav").find("li.nav-item a.nav-link.active").attr("href");
                   prevPage.removeClass("focusPage");
                   $(activeSection).parent().addClass("focusPage");
                   prevPage = $(activeSection).parent();
                 });
-            });            
+            });
         </script>
       </div>
     </div>
