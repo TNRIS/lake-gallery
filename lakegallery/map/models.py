@@ -90,7 +90,7 @@ class StoryContent(models.Model):
     summary = models.TextField()
     summary_photo_main = models.ImageField(upload_to=get_upload_path,
                                            blank=True)
-    history = models.TextField()
+    history = models.TextField(blank=True)
     history_photo_main = models.ImageField(upload_to=get_upload_path,
                                            blank=True)
     history_photo = models.ImageField(upload_to=get_upload_path,
