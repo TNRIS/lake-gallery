@@ -1,0 +1,58 @@
+/*BROWSABLE REST API PAGE*/
+.lake-api-header {
+	background-color: #3C5163;
+	border: 0;
+	color: white;
+}
+
+.navbar-brand {
+	padding-top: 5px;
+	color: white;
+	text-shadow: 2px 2px 4px #383838;
+}
+
+.navbar-brand > img {
+	display: inline;
+}
+
+.navbar-brand:hover {
+	color: #F7F7F9;
+}
+
+.apiHeaderLogo {
+	max-height: 40px;
+	margin-right: 8px;
+	margin-left: 8px;
+}
+
+.nav.navbar-nav.pull-right > li.dropdown.open > a {
+	background-color: #496177;
+}
+
+ul.nav.navbar-nav.pull-right > li > a {
+	background-color: #3C5163;
+}
+
+ul.nav.navbar-nav.pull-right > li > a:hover {
+	background-color: #496177;
+}
+
+/*LOGIN PAGE*/
+.loginHeader {
+	margin: 15px 0 20px;
+	text-align: center;
+	color: #3C5163;
+}
+
+.loginLogo {
+	text-align: center;
+	color: #3C5163;
+}
+
+#submit-id-submit {
+	background-color: #3C5163;
+}
+
+#submit-id-submit:hover {
+	background-color: #496177;
+}

@@ -5,7 +5,7 @@
 {% block content %}
   <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">              
+      <div class="modal-content">
         <div class="modal-body">
           <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
           <img src="" class="imagepreview" />
@@ -237,7 +237,7 @@
                       <p id="rankingFooter">*Height is represented as feet above mean sea level (MSL)</p>
                     {% endif %}
                   </div>
-            
+
                 </div>
               {% endif %}
 
@@ -289,7 +289,7 @@
         <input id="historicalSlider" type="text" style="display:none;"/>
         {% leaflet_map "mobileStoryMap" callback="main_map_init" %}
         <script type="text/javascript">
-            
+
             function main_map_init (map, options) {
               var basemaps = {
                   'Google Imagery': new L.TileLayer.WMTS('https://txgi.tnris.org/login/path/source-blonde-xray-cheese/wmts', {
@@ -350,9 +350,9 @@
                     });
                     overlays[config.toc_label] = tileLayer;
                     if (Object.keys(overlays).length == (allOverlays.length - 1)) {
-                      // must re-sort the overlay object. although objects don't have orders, somehow 
+                      // must re-sort the overlay object. although objects don't have orders, somehow
                       // leaflet controller recognizes the order in which the layers are added to the
-                      // overlay object and z-indexes the layers based off of that. we re-order so 
+                      // overlay object and z-indexes the layers based off of that. we re-order so
                       // point are on top of polygons
                       sortOverlays();
                     }
@@ -457,22 +457,25 @@
                     topNaip.push(index + 1);
                   }
                 });
+
                 var len = ticks.length;
-                
+
                 $("#historicalSlider").slider({
-                  ticks: ticks,
-                  ticks_labels: labels,
-                  ticks_snap_bounds: 1,
-                  value: 0
+                  tooltip: 'always',
+                  value: 0,
+                  ticks: ticks
                 });
+
                 var slideStart;
                 var active = false;
                 var secondBasemap;
                 var historicalLayer;
                 var sideBySideControl;
+
                 $("#historicalSlider").on('change', function(e) {
                   slideStart = e.value.oldValue;
                 });
+
                 $("#historicalSlider").on('slideStop', function(e) {
                   if (active == true) {
                     map.removeLayer(secondBasemap);
@@ -490,15 +493,16 @@
                       tilematrixSet: "0to20",
                       format: "image/png"
                     }).addTo(map);
+
                     var position = e.value - 1;
-                    
+
                     if (topNaip.indexOf(e.value) >= 0) {
                       historicalLayer = L.tileLayer.wms(linkConfig[position]['link'], {layers: '0'}).addTo(map);
                     }
                     else {
                       historicalLayer = L.esri.tiledMapLayer({'url':linkConfig[position]['link']}).addTo(map);
                     }
-                    
+
                     sideBySideControl = L.control.sideBySide(basemaps['Google Imagery'], [secondBasemap, historicalLayer]).addTo(map);
                     active = true;
 
@@ -509,6 +513,7 @@
                 });
 
               }
+
               if (linkConfig.length > 0) {
                 $("#historicalSlider").css('display', 'block');
                 setupHistoricalSlider(linkConfig);

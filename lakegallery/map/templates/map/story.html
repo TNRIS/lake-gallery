@@ -283,7 +283,9 @@
         </div>
       <div class="col-8 mapPanel">
         <input id="historicalSlider" type="text" style="display:none;"/>
+
         {% leaflet_map "storyMap" callback="main_map_init" %}
+
         <script type="text/javascript">
 
             function main_map_init (map, options) {
@@ -313,6 +315,7 @@
               var allOverlays = ['Google Imagery', '{{ lake }}'].concat(overlayOrder);
               var overlayQueryId = "{{ overlay_query }}";
 
+              // begin loadOverlay function
               function loadOverlay (config) {
                 var css = config.carto_css;
                 if (config.carto_lbl) {
@@ -354,8 +357,9 @@
                     }
                   }
                 })
-              }
+              } // end loadOverlay function
 
+              // begin sortOverlays function
               function sortOverlays () {
                 var sortedOverlays = {};
                 var index = 1;
@@ -379,8 +383,9 @@
                   }
                 }
                 addSortedOverlay();
-              }
+              } // end sortOverlays function
 
+              // begin fireOverlays function w/ sortedOverlays as arg
               function fireOverlays (sortedOverlays) {
                 var layerController = L.control.layers(basemaps, sortedOverlays, {
                   sortLayers: true,
@@ -391,8 +396,9 @@
                 });
                 layerController.addTo(map);
                 overlays['{{ lake }}'].addTo(map);
-              }
+              } // end sortedOverlays
 
+              // begin getTileUrls function - config & lakeName as args
               function getTileUrls (config, lakeName) {
                 var css = config.carto_story_css;
                 // var interactivity = config.interactivity;
@@ -436,39 +442,59 @@
                     });
                   }
                 })
-              }
+              } // end getTileUrls function
 
+              // run getTileUrls function with resConfig & lake name as args
               getTileUrls(resConfig, "{{ lake }}");
 
+              // Historical slider function below -----
               function setupHistoricalSlider(links) {
                 var topNaip = [];
-
                 var ticks = [0];
                 var labels = ['Off'];
+                console.log(links);
+                var tooltipLabel = {};
+
                 links.map(function(l, index) {
                   ticks.push(index + 1);
+                  console.log(l,index);
                   labels.push(l.year);
-
+                  tooltipLabel = {l:l.year};
                   if (l.year == '2015' || l.year == '2016') {
                     topNaip.push(index + 1);
                   }
+                  console.log(tooltipLabel);
                 });
+
                 var len = ticks.length;
 
+                // function displayLabel(value) {
+                //   for (i = 0; i < labels.length; i++) {
+                //     if (labels[i] === value) {
+                //       return labels[i];
+                //     }
+                //   }
+                // }
+
                 $("#historicalSlider").slider({
+                  value: 0,
                   ticks: ticks,
-                  ticks_labels: labels,
-                  ticks_snap_bounds: 1,
-                  value: 0
+                  tooltip: 'always',
+                    formatter: function(value) {
+                      return;
+                    }
                 });
+
                 var slideStart;
                 var active = false;
                 var secondBasemap;
                 var historicalLayer;
                 var sideBySideControl;
+
                 $("#historicalSlider").on('change', function(e) {
                   slideStart = e.value.oldValue;
                 });
+
                 $("#historicalSlider").on('slideStop', function(e) {
                   if (active == true) {
                     map.removeLayer(secondBasemap);
@@ -486,6 +512,7 @@
                       tilematrixSet: "0to20",
                       format: "image/png"
                     }).addTo(map);
+
                     var position = e.value - 1;
 
                     if (topNaip.indexOf(e.value) >= 0) {
@@ -503,13 +530,14 @@
                     });
                   }
                 });
+              } // end of setupHistoricalSlider function
 
-              }
+              // if linkConfig exists, display slider using linkConfig
               if (linkConfig.length > 0) {
                 $("#historicalSlider").css('display', 'block');
                 setupHistoricalSlider(linkConfig);
               }
-            }
+            } // end of main_map_init function
 
             // setup picture modal event to populate image in modal dynamically
             // setup page effect on story
