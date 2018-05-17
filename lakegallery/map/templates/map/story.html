@@ -451,37 +451,25 @@
               function setupHistoricalSlider(links) {
                 var topNaip = [];
                 var ticks = [0];
-                var labels = ['Off'];
-                console.log(links);
-                var tooltipLabel = {};
+                var labelObject = {0: 'Off'};
 
                 links.map(function(l, index) {
                   ticks.push(index + 1);
-                  console.log(l,index);
-                  labels.push(l.year);
-                  tooltipLabel = {l:l.year};
+                  labelObject[index + 1] = l.year;
+
                   if (l.year == '2015' || l.year == '2016') {
                     topNaip.push(index + 1);
                   }
-                  console.log(tooltipLabel);
                 });
 
                 var len = ticks.length;
-
-                // function displayLabel(value) {
-                //   for (i = 0; i < labels.length; i++) {
-                //     if (labels[i] === value) {
-                //       return labels[i];
-                //     }
-                //   }
-                // }
 
                 $("#historicalSlider").slider({
                   value: 0,
                   ticks: ticks,
                   tooltip: 'always',
                     formatter: function(value) {
-                      return;
+                      return labelObject[value];
                     }
                 });
 
