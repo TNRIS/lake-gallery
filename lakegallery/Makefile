@@ -3,6 +3,7 @@
 run-dev:
 	export LAKE_GALLERY_MODE='DEVELOPMENT' && \
 	. ./lakegallery/secrets/set_env.sh && \
+	python manage.py collectstatic && \
 	python manage.py runserver
 
 run-prod:

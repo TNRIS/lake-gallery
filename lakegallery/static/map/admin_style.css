@@ -1,0 +1,44 @@
+/*DOCUMENT*/
+@font-face {
+	font-family: "Clear Sans";
+	src: url("font/EOT/ClearSans-Light.eot");
+	src: 
+	url("font/WOFF/ClearSans-Light.woff") format("woff"),
+	url("font/TTF/ClearSans-Light.ttf") format("ttf"),
+	url("font/SVG/ClearSans-Light.svg#filename") format("svg");
+}
+
+body {
+	font-family: "Clear Sans";
+}
+
+/*ADMIN SITE*/
+#header {
+	background: #3C5163;
+	color: white;
+}
+
+.adminHeaderLogo {
+	max-height: 30px;
+}
+
+#brandTitle {
+	color: white !important;
+	text-shadow: 2px 2px 4px #383838;
+}
+
+.breadcrumbs {
+	background: #5b7c9b !important;
+}
+
+table > caption {
+	background-color: #3C5163 !important;
+} 
+
+fieldset.module.aligned > h2 {
+	background-color: #3C5163 !important;
+}
+
+#changelist-filter > h2 {
+	background-color: #3C5163 !important;
+}
