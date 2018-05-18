@@ -343,14 +343,29 @@ div.slider.slider-horizontal {
 	z-index: 100;
 }
 
-div.tooltip {
+.tooltip {
 	opacity: 1 !important;
 }
 
-.slider-tick-label {
+.tooltip.top .tooltip-arrow {
+  bottom: -5;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px 5px 0;
+  border-top-color: #3C5163;
+}
+
+.tooltip-arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+}
+
+.tooltip-inner {
+	background-image: linear-gradient(to bottom,#337ab7 0,#3C5163 100%);
 	color: white;
-	width: 52.5px;
-	font-weight: bold;
 }
 
 div.slider-handle.min-slider-handle.round {

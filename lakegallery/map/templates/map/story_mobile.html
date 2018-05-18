@@ -287,7 +287,9 @@
       </div>
       <div class="col-12 mobileMapPanel">
         <input id="historicalSlider" type="text" style="display:none;"/>
+
         {% leaflet_map "mobileStoryMap" callback="main_map_init" %}
+
         <script type="text/javascript">
 
             function main_map_init (map, options) {
@@ -446,12 +448,12 @@
 
               function setupHistoricalSlider(links) {
                 var topNaip = [];
-
                 var ticks = [0];
-                var labels = ['Off'];
+                var labelObject = {0: 'OFF'};
+
                 links.map(function(l, index) {
                   ticks.push(index + 1);
-                  labels.push(l.year);
+                  labelObject[index + 1] = l.year;
 
                   if (l.year == '2015' || l.year == '2016') {
                     topNaip.push(index + 1);
@@ -461,9 +463,12 @@
                 var len = ticks.length;
 
                 $("#historicalSlider").slider({
-                  tooltip: 'always',
                   value: 0,
-                  ticks: ticks
+                  ticks: ticks,
+                  tooltip: 'always',
+                    formatter: function(value) {
+                      return labelObject[value];
+                    }
                 });
 
                 var slideStart;
