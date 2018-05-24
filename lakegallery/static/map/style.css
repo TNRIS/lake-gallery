@@ -39,6 +39,15 @@ body {
 	opacity: .4;
 }
 
+#search {
+	max-width: auto;
+}
+
+#glyph-search {
+	height: 25px;
+	width: 25px;
+}
+
 /*LEAFLET FOR ALL*/
 .leaflet-control-layers-base > label > div > input {
 	display: none;

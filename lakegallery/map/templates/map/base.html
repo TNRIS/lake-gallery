@@ -76,7 +76,41 @@
             <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Lakes
             </a>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+            <div class="dropdown-menu dropdown-menu-right" id="lakeMenu" aria-labelledby="navbarDropdownMenuLink">
+              <script>
+              //function to search and filter lakes
+                function lakeSearch() {
+                  var input, filter, lakeMenu, atags, atagsLength, i;
+                  input = document.getElementById("search");
+                  filter = input.value.toUpperCase();
+                  lakeMenu = document.getElementById("lakeMenu");
+                  atags = lakeMenu.getElementsByTagName("a");
+                  atagsLength = atags.length;
+
+                  // Loop through all enabled lake atags, and hide those who don't match the search query
+                  for (i = 0; i < atagsLength; i++) {
+                    var atag = atags[i];
+                    if (atag) {
+                      if (atag.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        atag.style.display = "";
+                      } else {
+                        atag.style.display = "none";
+                      }
+                    }
+                  }
+                }
+
+                //function to clear search text when click image to right of search/filter
+                function clearSearch() {
+                  var searchText = document.getElementById("search").value;
+                  searchText = "";
+                  // $("#search").value("test");
+                }
+              </script>
+              <div class="btn-group">
+                <input type="text" id="search" class="form-control" onkeyup="lakeSearch();" placeholder="Search for a lake...">
+                <img id="clearSearch" src="{% static 'map/images/glyphicons-remove-circle.png' %}" onclick="clearSearch();"/>
+              </div>
               {% for l in header_lakes %}
                 {% if l.class == "enabled" %}
                   <a class="dropdown-item {{ l.class }}" href="/{{ l.region }}/{{ l.name }}">{{ l.name }}</a>
@@ -90,7 +124,7 @@
             </a>
           </li>
         </ul>
-        
+
       </div>
     </nav>
 
