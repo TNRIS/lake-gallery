@@ -29,14 +29,55 @@ body {
 }
 
 .dropdown-menu {
+	position: relative;
+	min-width: 300px;
 	max-height: 600px;
 	overflow: hidden;
     overflow-y: auto;
 }
 
+.dropdown-item {
+	width: 100%;
+}
+
 .dropdown-item.disabled {
 	pointer-events: none;
+	width: 100%;
 	opacity: .4;
+}
+
+.clear-image {
+	opacity: 0.25;
+	filter: alpha(opacity=25);
+}
+
+.clear-image:hover {
+	opacity: 0.5;
+	filter: alpha(opacity=50);
+}
+
+#search {
+	margin-left: 3px;
+	margin-top: 5px;
+	width: 98%;
+}
+
+#parent {
+	display: inline-block;
+	position: relative;
+	padding-right: 15px;
+}
+
+#noneAvailable {
+	margin-left: 25px;
+	margin-top: 20px;
+	display: none;
+}
+
+#clear-span {
+	position: absolute;
+	top: 15px;
+	right: 30px;
 }
 
 /*LEAFLET FOR ALL*/
