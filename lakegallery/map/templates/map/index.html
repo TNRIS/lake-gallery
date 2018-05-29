@@ -7,7 +7,18 @@
       <div class="modal-dialog" role="document">
         <div id="instructionModalContent" class="modal-content">
           <div class="modal-body">
+            <p>
+              <strong style="color:red;">Please note that this application is currently a beta version and is still undergoing final testing before its official release.</strong>
+            </p>
             <h2 class="modal-title">Welcome to the Texas Lake Gallery!</h2>
+            <br />
+            <p>
+              <strong>Disclaimer: </strong>The information provided by the Texas Water Development Board and the Texas Natural Resources Information System (TNRIS) in the
+              Texas Lake Gallery web application is for general informational purposes only. All information on the site/application is provided in good faith, however we
+              make no representation or warranty of any kind, express or implied, regarding the accuracy, adequacy, validity, reliability, availability or completeness of
+              any information on the site/application.
+            </p>
+
             <img src="{% static 'map/images/modal_regions.png' %}" />
             <p>
             Lakes are grouped by the Planning Region within which they reside. Click a Region in the map to view the available lakes and reservoirs within that region.
@@ -37,7 +48,7 @@
             var css = config.carto_css;
             css += config.carto_lbl;
             var interactivity = config.interactivity;
-            
+
             var sql = `select * from ${config.table_name}`;
 
             var mapconfig = {
@@ -86,7 +97,7 @@
 
           getTileUrls(rwpasConfig);
         }
-        
+
         // show modal on load if localstorage doesn't say they've opt'd out
         $(function() {
           var version = '{{ version }}';
@@ -101,6 +112,6 @@
               }
             });
           }
-        });  
-    </script> 
+        });
+    </script>
 {% endblock %}
