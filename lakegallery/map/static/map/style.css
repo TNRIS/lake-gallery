@@ -235,7 +235,7 @@ body {
 	height: calc(100% - 43px);
 	overflow: hidden;
     overflow-y: auto;
-    padding: 8px;
+    padding: 20px;
 }
 
 .storyPage > div > figure {
