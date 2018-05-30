@@ -450,22 +450,24 @@
               // Historical slider function below -----
               function setupHistoricalSlider(links) {
                 var topNaip = [];
-                var ticks = [0];
-                var labelObject = {0: 'OFF'};
+                var ticks = [];
+                var labelObject = {};
 
                 links.map(function(l, index) {
-                  ticks.push(index + 1);
-                  labelObject[index + 1] = l.year;
+                  ticks.push(index);
+                  labelObject[index] = l.year;
 
                   if (l.year == '2015' || l.year == '2016') {
-                    topNaip.push(index + 1);
+                    topNaip.push(index);
                   }
                 });
 
                 var len = ticks.length;
+                labelObject[ticks.length] = "Current";
+                ticks.push(ticks.length);
 
                 $("#historicalSlider").slider({
-                  value: 0,
+                  value: ticks.length,
                   ticks: ticks,
                   tooltip: 'always',
                     formatter: function(value) {
@@ -489,8 +491,9 @@
                     map.removeLayer(historicalLayer);
                     map.removeControl(sideBySideControl);
                   }
-                  if (e.value != 0) {
-                    if (slideStart == 0) {
+
+                  if (e.value != (ticks.length - 1)) {
+                    if (slideStart == (ticks.length - 1)) {
                       lakeLayer.remove();
                     }
 
@@ -501,9 +504,9 @@
                       format: "image/png"
                     }).addTo(map);
 
-                    var position = e.value - 1;
+                    var position = e.value;
 
-                    if (topNaip.indexOf(e.value) >= 0) {
+                    if (topNaip.indexOf(position) != -1) {
                       historicalLayer = L.tileLayer.wms(linkConfig[position]['link'], {layers: '0'}).addTo(map);
                     }
                     else {
