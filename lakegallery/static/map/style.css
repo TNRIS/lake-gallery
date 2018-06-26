@@ -386,6 +386,7 @@ div.slider.slider-horizontal {
 
 .tooltip {
 	opacity: 1 !important;
+	cursor: pointer;
 }
 
 .tooltip.top .tooltip-arrow {
@@ -402,6 +403,10 @@ div.slider.slider-horizontal {
   height: 0;
   border-color: transparent;
   border-style: solid;
+}
+
+.slider {
+	cursor: pointer;
 }
 
 .tooltip-inner {
