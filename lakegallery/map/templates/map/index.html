@@ -19,10 +19,10 @@
               any information on the site/application.
             </p>
 
-            <img src="{% static 'map/images/modal_regions.png' %}" />
-            <p>
+            <!-- <img src="{% static 'map/images/modal_regions.png' %}" /> -->
+            <!-- <p>
             Lakes are grouped by the Planning Region within which they reside. Click a Region in the map to view the available lakes and reservoirs within that region.
-            </p>
+            </p> -->
             <div>
               <label class="form-check-label">
                 <input id="modalHideCheckbox" class="form-check-input" type="checkbox" value="">
@@ -42,11 +42,12 @@
           var tileLayer;
           var utfGrid;
 
-          var rwpasConfig = JSON.parse('{{ layers.rwpas }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
+          // var rwpasConfig = JSON.parse('{{ layers.rwpas }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
+          var reservoirsPointConfig = JSON.parse('{{ layers.reservoirs_point }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
 
           function getTileUrls (config, regionLetter) {
             var css = config.carto_css;
-            css += config.carto_lbl;
+            // css += config.carto_lbl;
             var interactivity = config.interactivity;
 
             var sql = `select * from ${config.table_name}`;
@@ -95,7 +96,8 @@
             })
           }
 
-          getTileUrls(rwpasConfig);
+          // getTileUrls(rwpasConfig);
+          getTileUrls(reservoirsPointConfig);
         }
 
         // show modal on load if localstorage doesn't say they've opt'd out
