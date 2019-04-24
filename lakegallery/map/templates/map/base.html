@@ -5,7 +5,7 @@
 
 <html>
   <head>
-    <title>Texas Lake Gallery</title>
+    <title>Lakes of Texas</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,6 +13,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'map/favicon/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'map/favicon/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'map/favicon/favicon-16x16.png' %}">
+
     <link rel="manifest" href="{% static 'map/favicon/manifest.json' %}">
     <link rel="mask-icon" href="{% static 'map/favicon/safari-pinned-tab.svg' %}" color="#3c5163">
     <link rel="shortcut icon" href="{% static 'map/favicon/favicon.ico' %}">
@@ -50,9 +51,8 @@
   <body>
     <nav id="topNav" class="navbar navbar-expand-lg navbar-dark">
 
-      <a class="navbar-brand" href="{% url 'map:index' %}">
-        <img class="headerLogo" src="{% static 'map/images/twdb_splash2.png' %}" />
-        Texas Lake Gallery
+      <a class="navbar-brand" href="{% url 'map:index' %}" title="Home">
+        <img class="headerLogo" src="{% static 'map/images/lot-blue.jpg' %}" />
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
