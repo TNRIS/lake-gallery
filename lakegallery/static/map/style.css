@@ -107,6 +107,7 @@ body {
 #instructionModal > .modal-dialog {
 	display: block;
 	text-align: center;
+	top: 20vh;
 }
 
 @media (min-width: 576px) {
