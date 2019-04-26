@@ -30,6 +30,16 @@ body {
 	align-content: center;
 }
 
+img.texas-home {
+	max-height: 24px;
+	width: auto;
+	opacity: 0.5;
+}
+
+img.texas-home:hover {
+	opacity: 0.8;
+}
+
 .dropdown-menu {
 	position: relative;
 	min-width: 300px;

@@ -125,7 +125,7 @@ def story(request, letter, lake):
         low_list = []
 
     context = {'header_regions': labels, 'header_lakes': res, 'extent': ext,
-               'layer': layers['reservoirs'], 'lake': lake, 'links': links,
+               'layer': layers['reservoirs_point'], 'lake': lake, 'links': links,
                'story': c, 'stats': s, 'high_events': high_list,
                'low_events': low_list, 'overlays': overlays,
                'overlay_order': overlay_order, 'overlay_query': m.id}
