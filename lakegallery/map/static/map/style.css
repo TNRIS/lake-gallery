@@ -215,6 +215,8 @@ img.texas-home:hover {
 #navbar-contentPanel {
 	position: relative;
 	font-size: small;
+	border-top: 1px solid #d9d9d9;
+	border-bottom: 1px solid #d9d9d9;
 }
 
 #navbar-contentPanel > ul.nav.nav-pills {
@@ -226,29 +228,45 @@ img.texas-home:hover {
 }
 
 .nav.nav-pills > .nav-item > .nav-link {
-	color: #3C5163;
+	color: #01253d;
 }
 
 .nav.nav-pills > .nav-item > .nav-link.active {
 	color: #fff;
-	background-color: #3C5163;
+	background-color: #01253d;
 }
 
 @media (max-width: 991px) {
 	#navbar-contentPanel {
 		display: none;
 	}
+	/* .contentText {
+		height: calc(100vh - 110px);
+	} */
+}
 
+/* @media (min-width: 991px) and (max-width: 1367px) {
 	.contentText {
-		height: 100vh !important;
+		height: calc(100vh - 185px);
 	}
 }
 
+@media (min-width: 1367px) {
+	.contentText {
+		height: calc(100vh - 158px);
+	}
+} */
+
 .contentText {
-	height: calc(100% - 43px);
+	height: calc(100% - 158px);
 	overflow: hidden;
-    overflow-y: auto;
-    padding: 20px;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.lakeTitle {
+	text-align: center;
+	padding-top: 10px;
 }
 
 .storyPage > div > figure {

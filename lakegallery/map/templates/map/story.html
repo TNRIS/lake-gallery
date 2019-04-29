@@ -17,54 +17,60 @@
   <div class="container-fluid">
     <div class="row">
         <div class="col-4 contentPanel">
-          <nav id="navbar-contentPanel" class="navbar navbar-light bg-light">
-            <ul id="storyNav" class="nav nav-pills">
-              <li class="nav-item">
-                <a class="nav-link" href="#Story">Story</a>
-              </li>
-              {% if story.history %}
+
+          <div id="lakeHeader">
+            <h2 class="lakeTitle">{{ lake }}</h2>
+
+            <nav id="navbar-contentPanel" class="navbar navbar-light bg-light">
+              <ul id="storyNav" class="nav nav-pills">
                 <li class="nav-item">
-                  <a class="nav-link" href="#History">History</a>
+                  <a class="nav-link" href="#Overview">Overview</a>
                 </li>
-              {% endif %}
-              {% if stats.general_stats %}
-                <li class="nav-item">
-                  <a class="nav-link" href="#Statistics">Statistics</a>
-                </li>
-              {% endif %}
-              {% if story.section_one_header %}
-                <li class="nav-item">
-                  <a class="nav-link" href="#{{ story.section_one_nav|cut:' ' }}">{{ story.section_one_nav }}</a>
-                </li>
-              {% endif %}
-              {% if story.section_two_header %}
-                <li class="nav-item">
-                  <a class="nav-link" href="#{{ story.section_two_nav|cut:' ' }}">{{ story.section_two_nav }}</a>
-                </li>
-              {% endif %}
-              {% if story.section_three_header %}
-                <li class="nav-item">
-                  <a class="nav-link" href="#{{ story.section_three_nav|cut:' ' }}">{{ story.section_three_nav }}</a>
-                </li>
-              {% endif %}
-            </ul>
-          </nav>
+                {% if story.history %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="#History">History</a>
+                  </li>
+                {% endif %}
+                {% if stats.general_stats %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="#Statistics">Statistics</a>
+                  </li>
+                {% endif %}
+                {% if story.section_one_header %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="#{{ story.section_one_nav|cut:' ' }}">{{ story.section_one_nav }}</a>
+                  </li>
+                {% endif %}
+                {% if story.section_two_header %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="#{{ story.section_two_nav|cut:' ' }}">{{ story.section_two_nav }}</a>
+                  </li>
+                {% endif %}
+                {% if story.section_three_header %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="#{{ story.section_three_nav|cut:' ' }}">{{ story.section_three_nav }}</a>
+                  </li>
+                {% endif %}
+              </ul>
+            </nav>
+          </div>
+
           <div class="contentText" data-spy="scroll" data-target="#navbar-contentPanel" data-offset="100">
             <div class="storyPage">
-              <h2 id="Story" style="margin-top:0;">{{ lake }}</h2>
+              <h2 id="Overview" style="margin-top:0; text-align:center;">Overview</h2>
               <div>{{ story.summary|safe }}</div>
               <div class="pageSpacer"></div>
             </div>
             {% if story.history %}
               <div class="storyPage">
-                <h2 id="History">History of {{ lake }}</h2>
+                <h2 id="History" style="text-align:center;">History</h2>
                 <div>{{ story.history|safe }}</div>
                 <div class="pageSpacer"></div>
               </div>
             {% endif %}
             {% if stats.general_stats %}
               <div class="storyPage">
-                <h2 id="Statistics">{{ lake }} Statistics</h2>
+                <h2 id="Statistics" style="text-align:center;">Statistics</h2>
                 <ul class="statsList">
                   {% if stats.original_name not in stats.stat_defaults %}
                     <li>
@@ -257,7 +263,7 @@
 
             {% if story.section_one_header %}
               <div class="storyPage">
-                <h2 id="{{ story.section_one_nav|cut:' ' }}">{{ story.section_one_header }}</h2>
+                <h2 id="{{ story.section_one_nav|cut:' ' }}" style="text-align:center;">{{ story.section_one_header }}</h2>
                 <div>{{ story.section_one_content|safe }}</div>
                 <div class="pageSpacer"></div>
               </div>
@@ -265,7 +271,7 @@
 
             {% if story.section_two_header %}
               <div class="storyPage">
-                <h2 id="{{ story.section_two_nav|cut:' ' }}">{{ story.section_two_header }}</h2>
+                <h2 id="{{ story.section_two_nav|cut:' ' }}" style="text-align:center;">{{ story.section_two_header }}</h2>
                 <div>{{ story.section_two_content|safe }}</div>
                 <div class="pageSpacer"></div>
               </div>
@@ -273,7 +279,7 @@
 
             {% if story.section_three_header %}
               <div class="storyPage">
-                <h2 id="{{ story.section_three_nav|cut:' ' }}">{{ story.section_three_header }}</h2>
+                <h2 id="{{ story.section_three_nav|cut:' ' }}" style="text-align:center;">{{ story.section_three_header }}</h2>
                 <div>{{ story.section_three_content|safe }}</div>
               </div>
             {% endif %}
@@ -532,7 +538,7 @@
 
             // setup picture modal event to populate image in modal dynamically
             // setup page effect on story
-            var prevPage = $("#Story").parent();
+            var prevPage = $("#Overview").parent();
             $(function() {
                 $('.picZoom').on('click', function() {
                   $('.imagepreview').attr('src', $(this)[0]['src']);
@@ -548,6 +554,7 @@
                   prevPage = $(activeSection).parent();
                 });
             });
+
         </script>
       </div>
     </div>

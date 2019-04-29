@@ -45,14 +45,14 @@
             <div class="carousel-inner" role="listbox">
               <div class="carousel-item active">
                 <div class="mobileStoryPage">
-                  <h2 class="mobilePageHeader" id="Story">{{ lake }}</h2>
+                  <h2 class="mobilePageHeader" id="Overview">{{ lake }}</h2>
                   <div>{{ story.summary|safe }}</div>
                 </div>
               </div>
               {% if story.history %}
                 <div class="carousel-item">
                   <div class="mobileStoryPage">
-                    <h2 class="mobilePageHeader" id="History">History of {{ lake }}</h2>
+                    <h2 class="mobilePageHeader" id="History">{{ lake }} History</h2>
                     <div>{{ story.history|safe }}</div>
                   </div>
                 </div>
