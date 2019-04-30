@@ -53,24 +53,25 @@
                 {% endif %}
               </ul>
             </nav>
+
           </div>
 
           <div class="contentText" data-spy="scroll" data-target="#navbar-contentPanel" data-offset="100">
             <div class="storyPage">
-              <h2 id="Overview" style="margin-top:0; text-align:center;">Overview</h2>
+              <h4 id="Overview">Overview</h4>
               <div>{{ story.summary|safe }}</div>
               <div class="pageSpacer"></div>
             </div>
             {% if story.history %}
               <div class="storyPage">
-                <h2 id="History" style="text-align:center;">History</h2>
+                <h4 id="History">History</h4>
                 <div>{{ story.history|safe }}</div>
                 <div class="pageSpacer"></div>
               </div>
             {% endif %}
             {% if stats.general_stats %}
               <div class="storyPage">
-                <h2 id="Statistics" style="text-align:center;">Statistics</h2>
+                <h4 id="Statistics">Statistics</h4>
                 <ul class="statsList">
                   {% if stats.original_name not in stats.stat_defaults %}
                     <li>
@@ -263,7 +264,7 @@
 
             {% if story.section_one_header %}
               <div class="storyPage">
-                <h2 id="{{ story.section_one_nav|cut:' ' }}" style="text-align:center;">{{ story.section_one_header }}</h2>
+                <h4 id="{{ story.section_one_nav|cut:' ' }}">{{ story.section_one_header }}</h4>
                 <div>{{ story.section_one_content|safe }}</div>
                 <div class="pageSpacer"></div>
               </div>
@@ -271,7 +272,7 @@
 
             {% if story.section_two_header %}
               <div class="storyPage">
-                <h2 id="{{ story.section_two_nav|cut:' ' }}" style="text-align:center;">{{ story.section_two_header }}</h2>
+                <h4 id="{{ story.section_two_nav|cut:' ' }}">{{ story.section_two_header }}</h4>
                 <div>{{ story.section_two_content|safe }}</div>
                 <div class="pageSpacer"></div>
               </div>
@@ -279,7 +280,7 @@
 
             {% if story.section_three_header %}
               <div class="storyPage">
-                <h2 id="{{ story.section_three_nav|cut:' ' }}" style="text-align:center;">{{ story.section_three_header }}</h2>
+                <h4 id="{{ story.section_three_nav|cut:' ' }}">{{ story.section_three_header }}</h4>
                 <div>{{ story.section_three_content|safe }}</div>
               </div>
             {% endif %}
@@ -411,9 +412,10 @@
                 var sql = `select * from ${config.table_name} where res_lbl = '${lakeName}'`;
                 var bb = {{ extent }};
                 map.flyToBounds([[bb[1],bb[0]],[bb[3],bb[2]]]);
-                L.easyButton("<img src={% static 'map/images/home.png' %} />", function(btn, map){
-                  map.flyToBounds([[bb[1],bb[0]],[bb[3],bb[2]]]);
-                }).addTo(map);
+
+                // L.easyButton("<img src={% static 'map/images/home.png' %} />", function(btn, map){
+                //   map.flyToBounds([[bb[1],bb[0]],[bb[3],bb[2]]]);
+                // }).addTo(map);
 
                 var mapconfig = {
                   "version": "1.3.1",
@@ -539,21 +541,41 @@
             // setup picture modal event to populate image in modal dynamically
             // setup page effect on story
             var prevPage = $("#Overview").parent();
-            $(function() {
-                $('.picZoom').on('click', function() {
-                  $('.imagepreview').attr('src', $(this)[0]['src']);
-                  $('.imagepreview-caption').html($(this).next().html());
-                  $('#imagemodal').modal('show');
-                });
 
-                prevPage.addClass("focusPage");
-                $('.contentText').on('activate.bs.scrollspy', function (e) {
-                  var activeSection = $("#storyNav").find("li.nav-item a.nav-link.active").attr("href");
-                  prevPage.removeClass("focusPage");
-                  $(activeSection).parent().addClass("focusPage");
-                  prevPage = $(activeSection).parent();
-                });
+            $(function() {
+              $('.picZoom').on('click', function() {
+                $('.imagepreview').attr('src', $(this)[0]['src']);
+                $('.imagepreview-caption').html($(this).next().html());
+                $('#imagemodal').modal('show');
+              });
+
+              prevPage.addClass("focusPage");
+
+              $('.contentText').on('activate.bs.scrollspy', function (e) {
+                var activeSection = $("#storyNav").find("li.nav-item a.nav-link.active").attr("href");
+                prevPage.removeClass("focusPage");
+                $(activeSection).parent().addClass("focusPage");
+                prevPage = $(activeSection).parent();
+              });
             });
+
+            var lakeHeader = document.getElementById('lakeHeader');
+            var lakeStory = document.getElementsByClassName('contentText')[0];
+            var lakeTitle = document.getElementsByClassName('lakeTitle')[0];
+            var lakeNav = document.getElementById('navbar-contentPanel');
+
+            window.onload = function() {
+              window.innerWidth > 991 && (lakeNav.clientHeight + lakeTitle.clientHeight > 99) ?
+                lakeStory.style.height = `calc(100% - ${lakeNav.clientHeight + lakeTitle.clientHeight})` :
+                // lakeStory.style.height = 'calc(100% - 137px)' :
+                lakeStory.style.height = 'calc(100% - 99px)';
+            };
+
+            console.log(`header backtick test - ${lakeHeader.clientHeight}`);
+            console.log(`story text backtick test - ${lakeStory.clientHeight}`);
+            console.log(`nav backtick test - ${lakeNav.clientHeight}`);
+            console.log(`title backtick test - ${lakeTitle.clientHeight}`);
+
 
         </script>
       </div>
