@@ -56,7 +56,7 @@
 
           </div>
 
-          <div class="contentText" data-spy="scroll" data-target="#navbar-contentPanel" data-offset="100">
+          <div id="lakeStory" class="contentText" data-spy="scroll" data-target="#navbar-contentPanel" data-offset="100">
             <div class="storyPage">
               <h4 id="Overview">Overview</h4>
               <div>{{ story.summary|safe }}</div>
@@ -559,22 +559,20 @@
               });
             });
 
+            // for screen sizes greater than mobile breakpoint (991px), detect potential wrapped nav/title/header
+            // for longer lake names or multiple nav pills, then css calc story size for scroll
+
             var lakeHeader = document.getElementById('lakeHeader');
-            var lakeStory = document.getElementsByClassName('contentText')[0];
-            var lakeTitle = document.getElementsByClassName('lakeTitle')[0];
-            var lakeNav = document.getElementById('navbar-contentPanel');
+            var lakeStory = document.getElementById('lakeStory');
 
             window.onload = function() {
-              window.innerWidth > 991 && (lakeNav.clientHeight + lakeTitle.clientHeight > 99) ?
-                lakeStory.style.height = `calc(100% - ${lakeNav.clientHeight + lakeTitle.clientHeight})` :
-                // lakeStory.style.height = 'calc(100% - 137px)' :
+              if (window.innerWidth > 991 && lakeHeader.clientHeight > 99) {
+                lakeStory.style.height = `calc(100% - ${lakeHeader.clientHeight}px)`;
+              }
+              else {
                 lakeStory.style.height = 'calc(100% - 99px)';
+              }
             };
-
-            console.log(`header backtick test - ${lakeHeader.clientHeight}`);
-            console.log(`story text backtick test - ${lakeStory.clientHeight}`);
-            console.log(`nav backtick test - ${lakeNav.clientHeight}`);
-            console.log(`title backtick test - ${lakeTitle.clientHeight}`);
 
 
         </script>
