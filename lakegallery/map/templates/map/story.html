@@ -354,61 +354,61 @@
                     var tileLayer = new L.tileLayer(url, {
                       attribution: '<a href="https://www.lcra.org" target="_blank">LCRA</a>'
                     });
-                    overlays[config.toc_label] = tileLayer;
-                    if (Object.keys(overlays).length == (allOverlays.length - 1)) {
+                    // overlays[config.toc_label] = tileLayer;
+                    // if (Object.keys(overlays).length == (allOverlays.length - 1)) {
                       // must re-sort the overlay object. although objects don't have orders, somehow
                       // leaflet controller recognizes the order in which the layers are added to the
                       // overlay object and z-indexes the layers based off of that. we re-order so
                       // point are on top of polygons
-                      sortOverlays();
-                    }
+                    //   sortOverlays();
+                    // }
                   }
                 })
               } // end loadOverlay function
 
               // begin sortOverlays function
-              function sortOverlays () {
-                var sortedOverlays = {};
-                var index = 1;
-                function addSortedOverlay () {
-                  if (index < allOverlays.length) {
-                      var layerToLoad = allOverlays[index];
-                      var overlayData = overlays[layerToLoad];
-                      var htmlName;
-                      // add img to layer control. ***IMG file name must be same as toc_label
-                      if (layerToLoad == "{{ lake }}") {
-                        htmlName = `<span>${layerToLoad}</span><br /><img src="${static_url}Lake.png" />`;
-                      } else {
-                        htmlName = `<span>${layerToLoad}</span><br /><img src="${static_url}${layerToLoad}.png" />`;
-                      }
-                      sortedOverlays[htmlName] = overlayData;
-                      ++index;
-                      addSortedOverlay();
-                  }
-                  else {
-                    fireOverlays(sortedOverlays);
-                  }
-                }
-                addSortedOverlay();
-              } // end sortOverlays function
+              // function sortOverlays () {
+              //   var sortedOverlays = {};
+              //   var index = 1;
+              //   function addSortedOverlay () {
+              //     if (index < allOverlays.length) {
+              //         var layerToLoad = allOverlays[index];
+              //         var overlayData = overlays[layerToLoad];
+              //         var htmlName;
+              //         // add img to layer control. ***IMG file name must be same as toc_label
+              //         if (layerToLoad == "{{ lake }}") {
+              //           htmlName = `<span>${layerToLoad}</span><br /><img src="${static_url}Lake.png" />`;
+              //         } else {
+              //           htmlName = `<span>${layerToLoad}</span><br /><img src="${static_url}${layerToLoad}.png" />`;
+              //         }
+              //         sortedOverlays[htmlName] = overlayData;
+              //         ++index;
+              //         addSortedOverlay();
+              //     }
+              //     else {
+              //       fireOverlays(sortedOverlays);
+              //     }
+              //   }
+              //   addSortedOverlay();
+              // } // end sortOverlays function
 
               // begin fireOverlays function w/ sortedOverlays as arg
-              function fireOverlays (sortedOverlays) {
-                var layerController = L.control.layers(basemaps, sortedOverlays, {
-                  sortLayers: true,
-                  sortFunction: function (lyr1, lyr2, name1, name2) {
-                    var num = allOverlays.indexOf(name1) - allOverlays.indexOf(name2);
-                    return num;
-                  }
-                });
-                layerController.addTo(map);
-                overlays['{{ lake }}'].addTo(map);
-              } // end sortedOverlays
+              // function fireOverlays (sortedOverlays) {
+              //   var layerController = L.control.layers(basemaps, sortedOverlays, {
+              //     sortLayers: true,
+              //     sortFunction: function (lyr1, lyr2, name1, name2) {
+              //       var num = allOverlays.indexOf(name1) - allOverlays.indexOf(name2);
+              //       return num;
+              //     }
+              //   });
+              //   layerController.addTo(map);
+              //   overlays['{{ lake }}'].addTo(map);
+              // } // end sortedOverlays
 
               // begin getTileUrls function - config & lakeName as args
               function getTileUrls (config, lakeName) {
                 var css = config.carto_story_css;
-                // var interactivity = config.interactivity;
+                var interactivity = config.interactivity;
                 var sql = `select * from ${config.table_name} where res_lbl = '${lakeName}'`;
                 var bb = {{ extent }};
                 map.flyToBounds([[bb[1],bb[0]],[bb[3],bb[2]]]);
@@ -471,11 +471,11 @@
                 });
 
                 var len = ticks.length;
-                labelObject[ticks.length] = "Current";
-                ticks.push(ticks.length);
+                labelObject[len] = "Current";
+                ticks.push(len);
 
                 $("#historicalSlider").slider({
-                  value: ticks.length,
+                  value: len,
                   ticks: ticks,
                   tooltip: 'always',
                     formatter: function(value) {
@@ -536,6 +536,79 @@
                 $("#historicalSlider").css('display', 'block');
                 setupHistoricalSlider(linkConfig);
               }
+
+              // custom control for historical imagery tool, zoom to extent, etc
+              var customControl = L.Control.extend({
+                options: {
+                  position: 'topright'
+                },
+                onAdd: function (map) {
+                  // L.easyButton("<img src={% static 'map/images/home.png' %} />", function(btn, map){
+                  //   map.flyToBounds([[bb[1],bb[0]],[bb[3],bb[2]]]);
+                  // }).addTo(map);
+
+                  var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom mobileCustomControl');
+
+                  return container;
+
+                  container.onclick = function() {
+                    if (container.classList.contains('mobileCustomControl')) {
+                      container.classList.remove('mobileCustomControl');
+                      container.classList.add('desktopCustomControl');
+                      return container;
+                    }
+                    else {
+                      container.classList.remove('desktopCustomControl');
+                      container.classList.add('mobileCustomControl');
+                      return container;
+                    }
+                  }
+
+                  // if (window.innerWidth > 991) {
+                  //
+                  //   var closeButton = L.DomUtil.create('div', 'close', container);
+                  //   closeButton.title = "Minimize tools";
+                  //
+                  //   closeButton.onclick = function(){
+                  //     console.log('clicked close button');
+                  //     container.classList.remove('desktopCustomControl');
+                  //     closeButton.remove();
+                  //     container.classList.add('mobileCustomControl');
+                  //   }
+                  //   return container;
+                  // }
+                  // else if (window.innerWidth <= 991) {
+                  //   var container = L.DomUtil.create('button', 'leaflet-bar leaflet-control leaflet-control-custom mobileCustomControl');
+                  //   var img = L.DomUtil.create('img', 'tool-img', container);
+                  //
+                  //   container.style.display = 'inline';
+                  //   container.title = "Open tools";
+                  //   var closeButton = L.DomUtil.create('div', 'close', container);
+                  //   closeButton.title = "Minimize tools";
+                  //
+                  //   container.onclick = function(){
+                  //     console.log('mobile control clicked');
+                  //     container.classList.remove('mobileCustomControl');
+                  //     container.classList.add('desktopCustomControl');
+                  //   }
+                  //
+                  //   closeButton.onclick = function(){
+                  //     console.log('clicked close button');
+                  //     container.classList.remove('desktopCustomControl');
+                  //     closeButton.remove();
+                  //     container.classList.add('mobileCustomControl');
+                  //   }
+                  //   return container;
+                  // }
+                  // else {
+                  //   console.log('leaflet custom control error');
+                  // }
+                }
+              });
+              // add custom control to map
+              map.addControl(new customControl());
+              // end custom control
+
             } // end of main_map_init function
 
             // setup picture modal event to populate image in modal dynamically
@@ -561,9 +634,10 @@
 
             // for screen sizes greater than mobile breakpoint (991px), detect potential wrapped nav/title/header
             // for longer lake names or multiple nav pills, then css calc story size for scroll
-
             var lakeHeader = document.getElementById('lakeHeader');
             var lakeStory = document.getElementById('lakeStory');
+            var lakeNav = document.getElementById('navbar-contentPanel');
+            var navPills = document.getElementById('storyNav');
 
             window.onload = function() {
               if (window.innerWidth > 991 && lakeHeader.clientHeight > 99) {
