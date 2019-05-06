@@ -537,76 +537,45 @@
                 setupHistoricalSlider(linkConfig);
               }
 
+              // add custom control to map
               // custom control for historical imagery tool, zoom to extent, etc
               var customControl = L.Control.extend({
-                options: {
-                  position: 'topright'
-                },
-                onAdd: function (map) {
-                  // L.easyButton("<img src={% static 'map/images/home.png' %} />", function(btn, map){
-                  //   map.flyToBounds([[bb[1],bb[0]],[bb[3],bb[2]]]);
-                  // }).addTo(map);
+                  options: {
+                    position: 'topright'
+                  },
+                  onAdd: function (map) {
+                    var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom desktopCustomControl');
+                    return container;
+                  },
+                  onRemove: function (map) {
+                  }
+                });
 
-                  var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom mobileCustomControl');
-
-                  return container;
-
-                  container.onclick = function() {
-                    if (container.classList.contains('mobileCustomControl')) {
-                      container.classList.remove('mobileCustomControl');
-                      container.classList.add('desktopCustomControl');
-                      return container;
+              L.easyButton({
+                position: 'topright',
+                id: 'customControl',
+                states: [
+                  {
+                    stateName: 'close',
+                    icon: "<img class='menu-icon' src={% static 'map/images/menu.svg' %} />",
+                    title: 'Open tools menu',
+                    onClick: function(control){
+                      control.state('open');
+                      map.addControl(new customControl);
                     }
-                    else {
-                      container.classList.remove('desktopCustomControl');
-                      container.classList.add('mobileCustomControl');
-                      return container;
+                  },
+                  {
+                    stateName: 'open',
+                    icon: "<img class='menu-icon' src={% static 'map/images/menu-close.svg' %} />",
+                    title: 'Close tools menu',
+                    onClick: function(control, container) {
+                      control.state('close');
+                      contai
                     }
                   }
+                ]
+              }).addTo(map);
 
-                  // if (window.innerWidth > 991) {
-                  //
-                  //   var closeButton = L.DomUtil.create('div', 'close', container);
-                  //   closeButton.title = "Minimize tools";
-                  //
-                  //   closeButton.onclick = function(){
-                  //     console.log('clicked close button');
-                  //     container.classList.remove('desktopCustomControl');
-                  //     closeButton.remove();
-                  //     container.classList.add('mobileCustomControl');
-                  //   }
-                  //   return container;
-                  // }
-                  // else if (window.innerWidth <= 991) {
-                  //   var container = L.DomUtil.create('button', 'leaflet-bar leaflet-control leaflet-control-custom mobileCustomControl');
-                  //   var img = L.DomUtil.create('img', 'tool-img', container);
-                  //
-                  //   container.style.display = 'inline';
-                  //   container.title = "Open tools";
-                  //   var closeButton = L.DomUtil.create('div', 'close', container);
-                  //   closeButton.title = "Minimize tools";
-                  //
-                  //   container.onclick = function(){
-                  //     console.log('mobile control clicked');
-                  //     container.classList.remove('mobileCustomControl');
-                  //     container.classList.add('desktopCustomControl');
-                  //   }
-                  //
-                  //   closeButton.onclick = function(){
-                  //     console.log('clicked close button');
-                  //     container.classList.remove('desktopCustomControl');
-                  //     closeButton.remove();
-                  //     container.classList.add('mobileCustomControl');
-                  //   }
-                  //   return container;
-                  // }
-                  // else {
-                  //   console.log('leaflet custom control error');
-                  // }
-                }
-              });
-              // add custom control to map
-              map.addControl(new customControl());
               // end custom control
 
             } // end of main_map_init function
