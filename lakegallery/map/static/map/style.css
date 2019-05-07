@@ -415,8 +415,13 @@ div.leaflet-control-layers-overlays > label {
 
 div.slider.slider-horizontal {
 	position: absolute;
-	bottom: 30px;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	top: 90px;
 	right: 50px;
+	/* bottom: 30px; */
+	/* right: 50px; */
 	z-index: 100;
 }
 
@@ -460,51 +465,22 @@ div.slider-handle.min-slider-handle.round {
 }
 
 .desktopCustomControl {
-	/* display: none; */
 	background-color: #01253d;
 	opacity: 0.7;
+	width: auto;
+	height: auto;
 	min-width: 300px;
 	min-height: 100px;
+	/* -webkit-transition: width 1s;
+	transition: width 1s; */
 }
 
 .menu-icon {
 	padding: 3px;
 }
 
-.close {
-	width: 15px;
-	height: 15px;
-	display: block;
-	cursor: pointer;
-	border-radius: 2px;
-	background-color: #bfbfbf;
-	/* background-image: url('./static/map/images/glyphicon-remove.png') no-repeat; */
-}
-
 .close:hover {
 	background-color: #ffffff;
-}
-
-/* mobile map tool dialog button - collapsed */
-.mobileCustomControl {
-	/* display: none; */
-	background-color: #fff;
-	/* background-image: url("{% static 'map/images/gears.png'%}") no-repeat; */
-	border-radius: 6px;
-	width: 34px;
-	height: 34px;
-	line-height: 34px;
-	cursor: pointer;
-}
-
-.mobileCustomControl:hover {
-	background-color: #f2f2f2;
-}
-
-.tool-img {
-	/* background-image: url('./static/map/images/gears.png') no-repeat; */
-	width: 30px;
-	height: auto;
 }
 
 /*--------------- STORY MOBILE ---------------*/

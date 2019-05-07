@@ -289,7 +289,8 @@
 
         </div>
       <div class="col-8 mapPanel">
-        <input id="historicalSlider" type="text" style="display:none;"/>
+
+        <input id='historicalSlider' type='text' style='display: none;'/>
 
         {% leaflet_map "storyMap" callback="main_map_init" %}
 
@@ -531,29 +532,43 @@
                 });
               } // end of setupHistoricalSlider function
 
-              // if linkConfig exists, display slider using linkConfig
               if (linkConfig.length > 0) {
-                $("#historicalSlider").css('display', 'block');
+                // $("#historicalSlider").css('display', 'block');
+                $("#historicalSlider").append(timeSliderContainer);
                 setupHistoricalSlider(linkConfig);
               }
 
+              // function addSlider() {
+              //
+              // }
+              //
+              // function hideSlider() {
+              //   $("#historicalSlider").css('display', 'none');
+              // }
+
               // add custom control to map
               // custom control for historical imagery tool, zoom to extent, etc
+              var timeSliderContainer = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom desktopCustomControl');
+              // var htmlSlider = L.DomUtil.create('input', 'historicalSlider', timeSliderContainer);
+              // var html = "<input id='historicalSlider' type='text' style='display: none;'/>";
+              // var htmlContent = L.DomUtil.create(`${htmlSlider}`, '', timeSliderContainer);
+              // document.getElementById("#historicalSlider").appendChild(timeSliderContainer);
+              // console.log(html);
+
               var customControl = L.Control.extend({
                   options: {
-                    position: 'topright'
+                    position: 'topright',
+                    id: 'timeSliderControl',
                   },
                   onAdd: function (map) {
-                    var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom desktopCustomControl');
-                    return container;
-                  },
-                  onRemove: function (map) {
+                    return timeSliderContainer;
                   }
                 });
 
+              // easy button control to turn off and on customControl div w/ time slider
               L.easyButton({
                 position: 'topright',
-                id: 'customControl',
+                id: 'customEasyBtn',
                 states: [
                   {
                     stateName: 'close',
@@ -562,21 +577,23 @@
                     onClick: function(control){
                       control.state('open');
                       map.addControl(new customControl);
+                      document.getElementById('historicalSlider').style.display = 'block';
                     }
                   },
                   {
                     stateName: 'open',
                     icon: "<img class='menu-icon' src={% static 'map/images/menu-close.svg' %} />",
                     title: 'Close tools menu',
-                    onClick: function(control, container) {
+                    onClick: function(control) {
                       control.state('close');
-                      contai
+                      map.removeControl(timeSliderContainer);
+                      // L.DomUtil.remove(htmlSlider);
                     }
                   }
                 ]
               }).addTo(map);
 
-              // end custom control
+              // end easy button control
 
             } // end of main_map_init function
 
@@ -601,12 +618,10 @@
               });
             });
 
-            // for screen sizes greater than mobile breakpoint (991px), detect potential wrapped nav/title/header
-            // for longer lake names or multiple nav pills, then css calc story size for scroll
+            // for screen sizes greater than mobile breakpoint (991px), detect long lake names and navs with
+            // more than ~4 pills that wrap to two lines; css calc story size for proper scroll
             var lakeHeader = document.getElementById('lakeHeader');
             var lakeStory = document.getElementById('lakeStory');
-            var lakeNav = document.getElementById('navbar-contentPanel');
-            var navPills = document.getElementById('storyNav');
 
             window.onload = function() {
               if (window.innerWidth > 991 && lakeHeader.clientHeight > 99) {
