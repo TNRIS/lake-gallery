@@ -41,6 +41,7 @@ img.texas-home:hover {
 }
 
 .dropdown-menu {
+	z-index: 1000;
 	position: relative;
 	min-width: 300px;
 	max-height: 600px;
@@ -398,9 +399,9 @@ div.leaflet-control-layers-overlays > label {
 	cursor: pointer;
 }
 
-.sliderContainer {
+/* .sliderContainer {
 	height: 200px;
-}
+} */
 
 .slider-selection {
 	background: #BABABA;
@@ -414,46 +415,44 @@ div.leaflet-control-layers-overlays > label {
 }
 
 div.slider.slider-horizontal {
-	position: absolute;
-	text-align: center;
+	width: 90%;
 	margin-left: auto;
 	margin-right: auto;
-	top: 90px;
-	right: 50px;
-	/* bottom: 30px; */
-	/* right: 50px; */
-	z-index: 100;
+	position: absolute;
+	margin: 5px;
+	/* bottom: 5px; */
+	left: 10px;
 }
 
-.tooltip {
+/* .tooltip {
 	opacity: 1 !important;
 	cursor: pointer;
-}
+} */
 
-.tooltip.top .tooltip-arrow {
+/* .tooltip.top .tooltip-arrow {
   bottom: -5;
   left: 50%;
   margin-left: -5px;
   border-width: 5px 5px 0;
   border-top-color: #3C5163;
-}
+} */
 
-.tooltip-arrow {
+/* .tooltip-arrow {
   position: absolute;
   width: 0;
   height: 0;
   border-color: transparent;
   border-style: solid;
-}
+} */
 
 .slider {
 	cursor: pointer;
 }
 
-.tooltip-inner {
+/* .tooltip-inner {
 	background-image: linear-gradient(to bottom,#337ab7 0,#3C5163 100%);
 	color: white;
-}
+} */
 
 div.slider-handle.min-slider-handle.round {
 	background-image: linear-gradient(to bottom,#337ab7 0,#3C5163 100%);
@@ -464,15 +463,38 @@ div.slider-handle.min-slider-handle.round {
 	height: calc(100vh - 56px);
 }
 
-.desktopCustomControl {
-	background-color: #01253d;
-	opacity: 0.7;
+#slider-container {
+	position: absolute;
+	background: #01253d; /* older browsers */
+	background: rgb(1,37,61,0.7); /* newer browsers */
+	border-radius: 5px;
+	justify-content: center;
+	top: 12px;
+	right: 45px;
+	z-index: 999;
+	padding: 10px;
 	width: auto;
 	height: auto;
 	min-width: 300px;
 	min-height: 100px;
-	/* -webkit-transition: width 1s;
-	transition: width 1s; */
+}
+
+#bottom-text {
+	bottom: 0;
+}
+
+a.slider-container-links {
+	text-decoration: none;
+}
+
+.slider-container-links {
+	color: #fff;
+	font-size: 14px;
+}
+
+.slider-container-links:hover {
+	color: #f2f2f2;
+	text-decoration: none;
 }
 
 .menu-icon {

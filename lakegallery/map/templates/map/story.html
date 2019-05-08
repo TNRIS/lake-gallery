@@ -288,9 +288,28 @@
           </div>
 
         </div>
-      <div class="col-8 mapPanel">
 
-        <input id='historicalSlider' type='text' style='display: none;'/>
+      <div class="col-8 mapPanel">
+        <!-- story map tools menu - time slider and lake outline, etc -->
+        <div id='slider-container' class='slider-container-style' style="display: none;">
+          <div style="display:flex;">
+            <img src="{% static 'map/images/camera-solid.svg' %}" style="width:20px; height:20px; margin-right:10px;" alt="camera-icon" />
+            <p style="color:white;">View <strong>{{ lake }}</strong> - Past to Present</p>
+          </div>
+
+          <input id='historicalSlider' class='slider-style' type='text'/>
+
+          <hr></hr>
+
+          <div style="display:flex; justify-content:center;">
+            <a href="#" style="bottom:0;">
+              <img src="{% static 'map/images/zoom-to-extent.png' %}" style="margin-right:10px; width:20px; height:20px;"/>
+              <p class="slider-container-links">Full Lake Extent</p>
+            </a>
+            <input type="checkbox" class="leaflet-control-layers-selector" style="bottom:0;" checked>
+            <p style="color:white; bottom:0;">Lake Outline</p>
+          </div>
+        </div>
 
         {% leaflet_map "storyMap" callback="main_map_init" %}
 
@@ -478,10 +497,13 @@
                 $("#historicalSlider").slider({
                   value: len,
                   ticks: ticks,
-                  tooltip: 'always',
-                    formatter: function(value) {
-                      return labelObject[value];
-                    }
+                  ticks_labels: function(value) {
+                    return labelObject[value];
+                  }
+                  // tooltip: 'always',
+                  //   formatter: function(value) {
+                  //     return labelObject[value];
+                  //   }
                 });
 
                 var slideStart;
@@ -533,51 +555,21 @@
               } // end of setupHistoricalSlider function
 
               if (linkConfig.length > 0) {
-                // $("#historicalSlider").css('display', 'block');
-                $("#historicalSlider").append(timeSliderContainer);
                 setupHistoricalSlider(linkConfig);
               }
 
-              // function addSlider() {
-              //
-              // }
-              //
-              // function hideSlider() {
-              //   $("#historicalSlider").css('display', 'none');
-              // }
-
-              // add custom control to map
-              // custom control for historical imagery tool, zoom to extent, etc
-              var timeSliderContainer = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom desktopCustomControl');
-              // var htmlSlider = L.DomUtil.create('input', 'historicalSlider', timeSliderContainer);
-              // var html = "<input id='historicalSlider' type='text' style='display: none;'/>";
-              // var htmlContent = L.DomUtil.create(`${htmlSlider}`, '', timeSliderContainer);
-              // document.getElementById("#historicalSlider").appendChild(timeSliderContainer);
-              // console.log(html);
-
-              var customControl = L.Control.extend({
-                  options: {
-                    position: 'topright',
-                    id: 'timeSliderControl',
-                  },
-                  onAdd: function (map) {
-                    return timeSliderContainer;
-                  }
-                });
-
-              // easy button control to turn off and on customControl div w/ time slider
+              // easy button control to turn off and on container div w/ time slider
               L.easyButton({
                 position: 'topright',
                 id: 'customEasyBtn',
                 states: [
                   {
-                    stateName: 'close',
+                    stateName: 'closed',
                     icon: "<img class='menu-icon' src={% static 'map/images/menu.svg' %} />",
                     title: 'Open tools menu',
                     onClick: function(control){
                       control.state('open');
-                      map.addControl(new customControl);
-                      document.getElementById('historicalSlider').style.display = 'block';
+                      $("#slider-container").css('display', 'block');
                     }
                   },
                   {
@@ -585,9 +577,8 @@
                     icon: "<img class='menu-icon' src={% static 'map/images/menu-close.svg' %} />",
                     title: 'Close tools menu',
                     onClick: function(control) {
-                      control.state('close');
-                      map.removeControl(timeSliderContainer);
-                      // L.DomUtil.remove(htmlSlider);
+                      control.state('closed');
+                      $("#slider-container").css('display', 'none');
                     }
                   }
                 ]
