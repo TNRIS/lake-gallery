@@ -43,11 +43,12 @@
           var utfGrid;
 
           // var rwpasConfig = JSON.parse('{{ layers.rwpas }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
-          var reservoirsPointConfig = JSON.parse('{{ layers.reservoirs_point }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
+          var reservoirsPtConfig = JSON.parse('{{ layers.reservoirs_pt }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
+          var reservoirsPolyConfig = JSON.parse('{{ layers.reservoirs_poly }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
 
           function getTileUrls (config, regionLetter) {
             var css = config.carto_css;
-            // css += config.carto_lbl;
+            css += config.carto_lbl;
             var interactivity = config.interactivity;
 
             var sql = `select * from ${config.table_name}`;
@@ -87,8 +88,10 @@
                 });
                 utfGrid.on('click', function (e) {
                   if (e.data) {
-                    var regionLink = '/' + e.data.letter;
-                    window.location.href = regionLink;
+                    console.log(e.data);
+                    var lakeLink = '/' + e.data.letter;
+                    // var lakeLink = '/';
+                    window.location.href = lakeLink;
                   }
                 });
                 utfGrid.addTo(map);
@@ -96,8 +99,29 @@
             })
           }
 
-          // getTileUrls(rwpasConfig);
-          getTileUrls(reservoirsPointConfig);
+          function removeTileUrls(c) {
+
+
+          }
+
+          // default home index zoom level draws point reservoir layer
+          getTileUrls(reservoirsPtConfig);
+
+          // detect zoom level to know when to switch between points & polygons
+          map.on('zoomend', function() {
+            var zoomLevel = map.getZoom();
+            console.log(zoomLevel);
+            if(zoomLevel > 10) {
+              removeTileUrls(reservoirsPtConfig);
+              getTileUrls(reservoirsPolyConfig);
+            }
+            else {
+              // map.removeLayer(reservoirsPolyConfig);
+              removeTileUrls();
+              getTileUrls(reservoirsPtConfig);
+              // var markers = L.markerClusterGroup();
+            }
+          });
         }
 
         // show modal on load if localstorage doesn't say they've opt'd out

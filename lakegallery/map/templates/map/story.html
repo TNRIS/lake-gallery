@@ -289,9 +289,10 @@
 
         </div>
 
+      <!-- map div -->
       <div class="col-8 mapPanel">
         <!-- story map tools menu - time slider and lake outline, etc -->
-        <div id='slider-container' class='slider-container-style' style="display: none;">
+        <div id='slider-container' style="display: none;">
           <div style="display:flex;">
             <img src="{% static 'map/images/camera-solid.svg' %}" style="width:20px; height:20px; margin-right:10px;" alt="camera-icon" />
             <p style="color:white;">View <strong>{{ lake }}</strong> - Past to Present</p>
@@ -306,7 +307,8 @@
               <img src="{% static 'map/images/zoom-to-extent.png' %}" style="margin-right:10px; width:20px; height:20px;"/>
               <p class="slider-container-links">Full Lake Extent</p>
             </a>
-            <input type="checkbox" class="leaflet-control-layers-selector" style="bottom:0;" checked>
+            <!-- <input id="lakeOverlay" type="checkbox" class="leaflet-control-layers-selector" style="bottom:0;" onchange="lakeOverlay()" checked> -->
+            <input id="lakeOverlay" type="checkbox" checked />
             <p style="color:white; bottom:0;">Lake Outline</p>
           </div>
         </div>
@@ -374,14 +376,14 @@
                     var tileLayer = new L.tileLayer(url, {
                       attribution: '<a href="https://www.lcra.org" target="_blank">LCRA</a>'
                     });
-                    // overlays[config.toc_label] = tileLayer;
-                    // if (Object.keys(overlays).length == (allOverlays.length - 1)) {
+                    overlays[config.toc_label] = tileLayer;
+                    if (Object.keys(overlays).length == (allOverlays.length - 1)) {
                       // must re-sort the overlay object. although objects don't have orders, somehow
                       // leaflet controller recognizes the order in which the layers are added to the
                       // overlay object and z-indexes the layers based off of that. we re-order so
                       // point are on top of polygons
-                    //   sortOverlays();
-                    // }
+                      sortOverlays();
+                    }
                   }
                 })
               } // end loadOverlay function
@@ -413,17 +415,17 @@
               // } // end sortOverlays function
 
               // begin fireOverlays function w/ sortedOverlays as arg
-              // function fireOverlays (sortedOverlays) {
-              //   var layerController = L.control.layers(basemaps, sortedOverlays, {
-              //     sortLayers: true,
-              //     sortFunction: function (lyr1, lyr2, name1, name2) {
-              //       var num = allOverlays.indexOf(name1) - allOverlays.indexOf(name2);
-              //       return num;
-              //     }
-              //   });
-              //   layerController.addTo(map);
-              //   overlays['{{ lake }}'].addTo(map);
-              // } // end sortedOverlays
+              function fireOverlays (sortedOverlays) {
+                var layerController = L.control.layers(basemaps, sortedOverlays, {
+                  sortLayers: true,
+                  sortFunction: function (lyr1, lyr2, name1, name2) {
+                    var num = allOverlays.indexOf(name1) - allOverlays.indexOf(name2);
+                    return num;
+                  }
+                });
+                layerController.addTo(map);
+                overlays['{{ lake }}'].addTo(map);
+              } // end sortedOverlays
 
               // begin getTileUrls function - config & lakeName as args
               function getTileUrls (config, lakeName) {
@@ -432,10 +434,6 @@
                 var sql = `select * from ${config.table_name} where res_lbl = '${lakeName}'`;
                 var bb = {{ extent }};
                 map.flyToBounds([[bb[1],bb[0]],[bb[3],bb[2]]]);
-
-                // L.easyButton("<img src={% static 'map/images/home.png' %} />", function(btn, map){
-                //   map.flyToBounds([[bb[1],bb[0]],[bb[3],bb[2]]]);
-                // }).addTo(map);
 
                 var mapconfig = {
                   "version": "1.3.1",
@@ -558,6 +556,12 @@
                 setupHistoricalSlider(linkConfig);
               }
 
+              // lake polygon overlay input checkbox in tools/time slider container
+              function lakeOverlay() {
+                var checkbox = document.getElementById("lakeOverlay");
+                checkbox.style.display = ":checked" ? alert("checked") : alert("unchecked");
+              };
+
               // easy button control to turn off and on container div w/ time slider
               L.easyButton({
                 position: 'topright',
@@ -570,6 +574,7 @@
                     onClick: function(control){
                       control.state('open');
                       $("#slider-container").css('display', 'block');
+                      lakeOverlay();
                     }
                   },
                   {
