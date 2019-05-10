@@ -291,6 +291,7 @@
 
       <!-- map div -->
       <div class="col-8 mapPanel">
+
         <!-- story map tools menu - time slider and lake outline, etc -->
         <div id='slider-container' style="display: none;">
           <div style="display:flex;">
@@ -298,19 +299,25 @@
             <p style="color:white;">View <strong>{{ lake }}</strong> - Past to Present</p>
           </div>
 
-          <input id='historicalSlider' class='slider-style' type='text'/>
-
-          <hr></hr>
-
-          <div style="display:flex; justify-content:center;">
-            <a href="#" style="bottom:0;">
-              <img src="{% static 'map/images/zoom-to-extent.png' %}" style="margin-right:10px; width:20px; height:20px;"/>
-              <p class="slider-container-links">Full Lake Extent</p>
-            </a>
-            <!-- <input id="lakeOverlay" type="checkbox" class="leaflet-control-layers-selector" style="bottom:0;" onchange="lakeOverlay()" checked> -->
-            <input id="lakeOverlay" type="checkbox" checked />
-            <p style="color:white; bottom:0;">Lake Outline</p>
+          <div style="display:flext;">
+            <input id='historicalSlider' class='slider-style' type='text'/>
           </div>
+
+          <div style="display:flex;">
+            <hr id="slider-separator">
+          </div>
+
+          <div class="slider-container-text bottom-container">
+            <div>
+              <img src="{% static 'map/images/zoom-to-extent.png' %}" style="width:20px; height:20px;"></img>
+              <a href="#" class="link">Full Lake Extent</a>
+            </div>
+            <div style="float:right;">
+              <input id="lakeOverlay" name="lakeOverlay" onclick="lakeOverlay()" type="checkbox" checked />
+              <p>Lake Outline</p>
+            </div>
+          </div>
+
         </div>
 
         {% leaflet_map "storyMap" callback="main_map_init" %}
@@ -377,13 +384,13 @@
                       attribution: '<a href="https://www.lcra.org" target="_blank">LCRA</a>'
                     });
                     overlays[config.toc_label] = tileLayer;
-                    if (Object.keys(overlays).length == (allOverlays.length - 1)) {
-                      // must re-sort the overlay object. although objects don't have orders, somehow
-                      // leaflet controller recognizes the order in which the layers are added to the
-                      // overlay object and z-indexes the layers based off of that. we re-order so
-                      // point are on top of polygons
-                      sortOverlays();
-                    }
+                    // if (Object.keys(overlays).length == (allOverlays.length - 1)) {
+                    //   // must re-sort the overlay object. although objects don't have orders, somehow
+                    //   // leaflet controller recognizes the order in which the layers are added to the
+                    //   // overlay object and z-indexes the layers based off of that. we re-order so
+                    //   // point are on top of polygons
+                    //   sortOverlays();
+                    // }
                   }
                 })
               } // end loadOverlay function
@@ -415,17 +422,17 @@
               // } // end sortOverlays function
 
               // begin fireOverlays function w/ sortedOverlays as arg
-              function fireOverlays (sortedOverlays) {
-                var layerController = L.control.layers(basemaps, sortedOverlays, {
-                  sortLayers: true,
-                  sortFunction: function (lyr1, lyr2, name1, name2) {
-                    var num = allOverlays.indexOf(name1) - allOverlays.indexOf(name2);
-                    return num;
-                  }
-                });
-                layerController.addTo(map);
-                overlays['{{ lake }}'].addTo(map);
-              } // end sortedOverlays
+              // function fireOverlays (sortedOverlays) {
+              //   var layerController = L.control.layers(basemaps, sortedOverlays, {
+              //     sortLayers: true,
+              //     sortFunction: function (lyr1, lyr2, name1, name2) {
+              //       var num = allOverlays.indexOf(name1) - allOverlays.indexOf(name2);
+              //       return num;
+              //     }
+              //   });
+              //   layerController.addTo(map);
+              //   overlays['{{ lake }}'].addTo(map);
+              // } // end sortedOverlays
 
               // begin getTileUrls function - config & lakeName as args
               function getTileUrls (config, lakeName) {
@@ -556,12 +563,6 @@
                 setupHistoricalSlider(linkConfig);
               }
 
-              // lake polygon overlay input checkbox in tools/time slider container
-              function lakeOverlay() {
-                var checkbox = document.getElementById("lakeOverlay");
-                checkbox.style.display = ":checked" ? alert("checked") : alert("unchecked");
-              };
-
               // easy button control to turn off and on container div w/ time slider
               L.easyButton({
                 position: 'topright',
@@ -592,6 +593,12 @@
               // end easy button control
 
             } // end of main_map_init function
+
+            // lake polygon overlay input checkbox function - in tools/time slider container
+            function lakeOverlay() {
+              var checkbox = document.getElementById("lakeOverlay");
+              checkbox.checked == true ? console.log('checked') : console.log('unchecked');
+            };
 
             // setup picture modal event to populate image in modal dynamically
             // setup page effect on story

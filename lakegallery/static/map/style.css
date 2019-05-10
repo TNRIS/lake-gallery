@@ -399,10 +399,6 @@ div.leaflet-control-layers-overlays > label {
 	cursor: pointer;
 }
 
-/* .sliderContainer {
-	height: 200px;
-} */
-
 .slider-selection {
 	background: #BABABA;
 }
@@ -479,30 +475,50 @@ div.slider-handle.min-slider-handle.round {
 	min-height: 100px;
 }
 
-#bottom-text {
+.bottom-container {
 	bottom: 0;
+	width: 100%;
+	text-align: center;
+	display: flex;
 }
 
-a.slider-container-links {
+#line {
+	float: left;
+	width: 95%;
+	height: 20px;
+}
+
+hr.slider-separator {
+  border: 0;
+  clear: both;
+  display: block;
+  width: 100%;
+  height: 3px;
+}
+
+.slider-container-text {
 	text-decoration: none;
-}
-
-.slider-container-links {
 	color: #fff;
 	font-size: 14px;
 }
 
-.slider-container-links:hover {
-	color: #f2f2f2;
+.link {
+	color: #fff;
+	width: 50%;
+	float: left;
+}
+
+#lakeOverlay {
+	width: 50%;
+}
+
+.link:hover {
+	color: #d9d9d9;
 	text-decoration: none;
 }
 
 .menu-icon {
 	padding: 3px;
-}
-
-.close:hover {
-	background-color: #ffffff;
 }
 
 /*--------------- STORY MOBILE ---------------*/
