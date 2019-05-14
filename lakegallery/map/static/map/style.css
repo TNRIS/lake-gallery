@@ -245,26 +245,9 @@ img.texas-home:hover {
 		border-bottom: 1px solid #d9d9d9;
 		padding-bottom: 10px;
 	}
-	/* .contentText {
-		margin-top: 20px;
-		height: calc(100vh - 110px);
-	} */
 }
-
-/* @media (min-width: 991px) and (max-width: 1367px) {
-	.contentText {
-		height: calc(100vh - 185px);
-	}
-}
-
-@media (min-width: 1367px) {
-	.contentText {
-		height: calc(100vh - 158px);
-	}
-} */
 
 .contentText {
-	/* height: calc(100% - 158px); */
 	overflow: hidden;
   overflow-y: auto;
   padding: 0px 20px 20px 20px;
@@ -403,6 +386,11 @@ div.leaflet-control-layers-overlays > label {
 	background: #BABABA;
 }
 
+.slider-tick-label-container {
+	color: white;
+	font-size: 14px;
+}
+
 #sliderToggler {
 	position: absolute;
 	bottom: 40px;
@@ -415,9 +403,7 @@ div.slider.slider-horizontal {
 	margin-left: auto;
 	margin-right: auto;
 	position: absolute;
-	margin: 5px;
-	/* bottom: 5px; */
-	left: 10px;
+	/* margin: 5px; */
 }
 
 /* .tooltip {
@@ -459,18 +445,14 @@ div.slider-handle.min-slider-handle.round {
 	height: calc(100vh - 56px);
 }
 
-#customEasyBtn {
-	z-index: 1000;
-}
-
 #slider-container {
 	position: absolute;
 	background: #01253d; /* older browsers (no transparency) */
 	background: rgb(1,37,61,0.7); /* newer browsers (transparent) */
 	border-radius: 5px;
 	justify-content: center;
-	top: 42px;
-	right: 42px;
+	top: 10px;
+	right: 45px;
 	z-index: 999;
 	padding: 10px;
 	width: auto;
@@ -479,25 +461,28 @@ div.slider-handle.min-slider-handle.round {
 	min-height: 100px;
 }
 
+.slider-container-header {
+	display: flex;
+	text-align: center;
+	width: 100%;
+	color: #fff;
+}
+
 .bottom-container {
-	bottom: 0;
+	display: flex;
 	width: 100%;
 	text-align: center;
-	display: flex;
+	display: inline-block;
+	max-height: 25px;
+	margin: 0 auto;
 }
 
-#line {
-	float: left;
-	width: 95%;
-	height: 20px;
-}
-
-hr.slider-separator {
-  border: 0;
-  clear: both;
-  display: block;
-  width: 100%;
-  height: 3px;
+hr.separator {
+  height: 0.5px;
+	color: #fff;
+	background-color: #fff;
+	border: none;
+	opacity: 0.5;
 }
 
 .slider-container-text {
@@ -508,17 +493,34 @@ hr.slider-separator {
 
 .link {
 	color: #fff;
-	width: 50%;
-	float: left;
-}
-
-#lakeOverlay {
-	width: 50%;
+	width: 100%;
+	text-decoration: none;
 }
 
 .link:hover {
 	color: #d9d9d9;
 	text-decoration: none;
+}
+
+.historical-link {
+	text-decoration: none;
+	color: #fff;
+}
+
+.historical-link:hover {
+	text-decoration: none;
+	color: #82b3de;
+}
+
+.extent {
+	width: 20px;
+	height: 20px;
+	float: left;
+	margin-right: 5px;
+}
+
+.extent:hover {
+	filter: opacity(50%);
 }
 
 .menu-icon {

@@ -298,28 +298,31 @@
 
           </div> -->
 
-          <div style="display:flex;">
+          <div class="slider-container-header">
             <img src="{% static 'map/images/camera-solid.svg' %}" style="width:20px; height:20px; margin-right:10px;" alt="camera-icon" />
-            <p style="color:white;">View <strong>{{ lake }}</strong> - Past to Present</p>
+            <p>View <strong>{{ lake }}</strong> - Past to Present</p>
           </div>
 
-          <div style="display:flext;">
-            <input id='historicalSlider' class='slider-style' type='text'/>
+          <div style="width:100%; min-height:50px;">
+            <input id='historicalSlider' type='text'/>
           </div>
 
-          <div style="display:flex;">
-            <hr id="slider-separator">
-          </div>
+          <hr class="separator">
 
           <div class="slider-container-text bottom-container">
-            <div>
-              <img src="{% static 'map/images/zoom-to-extent.png' %}" style="width:20px; height:20px;"></img>
-              <a href="#" class="link">Full Lake Extent</a>
+
+            <div style="float:left;">
+              <a href="#" onclick="zoomExtent();" class="link">
+                <img class="extent" src="{% static 'map/images/extent.png' %}" />
+                Full Lake Extent
+              </a>
             </div>
+
             <div style="float:right;">
-              <input id="lakeOverlay" name="lakeOverlay" onclick="lakeOverlay()" type="checkbox" checked />
-              <p>Lake Outline</p>
+              <input style="float:left;" id="lakeOverlay" name="lakeOverlay" onclick="lakeOverlay()" type="checkbox" checked />
+              <label style="padding-left:5px;">Lake Outline</label>
             </div>
+
           </div>
 
         </div>
@@ -403,26 +406,26 @@
               function sortOverlays () {
                 var sortedOverlays = {};
                 var index = 1;
-                function addSortedOverlay () {
-                  if (index < allOverlays.length) {
-                      var layerToLoad = allOverlays[index];
-                      var overlayData = overlays[layerToLoad];
-                      var htmlName;
-                      // add img to layer control. ***IMG file name must be same as toc_label
-                      if (layerToLoad == "{{ lake }}") {
-                        htmlName = `<span>${layerToLoad}</span><br /><img src="${static_url}Lake.png" />`;
-                      } else {
-                        htmlName = `<span>${layerToLoad}</span><br /><img src="${static_url}${layerToLoad}.png" />`;
-                      }
-                      sortedOverlays[htmlName] = overlayData;
-                      ++index;
-                      addSortedOverlay();
-                  }
-                  else {
-                    fireOverlays(sortedOverlays);
-                  }
-                }
-                addSortedOverlay();
+                // function addSortedOverlay () {
+                //   if (index < allOverlays.length) {
+                //       var layerToLoad = allOverlays[index];
+                //       var overlayData = overlays[layerToLoad];
+                //       var htmlName;
+                //       // add img to layer control. ***IMG file name must be same as toc_label
+                //       if (layerToLoad == "{{ lake }}") {
+                //         htmlName = `<span>${layerToLoad}</span><br /><img src="${static_url}Lake.png" />`;
+                //       } else {
+                //         htmlName = `<span>${layerToLoad}</span><br /><img src="${static_url}${layerToLoad}.png" />`;
+                //       }
+                //       sortedOverlays[htmlName] = overlayData;
+                //       ++index;
+                //       addSortedOverlay();
+                //   }
+                //   else {
+                //     fireOverlays(sortedOverlays);
+                //   }
+                // }
+                // addSortedOverlay();
               } // end sortOverlays function
 
               // begin fireOverlays function w/ sortedOverlays as arg
@@ -434,7 +437,7 @@
                     return num;
                   }
                 });
-                layerController.addTo(map);
+                // layerController.addTo(map);
                 overlays['{{ lake }}'].addTo(map);
               } // end sortedOverlays
 
@@ -471,7 +474,7 @@
                     lakeLayer = new L.tileLayer(url);
                     overlays['{{ lake }}'] = lakeLayer;
 
-                    overlays["{{ lake }}"].addTo(map);
+                    // overlays["{{ lake }}"].addTo(map);
 
                     // we added lake separately from other overlays since it uses a seperate config
                     // also, so that we could get the map bounds moving without waiting for all overlays
@@ -505,17 +508,25 @@
                 var len = ticks.length;
                 labelObject[len] = "Current";
                 ticks.push(len);
+                console.log("labelObject: ",labelObject);
+
+                // create labels for time slider with links to datahub historical imagery
+                var labelArray = [];
+                var positionArray = [];
+
+                Object.values(labelObject).forEach(function (value) {
+                  value != 'Current' ? labelArray.push(`<a href='#' target='_blank' class='historical-link' title='get it on datahub'>${value}</a>`)
+                  : labelArray.push('Current');
+                });
+                // end label array function
+
+                console.log(labelArray);
 
                 $("#historicalSlider").slider({
                   value: len,
                   ticks: ticks,
-                  ticks_labels: function(value) {
-                    return labelObject[value];
-                  }
-                  // tooltip: 'always',
-                  //   formatter: function(value) {
-                  //     return labelObject[value];
-                  //   }
+                  ticks_labels: labelArray,
+                  ticks_positions: positionArray
                 });
 
                 var slideStart;
