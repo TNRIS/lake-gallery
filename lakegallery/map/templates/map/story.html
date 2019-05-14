@@ -294,6 +294,10 @@
 
         <!-- story map tools menu - time slider and lake outline, etc -->
         <div id='slider-container' style="display: none;">
+          <!-- <div style="float:right; background-color:white; width:30px; height:30px; border-radius:5px; top:0; right:0; border-width:2px; border-color: rgba(0,0,0,0.7);">
+
+          </div> -->
+
           <div style="display:flex;">
             <img src="{% static 'map/images/camera-solid.svg' %}" style="width:20px; height:20px; margin-right:10px;" alt="camera-icon" />
             <p style="color:white;">View <strong>{{ lake }}</strong> - Past to Present</p>
@@ -384,55 +388,55 @@
                       attribution: '<a href="https://www.lcra.org" target="_blank">LCRA</a>'
                     });
                     overlays[config.toc_label] = tileLayer;
-                    // if (Object.keys(overlays).length == (allOverlays.length - 1)) {
+                    if (Object.keys(overlays).length == (allOverlays.length - 1)) {
                     //   // must re-sort the overlay object. although objects don't have orders, somehow
                     //   // leaflet controller recognizes the order in which the layers are added to the
                     //   // overlay object and z-indexes the layers based off of that. we re-order so
                     //   // point are on top of polygons
-                    //   sortOverlays();
-                    // }
+                      sortOverlays();
+                    }
                   }
                 })
               } // end loadOverlay function
 
               // begin sortOverlays function
-              // function sortOverlays () {
-              //   var sortedOverlays = {};
-              //   var index = 1;
-              //   function addSortedOverlay () {
-              //     if (index < allOverlays.length) {
-              //         var layerToLoad = allOverlays[index];
-              //         var overlayData = overlays[layerToLoad];
-              //         var htmlName;
-              //         // add img to layer control. ***IMG file name must be same as toc_label
-              //         if (layerToLoad == "{{ lake }}") {
-              //           htmlName = `<span>${layerToLoad}</span><br /><img src="${static_url}Lake.png" />`;
-              //         } else {
-              //           htmlName = `<span>${layerToLoad}</span><br /><img src="${static_url}${layerToLoad}.png" />`;
-              //         }
-              //         sortedOverlays[htmlName] = overlayData;
-              //         ++index;
-              //         addSortedOverlay();
-              //     }
-              //     else {
-              //       fireOverlays(sortedOverlays);
-              //     }
-              //   }
-              //   addSortedOverlay();
-              // } // end sortOverlays function
+              function sortOverlays () {
+                var sortedOverlays = {};
+                var index = 1;
+                function addSortedOverlay () {
+                  if (index < allOverlays.length) {
+                      var layerToLoad = allOverlays[index];
+                      var overlayData = overlays[layerToLoad];
+                      var htmlName;
+                      // add img to layer control. ***IMG file name must be same as toc_label
+                      if (layerToLoad == "{{ lake }}") {
+                        htmlName = `<span>${layerToLoad}</span><br /><img src="${static_url}Lake.png" />`;
+                      } else {
+                        htmlName = `<span>${layerToLoad}</span><br /><img src="${static_url}${layerToLoad}.png" />`;
+                      }
+                      sortedOverlays[htmlName] = overlayData;
+                      ++index;
+                      addSortedOverlay();
+                  }
+                  else {
+                    fireOverlays(sortedOverlays);
+                  }
+                }
+                addSortedOverlay();
+              } // end sortOverlays function
 
               // begin fireOverlays function w/ sortedOverlays as arg
-              // function fireOverlays (sortedOverlays) {
-              //   var layerController = L.control.layers(basemaps, sortedOverlays, {
-              //     sortLayers: true,
-              //     sortFunction: function (lyr1, lyr2, name1, name2) {
-              //       var num = allOverlays.indexOf(name1) - allOverlays.indexOf(name2);
-              //       return num;
-              //     }
-              //   });
-              //   layerController.addTo(map);
-              //   overlays['{{ lake }}'].addTo(map);
-              // } // end sortedOverlays
+              function fireOverlays (sortedOverlays) {
+                var layerController = L.control.layers(basemaps, sortedOverlays, {
+                  sortLayers: true,
+                  sortFunction: function (lyr1, lyr2, name1, name2) {
+                    var num = allOverlays.indexOf(name1) - allOverlays.indexOf(name2);
+                    return num;
+                  }
+                });
+                layerController.addTo(map);
+                overlays['{{ lake }}'].addTo(map);
+              } // end sortedOverlays
 
               // begin getTileUrls function - config & lakeName as args
               function getTileUrls (config, lakeName) {
@@ -449,8 +453,8 @@
                     "options": {
                       "cartocss_version": "2.1.1",
                       "cartocss": css,
-                      "sql": sql
-                      // "interactivity": interactivity
+                      "sql": sql,
+                      "interactivity": interactivity
                     }
                   }]
                 }
@@ -467,12 +471,15 @@
                     lakeLayer = new L.tileLayer(url);
                     overlays['{{ lake }}'] = lakeLayer;
 
+                    overlays["{{ lake }}"].addTo(map);
+
                     // we added lake separately from other overlays since it uses a seperate config
                     // also, so that we could get the map bounds moving without waiting for all overlays
                     // to load
                     Object.keys(overlayConfig).forEach(function (key) {
                       loadOverlay(overlayConfig[key]);
                     });
+
                   }
                 })
               } // end getTileUrls function
@@ -575,7 +582,7 @@
                     onClick: function(control){
                       control.state('open');
                       $("#slider-container").css('display', 'block');
-                      lakeOverlay();
+                      // lakeOverlay(document.getElementById("lakeOverlay"));
                     }
                   },
                   {
@@ -585,20 +592,22 @@
                     onClick: function(control) {
                       control.state('closed');
                       $("#slider-container").css('display', 'none');
+                      // lakeOverlay(document.getElementById("lakeOverlay"));
                     }
                   }
                 ]
               }).addTo(map);
-
               // end easy button control
+
 
             } // end of main_map_init function
 
             // lake polygon overlay input checkbox function - in tools/time slider container
-            function lakeOverlay() {
-              var checkbox = document.getElementById("lakeOverlay");
-              checkbox.checked == true ? console.log('checked') : console.log('unchecked');
-            };
+            this.lakeOverlay = function(i) {
+              // var checkbox = document.getElementById("lakeOverlay");
+              // && overlays["{{ lake }}"].addTo(map)
+              i.checked == true ? console.log('checked') : console.log('unchecked');
+            }.bind(this);
 
             // setup picture modal event to populate image in modal dynamically
             // setup page effect on story
@@ -622,7 +631,7 @@
             });
 
             // for screen sizes greater than mobile breakpoint (991px), detect long lake names and navs with
-            // more than ~4 pills that wrap to two lines; css calc story size for proper scroll
+            // more than ~4 pills that wrap to two lines; css calc story height for proper scroll
             var lakeHeader = document.getElementById('lakeHeader');
             var lakeStory = document.getElementById('lakeStory');
 

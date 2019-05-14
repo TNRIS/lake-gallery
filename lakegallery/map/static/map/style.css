@@ -459,14 +459,18 @@ div.slider-handle.min-slider-handle.round {
 	height: calc(100vh - 56px);
 }
 
+#customEasyBtn {
+	z-index: 1000;
+}
+
 #slider-container {
 	position: absolute;
-	background: #01253d; /* older browsers */
-	background: rgb(1,37,61,0.7); /* newer browsers */
+	background: #01253d; /* older browsers (no transparency) */
+	background: rgb(1,37,61,0.7); /* newer browsers (transparent) */
 	border-radius: 5px;
 	justify-content: center;
-	top: 12px;
-	right: 45px;
+	top: 42px;
+	right: 42px;
 	z-index: 999;
 	padding: 10px;
 	width: auto;
