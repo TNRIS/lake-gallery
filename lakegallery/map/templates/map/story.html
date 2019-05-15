@@ -312,15 +312,15 @@
           <div class="slider-container-text bottom-container">
 
             <div style="float:left;">
-              <a href="#" onclick="zoomExtent();" class="link">
+              <a href="#" onclick=`${console.log('test')}` class="link">
                 <img class="extent" src="{% static 'map/images/extent.png' %}" />
                 Full Lake Extent
               </a>
             </div>
 
             <div style="float:right;">
-              <input style="float:left;" id="lakeOverlay" name="lakeOverlay" onclick="lakeOverlay()" type="checkbox" checked />
-              <label style="padding-left:5px;">Lake Outline</label>
+              <input type="checkbox" id="lakeOverlay" name="overlay" style="float:left;" value="checked" checked />
+              <label for="lakeOverlay" style="padding-left:5px;">Lake Outline</label>
             </div>
 
           </div>
@@ -392,10 +392,10 @@
                     });
                     overlays[config.toc_label] = tileLayer;
                     if (Object.keys(overlays).length == (allOverlays.length - 1)) {
-                    //   // must re-sort the overlay object. although objects don't have orders, somehow
-                    //   // leaflet controller recognizes the order in which the layers are added to the
-                    //   // overlay object and z-indexes the layers based off of that. we re-order so
-                    //   // point are on top of polygons
+                      // must re-sort the overlay object. although objects don't have orders, somehow
+                      // leaflet controller recognizes the order in which the layers are added to the
+                      // overlay object and z-indexes the layers based off of that. we re-order so
+                      // point are on top of polygons
                       sortOverlays();
                     }
                   }
@@ -406,26 +406,26 @@
               function sortOverlays () {
                 var sortedOverlays = {};
                 var index = 1;
-                // function addSortedOverlay () {
-                //   if (index < allOverlays.length) {
-                //       var layerToLoad = allOverlays[index];
-                //       var overlayData = overlays[layerToLoad];
-                //       var htmlName;
-                //       // add img to layer control. ***IMG file name must be same as toc_label
-                //       if (layerToLoad == "{{ lake }}") {
-                //         htmlName = `<span>${layerToLoad}</span><br /><img src="${static_url}Lake.png" />`;
-                //       } else {
-                //         htmlName = `<span>${layerToLoad}</span><br /><img src="${static_url}${layerToLoad}.png" />`;
-                //       }
-                //       sortedOverlays[htmlName] = overlayData;
-                //       ++index;
-                //       addSortedOverlay();
-                //   }
-                //   else {
-                //     fireOverlays(sortedOverlays);
-                //   }
-                // }
-                // addSortedOverlay();
+                function addSortedOverlay () {
+                  if (index < allOverlays.length) {
+                      var layerToLoad = allOverlays[index];
+                      var overlayData = overlays[layerToLoad];
+                      var htmlName;
+                      // add img to layer control. ***IMG file name must be same as toc_label
+                      if (layerToLoad == "{{ lake }}") {
+                        htmlName = `<span>${layerToLoad}</span><br /><img src="${static_url}Lake.png" />`;
+                      } else {
+                        htmlName = `<span>${layerToLoad}</span><br /><img src="${static_url}${layerToLoad}.png" />`;
+                      }
+                      sortedOverlays[htmlName] = overlayData;
+                      ++index;
+                      addSortedOverlay();
+                  }
+                  else {
+                    fireOverlays(sortedOverlays);
+                  }
+                }
+                addSortedOverlay();
               } // end sortOverlays function
 
               // begin fireOverlays function w/ sortedOverlays as arg
@@ -474,7 +474,7 @@
                     lakeLayer = new L.tileLayer(url);
                     overlays['{{ lake }}'] = lakeLayer;
 
-                    // overlays["{{ lake }}"].addTo(map);
+                    overlays["{{ lake }}"].addTo(map);
 
                     // we added lake separately from other overlays since it uses a seperate config
                     // also, so that we could get the map bounds moving without waiting for all overlays
@@ -508,7 +508,6 @@
                 var len = ticks.length;
                 labelObject[len] = "Current";
                 ticks.push(len);
-                console.log("labelObject: ",labelObject);
 
                 // create labels for time slider with links to datahub historical imagery
                 var labelArray = [];
@@ -519,8 +518,6 @@
                   : labelArray.push('Current');
                 });
                 // end label array function
-
-                console.log(labelArray);
 
                 $("#historicalSlider").slider({
                   value: len,
@@ -593,7 +590,6 @@
                     onClick: function(control){
                       control.state('open');
                       $("#slider-container").css('display', 'block');
-                      // lakeOverlay(document.getElementById("lakeOverlay"));
                     }
                   },
                   {
@@ -603,23 +599,28 @@
                     onClick: function(control) {
                       control.state('closed');
                       $("#slider-container").css('display', 'none');
-                      // lakeOverlay(document.getElementById("lakeOverlay"));
                     }
                   }
                 ]
               }).addTo(map);
               // end easy button control
 
+              // lake polygon overlay input checkbox function - in tools/time slider container
+              var checkbox = document.getElementById("lakeOverlay");
+              checkbox.addEventListener("click", function() {
+                if (checkbox.checked) {
+                  console.log('checked');
+                }
+                else {
+                  console.log('unchecked');
+                }
+              });
+
 
             } // end of main_map_init function
 
-            // lake polygon overlay input checkbox function - in tools/time slider container
-            this.lakeOverlay = function(i) {
-              // var checkbox = document.getElementById("lakeOverlay");
-              // && overlays["{{ lake }}"].addTo(map)
-              i.checked == true ? console.log('checked') : console.log('unchecked');
-            }.bind(this);
-
+            // the functions below are all outside of main_map_init
+            // -------- //
             // setup picture modal event to populate image in modal dynamically
             // setup page effect on story
             var prevPage = $("#Overview").parent();

@@ -10,7 +10,7 @@ layers = {
         "table_name": "reservoirs_pt",
         "label_field": "res_lbl",
         "carto_css": '#layer [story="enabled"] {marker-width: 10; marker-fill: #1556d7; marker-fill-opacity: 0.9; marker-allow-overlap: true; marker-line-width: 1; marker-line-color: #FFFFFF; marker-line-opacity: 1;}',
-        # "carto_lbl": '#layer::labels {[story="enabled"]{text-name: [res_lbl]; text-face-name: "DejaVu Sans Book";text-size: 12; text-fill: #FFFFFF; text-label-position-tolerance: 0; text-halo-radius: 1; text-halo-fill: #6f808d;text-dy: -10;text-allow-overlap: true;text-placement: point;text-placement-type: dummy;}}',
+        "carto_lbl": '#layer::labels {[story="enabled"]{text-name: [res_lbl]; text-face-name: "DejaVu Sans Book";text-size: 12; text-fill: #FFFFFF; text-label-position-tolerance: 0; text-halo-radius: 1; text-halo-fill: #6f808d;text-dy: -10;text-allow-overlap: true;text-placement: point;text-placement-type: dummy;}}',
         "interactivity": ["res_lbl"],
         "carto_story_css": '#layer{[story="enabled"]{polygon-fill: #5491f2; polygon-opacity: 0.25;}[story="disabled"]{polygon-fill: #acacac;polygon-opacity: 1;}}#layer::outline{[story="enabled"]{line-width: 2;line-color: #5491f2;line-opacity: 0.4;}[story="disabled"]{line-width: 2;line-color: #515151;line-opacity: 0.2;}}'
     },

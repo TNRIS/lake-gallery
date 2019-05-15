@@ -63,18 +63,18 @@ def redirect_region(request, letter):
     return redirect('/' + uppercase)
 
 
-def redirect_story(request, letter, lake):
-    uppercase = letter.upper()
-    return redirect('/' + uppercase + '/' + lake)
+def redirect_story(request, lake):
+    # uppercase = letter.upper()
+    return redirect('/' + lake)
 
 
-def story(request, letter, lake):
+def story(request, lake):
     labels = get_region_header_list()
     res = get_lake_header_list()
 
     m = MajorReservoirs.objects.get(res_lbl=lake)
-    if m.region != letter:
-        raise Http404()
+    # if m.region != letter:
+    #     raise Http404()
 
     ext = list(GEOSGeometry(m.geom).extent)
 

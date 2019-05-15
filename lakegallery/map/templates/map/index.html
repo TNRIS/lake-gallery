@@ -14,7 +14,7 @@
             <br />
             <p>
               <strong>Disclaimer: </strong>The information provided by the Texas Water Development Board and the Texas Natural Resources Information System (TNRIS) in the
-              Lakes of Texas web application is for general informational purposes only. All information on the site/application is provided in good faith, however we
+              Lakes of Texas web application is for general information purposes only. All information on the site/application is provided in good faith, however we
               make no representation or warranty of any kind, express or implied, regarding the accuracy, adequacy, validity, reliability, availability or completeness of
               any information on the site/application.
             </p>
@@ -34,7 +34,9 @@
         </div>
       </div>
     </div>
+
     {% leaflet_map "main" callback="main_map_init" %}
+
     <script type="text/javascript">
         function main_map_init (map, options) {
           L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}@2x.png').addTo(map);
@@ -74,10 +76,19 @@
               url: `https://${account}.carto.com/api/v1/map`,
               data: JSON.stringify(mapconfig),
               success: function(data) {
+                console.log(data.layergroupid);
                 var url = `https://${account}.carto.com/api/v1/map/` + data.layergroupid + '/{z}/{x}/{y}.png'
                 tileLayer = new L.tileLayer(url);
                 tileLayer.addTo(map);
 
+                // leaflet marker cluster stuff
+                var markers = L.markerClusterGroup();
+                L.marker([51.5, -0.09]).addTo(map)
+                  .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+                  .openPopup();
+            		map.addLayer(markers);
+
+                // leaflet utf grid stuff
                 var gridUrl = `https://${account}.carto.com/api/v1/map/` + data.layergroupid + '/0/{z}/{x}/{y}.grid.json'
                 utfGrid = new L.utfGrid(gridUrl);
                 utfGrid.on('mouseover', function (e) {
@@ -88,9 +99,7 @@
                 });
                 utfGrid.on('click', function (e) {
                   if (e.data) {
-                    console.log(e.data);
-                    var lakeLink = '/' + e.data.letter;
-                    // var lakeLink = '/';
+                    var lakeLink = '/' + e.data.res_lbl;
                     window.location.href = lakeLink;
                   }
                 });
@@ -99,25 +108,20 @@
             })
           }
 
-          function removeTileUrls(c) {
-
-
-          }
-
           // default home index zoom level draws point reservoir layer
           getTileUrls(reservoirsPtConfig);
 
           // detect zoom level to know when to switch between points & polygons
-          map.on('zoomend', function() {
+          map.on('zoom', function() {
             var zoomLevel = map.getZoom();
             console.log(zoomLevel);
             if(zoomLevel > 10) {
-              removeTileUrls(reservoirsPtConfig);
+              // removeTileUrls(reservoirsPtConfig);
               getTileUrls(reservoirsPolyConfig);
             }
             else {
               // map.removeLayer(reservoirsPolyConfig);
-              removeTileUrls();
+              // removeTileUrls(reservoirsPolyConfig);
               getTileUrls(reservoirsPtConfig);
               // var markers = L.markerClusterGroup();
             }
