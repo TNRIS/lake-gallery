@@ -45,65 +45,45 @@
           var utfGrid;
 
           // var rwpasConfig = JSON.parse('{{ layers.rwpas }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
-          var reservoirsPtConfig = JSON.parse('{{ layers.reservoirs_pt }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
-          var reservoirsPolyConfig = JSON.parse('{{ layers.reservoirs }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
+          // var reservoirsPtConfig = JSON.parse('{{ layers.reservoirs_pt }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
+          var reservoirsConfig = JSON.parse('{{ layers.reservoirs }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
 
-          function getTileUrls (poly_config, pt_config) {
-            var polycss = poly_config.carto_css;
-            var ptcss = pt_config.carto_css;
-            polycss += poly_config.carto_lbl;
-            ptcss += pt_config.carto_lbl;
+          function getTileUrls (config) {
+            var css = config.carto_css;
+            css += config.carto_lbl;
+            var interactivity = config.interactivity;
 
-            var interactivity = poly_config.interactivity;
+            var polySql = `SELECT * FROM ${config.table_name}`;
+            var centroidSql = `SELECT ST_Centroid(the_geom) FROM ${config.table_name}`;
 
-            var polySql = `SELECT * FROM ${poly_config.table_name}`;
-            var centroidSql = `SELECT
-                                "the_geom" as "poly_geom", "type", "story", "region", "status", "res_lbl", "res_name",
-                                ST_Centroid(ST_Transform("the_geom", 3857)) as "the_geom_webmercator"
-                              FROM
-                                ${poly_config.table_name}`;
-
-            var polyConfig = {
-              "version": "1.3.1",
-              "layers": [{
-                "type": "mapnik",
-                "options": {
-                  "cartocss_version": "2.1.1",
-                  "cartocss": polycss,
-                  "sql": polySql,
-                  "interactivity": interactivity
-                }
-              }]
-            };
-
-            var pointConfig = {
-              "version": "1.3.1",
-              "layers": [{
-                "type": "mapnik",
-                "options": {
-                  "cartocss_version": "2.1.1",
-                  "cartocss": ptcss,
-                  "sql": centroidSql,
-                  "interactivity": interactivity
-                }
-              }]
-            };
-
-            // function to return proper config for point or polygon layer based on zoom level
+            // function to return carto sql for point or polygon layer based on zoom level
             function zoomSql() {
               map.on('zoom', function() {
                 var zoomLevel = map.getZoom();
                 console.log(zoomLevel);
                 if(zoomLevel > 9) {
                   console.log('poly');
-                  return JSON.stringify(polyConfig);
+                  return `SELECT * FROM ${config.table_name}`;
                 }
                 else {
                   console.log('point');
-                  return JSON.stringify(pointConfig);
+                  return `SELECT ST_Centroid(the_geom) FROM ${config.table_name}`;
                 }
               })
             };
+
+            var mapconfig = {
+              "version": "1.3.1",
+              "layers": [{
+                "type": "mapnik",
+                "options": {
+                  "cartocss_version": "2.1.1",
+                  "cartocss": css,
+                  "sql": centroidSql,
+                  "interactivity": interactivity
+                }
+              }]
+            }
 
             $.ajax({
               crossOrigin: true,
@@ -111,7 +91,7 @@
               dataType: 'json',
               contentType: 'application/json',
               url: `https://${account}.carto.com/api/v1/map`,
-              data: JSON.stringify(pointConfig),
+              data: JSON.stringify(mapconfig),
               success: function(data) {
                 console.log(data.layergroupid);
                 var url = `https://${account}.carto.com/api/v1/map/` + data.layergroupid + '/{z}/{x}/{y}.png'
@@ -121,26 +101,27 @@
                 tileLayer.addTo(map);
 
                 // leaflet utf grid stuff
-                var gridUrl = `https://${account}.carto.com/api/v1/map/` + data.layergroupid + '/0/{z}/{x}/{y}.grid.json'
-                utfGrid = new L.utfGrid(gridUrl);
-                utfGrid.on('mouseover', function (e) {
-                  $('.leaflet-container').css('cursor', 'pointer');
-                });
-                utfGrid.on('mouseout', function (e) {
-                  $('.leaflet-container').css('cursor', '');
-                });
-                utfGrid.on('click', function (e) {
-                  if (e.data) {
-                    var lakeLink = '/' + e.data.res_lbl;
-                    window.location.href = lakeLink;
-                  }
-                });
-                utfGrid.addTo(map);
+                // var gridUrl = `https://${account}.carto.com/api/v1/map/` + data.layergroupid + '/0/{z}/{x}/{y}.grid.json'
+                // utfGrid = new L.utfGrid(gridUrl);
+                // utfGrid.on('mouseover', function (e) {
+                //   $('.leaflet-container').css('cursor', 'pointer');
+                // });
+                // utfGrid.on('mouseout', function (e) {
+                //   $('.leaflet-container').css('cursor', '');
+                // });
+                // utfGrid.on('click', function (e) {
+                //   if (e.data) {
+                //     var lakeLink = '/' + e.data.res_lbl;
+                //     window.location.href = lakeLink;
+                //   }
+                // });
+                // utfGrid.addTo(map);
+
               }
             })
           }
 
-          getTileUrls(reservoirsPolyConfig, reservoirsPtConfig);
+          getTileUrls(reservoirsConfig);
 
         }
 
