@@ -41,108 +41,78 @@
         function main_map_init (map, options) {
           L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}@2x.png').addTo(map);
           var account = 'tnris-flood'
-          var tileLayer;
+          var pointLayer = "{{ layers.reservoirs.table_name }}";
+          var polyLayer = "{{ layers.reservoirs.table_name }}";
+          var lakeClusters;
           var utfGrid;
+          var url;
 
-          // var rwpasConfig = JSON.parse('{{ layers.rwpas }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
-          var reservoirsPtConfig = JSON.parse('{{ layers.reservoirs_pt }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
-          var reservoirsPolyConfig = JSON.parse('{{ layers.reservoirs }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
+          var polySql = `SELECT * FROM ${polyLayer} WHERE story='enabled'`;
+          var centroidSql = `SELECT type, story, region, status, res_lbl, res_name, ST_Centroid(the_geom) as the_geom FROM ${pointLayer} WHERE story='enabled'`;
 
-          function getTileUrls (poly_config, pt_config) {
-            var polycss = poly_config.carto_css;
-            var ptcss = pt_config.carto_css;
-            polycss += poly_config.carto_lbl;
-            ptcss += pt_config.carto_lbl;
+          // popup function to be used each time point or poly reservoir layer added
+          var lakePopup = function (feature, layer) {
+            layer.bindPopup(
+              `<p style="text-align:center;">
+                <b><a href="/${feature.properties.res_lbl}" title="Go to lake story">${feature.properties.res_lbl}</a></b><br />
+                <em>Region ${feature.properties.region}</em><br />
+              </p>`
+            );
+          };
 
-            var interactivity = poly_config.interactivity;
+          // on initial map load use centroid/point sql
+          url = `https://${account}.carto.com/api/v2/sql?format=GeoJSON&q=${centroidSql}`;
 
-            var polySql = `SELECT * FROM ${poly_config.table_name}`;
-            var centroidSql = `SELECT
-                                "the_geom" as "poly_geom", "type", "story", "region", "status", "res_lbl", "res_name",
-                                ST_Centroid(ST_Transform("the_geom", 3857)) as "the_geom_webmercator"
-                              FROM
-                                ${poly_config.table_name}`;
+          $.getJSON(url, function (data) {
+            lakeClusters = L.markerClusterGroup();
+            pointLayer = L.geoJson(data, {
+              onEachFeature: lakePopup
+            });
+            lakeClusters.addLayer(pointLayer);
+            map.addLayer(lakeClusters);
+          });
 
-            var polyConfig = {
-              "version": "1.3.1",
-              "layers": [{
-                "type": "mapnik",
-                "options": {
-                  "cartocss_version": "2.1.1",
-                  "cartocss": polycss,
-                  "sql": polySql,
-                  "interactivity": interactivity
-                }
-              }]
-            };
+          // on map zoom, if zoom level greater than 9 use poly sql; else use centroid/point sql
+          map.on('zoomend', function() {
+            var zoomLevel = map.getZoom();
+            console.log(zoomLevel);
 
-            var pointConfig = {
-              "version": "1.3.1",
-              "layers": [{
-                "type": "mapnik",
-                "options": {
-                  "cartocss_version": "2.1.1",
-                  "cartocss": ptcss,
-                  "sql": centroidSql,
-                  "interactivity": interactivity
-                }
-              }]
-            };
+            map.removeLayer(pointLayer);
+            map.removeLayer(lakeClusters);
 
-            // function to return proper config for point or polygon layer based on zoom level
-            function zoomSql() {
-              map.on('zoom', function() {
-                var zoomLevel = map.getZoom();
-                console.log(zoomLevel);
-                if(zoomLevel > 9) {
-                  console.log('poly');
-                  return JSON.stringify(polyConfig);
-                }
-                else {
-                  console.log('point');
-                  return JSON.stringify(pointConfig);
-                }
-              })
-            };
+            if(zoomLevel > 9) {
+              console.log('poly');
+              // map.removeLayer(pointLayer);
+              // map.removeLayer(lakeClusters);
 
-            $.ajax({
-              crossOrigin: true,
-              type: 'POST',
-              dataType: 'json',
-              contentType: 'application/json',
-              url: `https://${account}.carto.com/api/v1/map`,
-              data: JSON.stringify(pointConfig),
-              success: function(data) {
-                console.log(data.layergroupid);
-                var url = `https://${account}.carto.com/api/v1/map/` + data.layergroupid + '/{z}/{x}/{y}.png'
-                tileLayer = new L.tileLayer(url);
+              url = `https://${account}.carto.com/api/v2/sql?format=GeoJSON&q=${polySql}`;
 
-                console.log(tileLayer);
-                tileLayer.addTo(map);
+              $.getJSON(url, function(data) {
+                polyLayer = L.geoJson(data, {
+                  onEachFeature: lakePopup
+                }).addTo(map);
+              });
+            }
 
-                // leaflet utf grid stuff
-                var gridUrl = `https://${account}.carto.com/api/v1/map/` + data.layergroupid + '/0/{z}/{x}/{y}.grid.json'
-                utfGrid = new L.utfGrid(gridUrl);
-                utfGrid.on('mouseover', function (e) {
-                  $('.leaflet-container').css('cursor', 'pointer');
+            if (zoomLevel <= 9) {
+              console.log('point');
+              // map.removeLayer(polyLayer);
+              // map.removeLayer(lakeClusters);
+
+              url = `https://${account}.carto.com/api/v2/sql?format=GeoJSON&q=${centroidSql}`;
+
+              $.getJSON(url, function(data) {
+                lakeClusters = L.markerClusterGroup();
+                pointLayer = L.geoJson(data, {
+                  onEachFeature: lakePopup
                 });
-                utfGrid.on('mouseout', function (e) {
-                  $('.leaflet-container').css('cursor', '');
-                });
-                utfGrid.on('click', function (e) {
-                  if (e.data) {
-                    var lakeLink = '/' + e.data.res_lbl;
-                    window.location.href = lakeLink;
-                  }
-                });
-                utfGrid.addTo(map);
-              }
-            })
-          }
+                lakeClusters.addLayer(pointLayer);
+                map.addLayer(lakeClusters);
+              });
+            }
 
-          getTileUrls(reservoirsPolyConfig, reservoirsPtConfig);
-
-        }
+          })
+        } //end main_map_init function
 
         // show modal on load if localstorage doesn't say they've opt'd out
         $(function() {
