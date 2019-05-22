@@ -93,6 +93,27 @@ img.texas-home:hover {
 	right: 30px;
 }
 
+.count-container {
+	width: auto;
+	max-width: 200px;
+	max-height: 100px;
+	background-color: #bfbfbf;
+	border: 1px solid #4d4d4d;
+	border-radius: 5px;
+	position: absolute;
+	top: 66px;
+	right: 10px;
+	z-index: 1000;
+	padding: 4px;
+	margin: 0;
+}
+
+.count {
+	color: #01253d;
+	font-weight: bold;
+	font-size: 18px;
+}
+
 /*LEAFLET FOR ALL*/
 .leaflet-control-layers-base > label > div > input {
 	display: none;

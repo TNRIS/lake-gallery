@@ -28,11 +28,17 @@
                 <input id="modalHideCheckbox" class="form-check-input" type="checkbox" value="">
                 Don't show this message again
               </label>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button id="dismiss-modal-btn" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
       </div>
+    </div>
+
+    <div id="lake-count" class="count-container">
+      <p class="count-text">
+        <strong>Total lake stories available: <span id="count-output" class="count"></span></strong>
+      </p>
     </div>
 
     {% leaflet_map "main" callback="main_map_init" %}
@@ -42,29 +48,50 @@
           L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}@2x.png').addTo(map);
           var account = 'tnris-flood'
           var pointLayer = "{{ layers.reservoirs.table_name }}";
-          var polyLayer = "{{ layers.reservoirs.table_name }}";
+          var polyLayer = pointLayer;
           var lakeClusters;
-          var utfGrid;
           var url;
+          var bounds = map.getBounds();
+
+          // easy button control to zoom to state extent
+          L.easyButton("<img src={% static 'map/images/texas_outline_blk.png' %} style='width:auto; height:100%; opacity:1;' title='Zoom to statewide extent' />", function(btn, map){
+            map.fitBounds(bounds);
+          }).addTo(map);
 
           var polySql = `SELECT * FROM ${polyLayer} WHERE story='enabled'`;
-          var centroidSql = `SELECT type, story, region, status, res_lbl, res_name, ST_Centroid(the_geom) as the_geom FROM ${pointLayer} WHERE story='enabled'`;
+          var pointSql = `SELECT type, story, region, status, res_lbl, res_name, ST_PointOnSurface(the_geom) as the_geom FROM ${pointLayer} WHERE story='enabled'`;
 
           // popup function to be used each time point or poly reservoir layer added
           var lakePopup = function (feature, layer) {
             layer.bindPopup(
               `<p style="text-align:center;">
                 <b><a href="/${feature.properties.res_lbl}" title="Go to lake story">${feature.properties.res_lbl}</a></b><br />
-                <em>Region ${feature.properties.region}</em><br />
+                <em>Region ${feature.properties.region}</em>
               </p>`
             );
           };
 
-          // on initial map load use centroid/point sql
-          url = `https://${account}.carto.com/api/v2/sql?format=GeoJSON&q=${centroidSql}`;
+          // label function for polygon reservoir layer; also click function to go to story
+          var lakeLabel = function (feature, layer) {
+            layer.bindTooltip(`<strong class="lake-label">${feature.properties.res_lbl}</strong>`, {permanent: true});
+            layer.bindTooltip("Click polygon to go to lake story", {
+              sticky: true
+            });
+            layer.on('click', function(e) {
+              window.location.href = `/${feature.properties.res_lbl}`;
+            });
+          };
+
+          // on map load use point sql for point/marker lake locations
+          // points and/or clusters will be visible at all times
+          url = `https://${account}.carto.com/api/v2/sql?format=GeoJSON&q=${pointSql}`;
 
           $.getJSON(url, function (data) {
-            lakeClusters = L.markerClusterGroup();
+            lakeClusters = L.markerClusterGroup({
+              spiderfyOnMaxZoom: true,
+              showCoverageOnHover: true,
+	            zoomToBoundsOnClick: true
+            });
             pointLayer = L.geoJson(data, {
               onEachFeature: lakePopup
             });
@@ -72,45 +99,21 @@
             map.addLayer(lakeClusters);
           });
 
-          // on map zoom, if zoom level greater than 9 use poly sql; else use centroid/point sql
+          // on map zoom, if zoom level greater than 9 use poly sql; else use point sql
           map.on('zoomend', function() {
             var zoomLevel = map.getZoom();
             console.log(zoomLevel);
-
-            map.removeLayer(pointLayer);
-            map.removeLayer(lakeClusters);
+            map.removeLayer(polyLayer);
 
             if(zoomLevel > 9) {
-              console.log('poly');
-              // map.removeLayer(pointLayer);
-              // map.removeLayer(lakeClusters);
-
               url = `https://${account}.carto.com/api/v2/sql?format=GeoJSON&q=${polySql}`;
 
               $.getJSON(url, function(data) {
                 polyLayer = L.geoJson(data, {
-                  onEachFeature: lakePopup
+                  onEachFeature: lakeLabel
                 }).addTo(map);
               });
             }
-
-            if (zoomLevel <= 9) {
-              console.log('point');
-              // map.removeLayer(polyLayer);
-              // map.removeLayer(lakeClusters);
-
-              url = `https://${account}.carto.com/api/v2/sql?format=GeoJSON&q=${centroidSql}`;
-
-              $.getJSON(url, function(data) {
-                lakeClusters = L.markerClusterGroup();
-                pointLayer = L.geoJson(data, {
-                  onEachFeature: lakePopup
-                });
-                lakeClusters.addLayer(pointLayer);
-                map.addLayer(lakeClusters);
-              });
-            }
-
           })
         } //end main_map_init function
 
@@ -129,5 +132,17 @@
             });
           }
         });
+
+        // carto sql api call to get enabled story count and update counter
+        // div in the upper right of the index/home map
+        var sql = new cartodb.SQL({ user: 'tnris-flood' });
+        sql.execute("SELECT COUNT(story) as lake_count FROM reservoirs WHERE story='enabled'")
+        .done(function(data) {
+          document.getElementById("count-output").innerHTML = data.rows[0].lake_count;
+        })
+        .error(function(errors) {
+          // errors contains a list of errors
+          console.log("errors:" + errors);
+        })
     </script>
 {% endblock %}
