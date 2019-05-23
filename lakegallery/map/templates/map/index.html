@@ -95,8 +95,7 @@
               maxClusterRadius: 100, // increase radius from default 80
               animate: true,
               showCoverageOnHover: true,
-              zoomToBoundsOnClick: true,
-              disableClusteringAtZoom: 9 // clusters stop at zoom level 9
+              zoomToBoundsOnClick: true
             });
             pointLayer = L.geoJson(data, {
               onEachFeature: lakePopup

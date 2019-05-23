@@ -304,11 +304,11 @@
             <input id='historicalSlider' type='text'/>
           </div>
 
-          <hr class="separator">
+          <hr class="separator"></hr>
 
           <div class="slider-container-text bottom-container">
             <div style="float:left;">
-              <a href="#" onclick=`${console.log('test')}` class="link">
+              <a href="#" class="link">
                 <img class="extent" src="{% static 'map/images/extent.png' %}" />
                 <span style="float:right;">Full Lake Extent</span>
               </a>
@@ -491,7 +491,10 @@
                 var ticks = [];
                 var labelObject = {};
 
+                console.log(links);
+
                 links.map(function(l, index) {
+                  console.log(l);
                   ticks.push(index);
                   labelObject[index] = l.year;
 
@@ -501,7 +504,7 @@
                 });
 
                 var len = ticks.length;
-                labelObject[len] = `<a href="https://tnris.org/texas-imagery-service/" target="_blank" title="Texas Imagery Service">Current</a>`;
+                labelObject[len] = `<a href="https://tnris.org/texas-imagery-service/" class="historical-link" target="_blank" title="Texas Imagery Service">Current</a>`;
                 ticks.push(len);
 
                 // create labels for time slider with links to datahub historical imagery
@@ -509,7 +512,7 @@
                 var positionArray = [];
 
                 Object.values(labelObject).forEach(function (value) {
-                  value != 'Current' ? labelArray.push(`<a href='#' target='_blank' class='historical-link' title='get it on datahub'>${value}</a>`)
+                  value != 'Current' ? labelArray.push(`<a href="#" target="_blank" class="historical-link" title="get it on datahub">${value}</a>`)
                   : labelArray.push('Current');
                 });
                 // end label array function
