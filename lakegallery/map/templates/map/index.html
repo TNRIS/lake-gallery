@@ -47,17 +47,18 @@
         function main_map_init (map, options) {
           L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}@2x.png').addTo(map);
           var account = 'tnris-flood'
-          var pointLayer = "{{ layers.reservoirs.table_name }}";
+          var pointLayer = "{{ layers.reservoirs_pt.table_name }}";
           var polyLayer = pointLayer;
           var lakeClusters;
           var url;
           var bounds = map.getBounds();
 
           // easy button control to zoom to state extent
-          L.easyButton("<img src={% static 'map/images/texas_outline_blk.png' %} style='width:auto; height:100%; opacity:1;' title='Zoom to statewide extent' />", function(btn, map){
+          L.easyButton("<img src={% static 'map/images/texas_solid_blk.png' %} style='width:auto; height:100%; opacity:1;' title='Zoom to statewide extent' />", function(btn, map){
             map.fitBounds(bounds);
           }).addTo(map);
 
+          // sql statements for the carto sql api
           var polySql = `SELECT * FROM ${polyLayer} WHERE story='enabled'`;
           var pointSql = `SELECT type, story, region, status, res_lbl, res_name, ST_PointOnSurface(the_geom) as the_geom FROM ${pointLayer} WHERE story='enabled'`;
 
@@ -65,21 +66,44 @@
           var lakePopup = function (feature, layer) {
             layer.bindPopup(
               `<p style="text-align:center;">
-                <b><a href="/${feature.properties.res_lbl}" title="Go to lake story">${feature.properties.res_lbl}</a></b><br />
+                <b><a href="/${feature.properties.res_lbl}" title="Go to ${feature.properties.res_lbl} story">${feature.properties.res_lbl}</a></b><br />
                 <em>Region ${feature.properties.region}</em>
               </p>`
             );
           };
 
-          // label function for polygon reservoir layer; also click function to go to story
+          // label function for polygon reservoir layer; contains labeling, click to go to lake story,
+          // and mouseover/mouseout popup functionality
           var lakeLabel = function (feature, layer) {
             layer.bindTooltip(`<strong class="lake-label">${feature.properties.res_lbl}</strong>`, {permanent: true});
-            layer.bindTooltip("Click polygon to go to lake story", {
-              sticky: true
-            });
             layer.on('click', function(e) {
               window.location.href = `/${feature.properties.res_lbl}`;
             });
+            layer.bindPopup(
+              `<p style="text-align:center;">
+                <strong>${feature.properties.res_lbl}</strong><br />
+                Click the polygon to visit the lake story content
+              </p>`
+            );
+            layer.on('mouseover', function (e) {
+                this.openPopup();
+            });
+            layer.on('mouseout', function (e) {
+                this.closePopup();
+            });
+            // layer.on('mouseover', function(e) {
+            //   var polyPopup = L.popup ()
+            //     .setLatLng(e.latlng)
+            //     .setContent(
+            //       `<p style="text-align:center;">
+            //         <b><a href="/${feature.properties.res_lbl}" title="Go to ${feature.properties.res_lbl} story">${feature.properties.res_lbl}</a></b><br />
+            //         <em>Region ${feature.properties.region}</em>
+            //       </p>`)
+            //     .openOn(map);
+            // });
+            // layer.on('mouseout', function(e) {
+            //   this.closePopup();
+            // });
           };
 
           // on map load use point sql for point/marker lake locations
@@ -89,8 +113,7 @@
           $.getJSON(url, function (data) {
             lakeClusters = L.markerClusterGroup({
               spiderfyOnMaxZoom: true,
-              showCoverageOnHover: true,
-	            zoomToBoundsOnClick: true
+              maxClusterRadius: 100 // increase radius from default 80
             });
             pointLayer = L.geoJson(data, {
               onEachFeature: lakePopup

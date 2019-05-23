@@ -138,7 +138,7 @@ img.texas-home:hover {
 	font-size: 15px;
 	color: #024c7e;
   font-weight: bold;
-	text-shadow:
+	text-shadow: /* white border around text - halo */
 		-1px -1px 0 #fff,
 		1px -1px 0 #fff,
 		-1px 1px 0 #fff,

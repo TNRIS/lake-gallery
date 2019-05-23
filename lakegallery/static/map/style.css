@@ -97,24 +97,54 @@ img.texas-home:hover {
 	width: auto;
 	max-width: 200px;
 	max-height: 100px;
-	background-color: #bfbfbf;
+	background-color: #e6e6e6;
 	border: 1px solid #4d4d4d;
 	border-radius: 5px;
 	position: absolute;
 	top: 66px;
 	right: 10px;
-	z-index: 1000;
+	z-index: 800;
 	padding: 4px;
+	box-shadow: 3px 3px 5px #404040;
+}
+
+.count-text {
 	margin: 0;
+	font-size: 14px;
+	text-align: center;
+	vertical-align: middle;
 }
 
 .count {
-	color: #01253d;
+	color: #024c7e;
 	font-weight: bold;
 	font-size: 18px;
 }
 
 /*LEAFLET FOR ALL*/
+/* remove label background elements */
+.leaflet-tooltip {
+	background-color: transparent;
+  border: transparent;
+  box-shadow: none;
+}
+
+.leaflet-tooltip-right:before {
+	border-right-color: transparent;
+	margin-left: 0;
+}
+
+.lake-label {
+	font-size: 15px;
+	color: #024c7e;
+  font-weight: bold;
+	text-shadow:
+		-1px -1px 0 #fff,
+		1px -1px 0 #fff,
+		-1px 1px 0 #fff,
+		1px 1px 0 #fff;
+}
+
 .leaflet-control-layers-base > label > div > input {
 	display: none;
 }
