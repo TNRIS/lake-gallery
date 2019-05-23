@@ -54,7 +54,7 @@
           var bounds = map.getBounds();
 
           // easy button control to zoom to state extent
-          L.easyButton("<img src={% static 'map/images/texas_solid_blk.png' %} style='width:auto; height:100%; opacity:1;' title='Zoom to statewide extent' />", function(btn, map){
+          L.easyButton("<img src={% static 'map/images/texas_solid_blk.png' %} style='width:auto; height:100%; opacity:1; padding: 3px;' title='Zoom to statewide extent' />", function(btn, map){
             map.fitBounds(bounds);
           }).addTo(map);
 
@@ -62,48 +62,27 @@
           var polySql = `SELECT * FROM ${polyLayer} WHERE story='enabled'`;
           var pointSql = `SELECT type, story, region, status, res_lbl, res_name, ST_PointOnSurface(the_geom) as the_geom FROM ${pointLayer} WHERE story='enabled'`;
 
-          // popup function to be used each time point or poly reservoir layer added
+          // popup function to be used each time point/marker clicked/hovered over
           var lakePopup = function (feature, layer) {
             layer.bindPopup(
               `<p style="text-align:center;">
                 <b><a href="/${feature.properties.res_lbl}" title="Go to ${feature.properties.res_lbl} story">${feature.properties.res_lbl}</a></b><br />
                 <em>Region ${feature.properties.region}</em>
               </p>`
-            );
+            )
           };
 
           // label function for polygon reservoir layer; contains labeling, click to go to lake story,
           // and mouseover/mouseout popup functionality
           var lakeLabel = function (feature, layer) {
             layer.bindTooltip(`<strong class="lake-label">${feature.properties.res_lbl}</strong>`, {permanent: true});
-            layer.on('click', function(e) {
-              window.location.href = `/${feature.properties.res_lbl}`;
-            });
+
             layer.bindPopup(
               `<p style="text-align:center;">
-                <strong>${feature.properties.res_lbl}</strong><br />
-                Click the polygon to visit the lake story content
+                <b><a href="/${feature.properties.res_lbl}" title="Go to ${feature.properties.res_lbl} story">${feature.properties.res_lbl}</a></b><br />
+                <em>Region ${feature.properties.region}</em>
               </p>`
-            );
-            layer.on('mouseover', function (e) {
-                this.openPopup();
-            });
-            layer.on('mouseout', function (e) {
-                this.closePopup();
-            });
-            // layer.on('mouseover', function(e) {
-            //   var polyPopup = L.popup ()
-            //     .setLatLng(e.latlng)
-            //     .setContent(
-            //       `<p style="text-align:center;">
-            //         <b><a href="/${feature.properties.res_lbl}" title="Go to ${feature.properties.res_lbl} story">${feature.properties.res_lbl}</a></b><br />
-            //         <em>Region ${feature.properties.region}</em>
-            //       </p>`)
-            //     .openOn(map);
-            // });
-            // layer.on('mouseout', function(e) {
-            //   this.closePopup();
-            // });
+            )
           };
 
           // on map load use point sql for point/marker lake locations
@@ -113,7 +92,11 @@
           $.getJSON(url, function (data) {
             lakeClusters = L.markerClusterGroup({
               spiderfyOnMaxZoom: true,
-              maxClusterRadius: 100 // increase radius from default 80
+              maxClusterRadius: 100, // increase radius from default 80
+              animate: true,
+              showCoverageOnHover: true,
+              zoomToBoundsOnClick: true,
+              disableClusteringAtZoom: 9 // clusters stop at zoom level 9
             });
             pointLayer = L.geoJson(data, {
               onEachFeature: lakePopup
