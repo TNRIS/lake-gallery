@@ -336,7 +336,6 @@
                       attribution: '<a href="https://tnris.org/texas-imagery-service/" target="_blank">Google</a>'
                   })
 
-                  // ,'Grayscale': L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}@2x.png')
               };
               var overlays = {};
               var lakeLayer;
@@ -348,95 +347,7 @@
 
               var resConfig = JSON.parse('{{ layer }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
               var linkConfig = JSON.parse('{{ links }}'.replace(/&#39;/g, '"'));
-              // var overlayConfig = JSON.parse('{{ overlays }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
-              // var overlayOrder = JSON.parse('{{overlay_order}}'.replace(/&#39;/g, '"'));
-              // var allOverlays = ['Google Imagery', '{{ lake }}'].concat(overlayOrder);
               var overlayQueryId = "{{ overlay_query }}";
-
-              // begin loadOverlay function
-              // function loadOverlay (config) {
-              //   var css = config.carto_css;
-              //   if (config.carto_lbl) {
-              //     css += config.carto_lbl;
-              //   }
-              //   var sql = `select * from ${config.table_name} where lake_id = ${overlayQueryId}`;
-              //
-              //   var mapconfig = {
-              //     "version": "1.3.1",
-              //     "layers": [{
-              //       "type": "mapnik",
-              //       "options": {
-              //         "cartocss_version": "2.1.1",
-              //         "cartocss": css,
-              //         "sql": sql
-              //       }
-              //     }]
-              //   }
-              //
-              //   $.ajax({
-              //     crossOrigin: true,
-              //     type: 'POST',
-              //     dataType: 'json',
-              //     contentType: 'application/json',
-              //     url: `https://${account}.carto.com/api/v1/map`,
-              //     data: JSON.stringify(mapconfig),
-              //     success: function(data) {
-              //       var url = `https://${account}.carto.com/api/v1/map/` + data.layergroupid + '/{z}/{x}/{y}.png'
-              //       var tileLayer = new L.tileLayer(url, {
-              //         attribution: '<a href="https://www.lcra.org" target="_blank">LCRA</a>'
-              //       });
-              //       overlays[config.toc_label] = tileLayer;
-              //
-              //       // if (Object.keys(overlays).length == (allOverlays.length - 1)) {
-              //       //   // must re-sort the overlay object. although objects don't have orders, somehow
-              //       //   // leaflet controller recognizes the order in which the layers are added to the
-              //       //   // overlay object and z-indexes the layers based off of that. we re-order so
-              //       //   // point are on top of polygons
-              //       //   sortOverlays();
-              //       // }
-              //     }
-              //   })
-              //   console.log(overlays);
-              // } // end loadOverlay function
-
-              // begin sortOverlays function
-              // function sortOverlays () {
-              //   var sortedOverlays = {};
-              //   var index = 1;
-              //   function addSortedOverlay () {
-              //     if (index < allOverlays.length) {
-              //         var layerToLoad = allOverlays[index];
-              //         var overlayData = overlays[layerToLoad];
-              //         var htmlName;
-              //         // add img to layer control. ***IMG file name must be same as toc_label
-              //         if (layerToLoad == "{{ lake }}") {
-              //           htmlName = `<span>${layerToLoad}</span><br /><img src="${static_url}Lake.png" />`;
-              //         } else {
-              //           htmlName = `<span>${layerToLoad}</span><br /><img src="${static_url}${layerToLoad}.png" />`;
-              //         }
-              //         sortedOverlays[htmlName] = overlayData;
-              //         ++index;
-              //         addSortedOverlay();
-              //     }
-              //     else {
-              //       fireOverlays(sortedOverlays);
-              //     }
-              //   }
-              //   addSortedOverlay();
-              // } // end sortOverlays function
-
-              // begin fireOverlays function w/ sortedOverlays as arg
-              // function fireOverlays (sortedOverlays) {
-              //   var layerController = L.control.layers(basemaps, sortedOverlays, {
-              //     sortLayers: true,
-              //     sortFunction: function (lyr1, lyr2, name1, name2) {
-              //       var num = allOverlays.indexOf(name1) - allOverlays.indexOf(name2);
-              //       return num;
-              //     }
-              //   });
-              //   layerController.addTo(map);
-              //   overlays['{{ lake }}'].addTo(map);
-              // } // end sortedOverlays
 
               // begin getLakeJson function - config & lakeName as args
               function getLakeJson (config, lakeName) {
@@ -463,49 +374,12 @@
 
                 // set max zoom level minus one to give some extra room
                 var maxZoomLevel = map.getZoom() - 1;
-                console.log(maxZoomLevel);
                 map.options.minZoom = maxZoomLevel;
 
                 // set max bounds to lakeBounds so user can't pan outside of lake area
-                // padding added so not too restrictive
-                map.setMaxBounds(lakeBounds);
+                // padding added to bounds so max is not too restrictive
+                map.setMaxBounds(map.getBounds(lakeBounds).pad(0.2));
 
-                // var mapconfig = {
-                //   "version": "1.3.1",
-                //   "layers": [{
-                //     "type": "mapnik",
-                //     "options": {
-                //       "cartocss_version": "2.1.1",
-                //       "cartocss": css,
-                //       "sql": sql,
-                //       "interactivity": interactivity
-                //     }
-                //   }]
-                // }
-
-                // $.ajax({
-                //   crossOrigin: true,
-                //   type: 'POST',
-                //   dataType: 'json',
-                //   contentType: 'application/json',
-                //   url: `https://${account}.carto.com/api/v1/map`,
-                //   data: JSON.stringify(mapconfig),
-                //   success: function(data) {
-                //     var url = `https://${account}.carto.com/api/v1/map/` + data.layergroupid + '/{z}/{x}/{y}.png'
-                //     lakeLayer = new L.tileLayer(url);
-                //     overlays['{{ lake }}'] = lakeLayer;
-                //
-                //     overlays["{{ lake }}"].addTo(map);
-                //
-                //     // we added lake separately from other overlays since it uses a seperate config
-                //     // also, so that we could get the map bounds moving without waiting for all overlays
-                //     // to load
-                //     Object.keys(overlayConfig).forEach(function (key) {
-                //       loadOverlay(overlayConfig[key]);
-                //     });
-                //
-                //   }
-                // })
               } // end getLakeJson function
 
               // run getLakeJson function with resConfig & lake name as args
