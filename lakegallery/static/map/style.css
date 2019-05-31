@@ -169,7 +169,7 @@ img.texas-home:hover {
 #instructionModal > .modal-dialog {
 	display: block;
 	text-align: center;
-	top: 20vh;
+	/* top: 20vh; */
 }
 
 @media (min-width: 576px) {
@@ -203,6 +203,20 @@ img.texas-home:hover {
 	cursor: pointer;
 }
 
+#expand-instructions {
+	float: left;
+	width: auto;
+	height: 100%;
+	padding: 10px;
+}
+
+#expand-instructions > ol > li {
+	margin-bottom: 20px;
+}
+
+#expand-instructions > ol > img {
+	margin-bottom: 20px;
+}
 /*ABOUT PAGE*/
 #aboutPage > div.row {
 	padding: 20px;

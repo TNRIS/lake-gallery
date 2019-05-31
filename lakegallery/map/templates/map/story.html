@@ -307,16 +307,16 @@
           <hr class="separator"></hr>
 
           <div class="slider-container-text bottom-container">
-            <div style="float:left;">
+            <div style="float:left; width:50%; padding-left:15px;">
               <a id="zoom-extent" href="#" class="link">
                 <img class="extent" src="{% static 'map/images/extent.png' %}" />
                 Full Lake Extent
               </a>
             </div>
 
-            <div style="float:right;">
-              <input type="checkbox" id="lakeOverlay" name="overlay" style="float:left;" value="checked" checked />
-              <label for="lakeOverlay" style="padding-left:5px;">Lake Outline</label>
+            <div style="float:right; width:50%; padding-left:25px;">
+              <input type="checkbox" id="lakeOverlay" name="overlay" style="float:left; vertical-align:baseline;" value="checked" checked />
+              <label for="lakeOverlay" style="margin-left:-10px;">Lake Outline</label>
             </div>
           </div>
 
@@ -337,17 +337,17 @@
                   })
 
               };
-              var overlays = {};
+              // var overlays = {};
               var lakeLayer;
 
               basemaps['Google Imagery'].addTo(map);
 
               var account = 'tnris-flood';
-              var static_url = "{% static 'map/images/' %}";
+              // var static_url = "{% static 'map/images/' %}";
 
               var resConfig = JSON.parse('{{ layer }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
               var linkConfig = JSON.parse('{{ links }}'.replace(/&#39;/g, '"'));
-              var overlayQueryId = "{{ overlay_query }}";
+              // var overlayQueryId = "{{ overlay_query }}";
 
               // begin getLakeJson function - config & lakeName as args
               function getLakeJson (config, lakeName) {

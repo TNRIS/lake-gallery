@@ -10,8 +10,11 @@
             <p>
               <strong style="color:red;">Please note that this application is currently in beta and is still undergoing final testing before its official release.</strong>
             </p>
+
             <h2 class="modal-title">Welcome to Lakes of Texas!</h2>
+
             <br />
+
             <p>
               <strong>Disclaimer: </strong>The information provided by the Texas Water Development Board and the Texas Natural Resources Information System (TNRIS) in the
               Lakes of Texas web application is for general information purposes only. All information on the site/application is provided in good faith, however we
@@ -23,13 +26,46 @@
             <!-- <p>
             Lakes are grouped by the Planning Region within which they reside. Click a Region in the map to view the available lakes and reservoirs within that region.
             </p> -->
-            <div>
+
+            <div style="bottom:0;">
               <label class="form-check-label">
                 <input id="modalHideCheckbox" class="form-check-input" type="checkbox" value="">
                 Don't show this message again
               </label>
               <button id="dismiss-modal-btn" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
+
+            <div style="padding:20px; bottom:0; float:left;">
+              <button id="expand-collapse-btn"
+                style="text-align:center;"
+                onclick="changeBtnTxt()"
+                class="btn btn-success"
+                type="button"
+                data-toggle="collapse"
+                data-target="#expand-instructions"
+                aria-expanded="false">
+                  Show Instructions
+              </button>
+            </div>
+
+            <div class="collapse" id="expand-instructions">
+              <h4 style="text-align:left;">
+                <strong>Instructions:</strong>
+              </h4>
+              <ol style="text-align:left;">
+                <li>Click a marker cluster to zoom closer to the area of those lake markers/locations.</li>
+                <img src="{% static 'map/images/instructions-step1.gif' %}">
+                <li>Hover over markers to view lake name and region.</li>
+                <img src="{% static 'map/images/instructions-step2.gif' %}">
+                <li>Click a marker to go to a lake story.</li>
+                <img style="width:600px; height:600px;" src="{% static 'map/images/instructions-step3.gif' %}">
+                <li>Keep zooming to view lake polygons and labels. Click a polygon to view that lakes' story.</li>
+                <img src="{% static 'map/images/instructions-step4.gif' %}">
+                <li>Click a polygon to go to a lake story.</li>
+                <img style="width:600px; height:600px;" src="{% static 'map/images/instructions-step5.gif' %}"
+              </ol>
+            </div>
+
           </div>
         </div>
       </div>
@@ -183,6 +219,23 @@
         .error(function(errors) {
           // errors contains a list of errors
           console.log("errors:" + errors);
-        })
+        });
+
+        // switch out text in expand instructions button; expand/collapse
+        // also adjust #instructionModal css 'top' value from 20vh to 0 to give room for modal expansion
+        function changeBtnTxt() {
+          var btn = document.getElementById("expand-collapse-btn");
+          var modal = $("#instructionModalContent.modal-dialog");
+
+          btn.innerText == "Show Instructions" ? btn.innerText = "Hide Instructions" : btn.innerText = "Show Instructions";
+
+          // console.log(modal);
+          // modal.css("top", "25vh") ? modal.css("top", "3vh") : modal.css("top", "25vh");
+          // if(modal.length) {
+          //   console.log($("#instructionModalContent.modal-body"));
+          //
+          // }
+        };
+
     </script>
 {% endblock %}
