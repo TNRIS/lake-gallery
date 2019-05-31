@@ -62,27 +62,62 @@
           var polySql = `SELECT * FROM ${polyLayer} WHERE story='enabled'`;
           var pointSql = `SELECT type, story, region, status, res_lbl, res_name, ST_PointOnSurface(the_geom) as the_geom FROM ${pointLayer} WHERE story='enabled'`;
 
-          // popup function to be used each time point/marker clicked/hovered over
+          // popup and tooltip function to be used each time point/marker clicked/hovered over
           var lakePopup = function (feature, layer) {
+            // bind popup to lake markers
             layer.bindPopup(
               `<p style="text-align:center;">
-                <b><a href="/${feature.properties.res_lbl}" title="Go to ${feature.properties.res_lbl} story">${feature.properties.res_lbl}</a></b><br />
+                <b>${feature.properties.res_lbl}</b><br />
                 <em>Region ${feature.properties.region}</em>
               </p>`
-            )
+            );
+            // bind tooltip to marker and on hover to show
+            // layer.bindTooltip(
+            //   `<p style="text-align:center; background-color:white; padding:3px; opacity:0.8;">
+            //     Click marker to view lake story
+            //   </p>`
+            // );
+            // open lake marker popup on mouse over
+            layer.on('mouseover', function (e) {
+              this.openPopup();
+              // this.openTooltip();
+            });
+            // close lake marker popup on mouse out
+            layer.on('mouseout', function (e) {
+              this.closePopup();
+              // this.closeTooltip();
+            });
+            // on clicking a lake marker go to story
+            layer.on('click', function (e) {
+              window.location.href = `/${feature.properties.res_lbl}`;
+            });
           };
 
-          // label function for polygon reservoir layer; contains labeling, click to go to lake story,
-          // and mouseover/mouseout popup functionality
+          // label function for polygon reservoir layer; contains labeling & click to go to lake story
           var lakeLabel = function (feature, layer) {
-            layer.bindTooltip(`<strong class="lake-label">${feature.properties.res_lbl}</strong>`, {permanent: true});
-
-            layer.bindPopup(
-              `<p style="text-align:center;">
-                <b><a href="/${feature.properties.res_lbl}" title="Go to ${feature.properties.res_lbl} story">${feature.properties.res_lbl}</a></b><br />
-                <em>Region ${feature.properties.region}</em>
-              </p>`
-            )
+            // bind tooltip label to lake polygons
+            layer.bindTooltip(`
+              <strong class="lake-label">
+                ${feature.properties.res_lbl}
+              </strong>`,
+              {permanent: true}
+            );
+            // bind popup to act as a traditional tooltip (give user instructions)
+            // layer.bindPopup(
+            //   `<b>Click polygon to view lake story</b>`
+            // );
+            // on hover lake polygon show popup
+            // layer.on('mouseover', function (e) {
+            //   layer.openPopup();
+            // });
+            // close tooltip on mouse out
+            // layer.on('mouseout', function (e) {
+            //   layer.closePopup();
+            // });
+            // on clicking a lake polygon go to story
+            layer.on('click', function (e) {
+              window.location.href = `/${feature.properties.res_lbl}`;
+            });
           };
 
           // on map load use point sql for point/marker lake locations
