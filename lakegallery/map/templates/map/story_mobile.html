@@ -289,7 +289,7 @@
         <!-- <input id="historicalSlider" type="text" style="display:none;"/> -->
 
         <!-- story map tools menu - time slider and lake outline, etc -->
-        <div id="slider-container" style="display: none;">
+        <div id="slider-container-mobile" style="display: none;">
 
           <div class="slider-container-header">
             <img src="{% static 'map/images/camera-solid.svg' %}" style="width:20px; height:20px; margin-right:10px;" alt="camera-icon" />
@@ -411,6 +411,18 @@
                 });
                 // end label array function
 
+                // create positionArray; used to position labels below ticks
+                var positionArray = [];
+
+                if (labelArray.length > 1) {
+                  var positionInterval = 100 / (labelArray.length - 1);
+
+                  for (i=0; i < labelArray.length; i++) {
+                    positionArray.push(positionInterval * i);
+                  }
+                };
+                // end positionArray
+
                 $("#historicalSlider").slider({
                   value: len,
                   ticks: ticks,
@@ -482,7 +494,7 @@
                     title: 'Open tools menu',
                     onClick: function(control){
                       control.state('open');
-                      $("#slider-container").css('display', 'block');
+                      $("#slider-container-mobile").css('display', 'block');
                     }
                   },
                   {
@@ -491,7 +503,7 @@
                     title: 'Close tools menu',
                     onClick: function(control) {
                       control.state('closed');
-                      $("#slider-container").css('display', 'none');
+                      $("#slider-container-mobile").css('display', 'none');
                     }
                   }
                 ]
@@ -499,8 +511,8 @@
 
               // set the easy button default state based on screen size & display or hide the custom control
               window.innerWidth > 991 ?
-                window.customEasyBtn.state('open') && $("#slider-container").css('display', 'block') :
-                window.customEasyBtn.state('closed') && $("#slider-container").css('display', 'none');
+                window.customEasyBtn.state('open') && $("#slider-container-mobile").css('display', 'block') :
+                window.customEasyBtn.state('closed') && $("#slider-container-mobile").css('display', 'none');
 
               // lake polygon overlay input checkbox function - inside custom time slider/layer control
               var checkbox = document.getElementById("lakeOverlay");

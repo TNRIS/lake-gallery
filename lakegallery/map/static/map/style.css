@@ -525,8 +525,20 @@ div.slider-handle.min-slider-handle.round {
 	padding: 10px;
 	width: auto;
 	height: auto;
-	min-width: 300px;
-	min-height: 100px;
+}
+
+#slider-container-mobile {
+	position: absolute;
+	background: #01253d; /* older browsers (no transparency) */
+	background: rgb(1,37,61,0.7); /* newer browsers (transparent) */
+	border-radius: 5px;
+	justify-content: center;
+	top: 45px;
+	right: 10px;
+	z-index: 999;
+	padding: 10px;
+	width: auto;
+	height: auto;
 }
 
 .slider-container-header {

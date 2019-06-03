@@ -404,9 +404,8 @@
                 labelObject[len] = `<a href="https://tnris.org/texas-imagery-service/" class="historical-link" target="_blank" title="Texas Imagery Service">Current</a>`;
                 ticks.push(len);
 
-                // create labels for time slider with links to datahub historical imagery
+                // create labels for time slider with links to datahub historical imagery (future enhancement)
                 var labelArray = [];
-                var positionArray = [];
 
                 Object.values(labelObject).forEach(function (value) {
                   // value != 'Current' ? labelArray.push(`<a href="#" target="_blank" class="historical-link" title="get it on datahub">${value}</a>`)
@@ -414,6 +413,18 @@
                   : labelArray.push('Current');
                 });
                 // end label array function
+
+                // create positionArray; used to position labels below ticks
+                var positionArray = [];
+
+                if (labelArray.length > 1) {
+                  var positionInterval = 100 / (labelArray.length - 1);
+
+                  for (i=0; i < labelArray.length; i++) {
+                    positionArray.push(positionInterval * i);
+                  }
+                };
+                // end positionArray
 
                 $("#historicalSlider").slider({
                   value: len,
