@@ -94,6 +94,7 @@ img.texas-home:hover {
 }
 
 .count-container {
+	display: none;
 	width: auto;
 	max-width: 200px;
 	max-height: 100px;
@@ -169,7 +170,7 @@ img.texas-home:hover {
 #instructionModal > .modal-dialog {
 	display: block;
 	text-align: center;
-	top: 25vh;
+	top: 3vh;
 }
 
 @media (min-width: 576px) {

@@ -100,33 +100,37 @@
 
           // popup and tooltip function to be used each time point/marker clicked/hovered over
           var lakePopup = function (feature, layer) {
-            // bind popup to lake markers
-            layer.bindPopup(
+            // bind popup to lake markers; based on window size (mobile vs desktop)
+            // on desktop: open lake marker popup on mouse over; close on mouseout; click marker to go to story
+            if (window.innerWidth > 991) {
+              layer.bindPopup(
+                `<p style="text-align:center;">
+                  <b>${feature.properties.res_lbl}</b><br />
+                  <em>Region ${feature.properties.region}</em>
+                </p>`
+              );
+              layer.on('mouseover', function (e) {
+                this.openPopup();
+              });
+              layer.on('mouseout', function (e) {
+                this.closePopup();
+              });
+              layer.on('click', function (e) {
+                window.location.href = `/${feature.properties.res_lbl}`;
+              });
+            }
+            // on mobile: open lake marker popup on click and click link in popup to go to story
+            else {
+              layer.bindPopup(
               `<p style="text-align:center;">
-                <b>${feature.properties.res_lbl}</b><br />
+                <b><a href="/${feature.properties.res_lbl}">${feature.properties.res_lbl}</a></b><br />
                 <em>Region ${feature.properties.region}</em>
               </p>`
-            );
-            // bind tooltip to marker and on hover to show
-            // layer.bindTooltip(
-            //   `<p style="text-align:center; background-color:white; padding:3px; opacity:0.8;">
-            //     Click marker to view lake story
-            //   </p>`
-            // );
-            // open lake marker popup on mouse over
-            layer.on('mouseover', function (e) {
-              this.openPopup();
-              // this.openTooltip();
-            });
-            // close lake marker popup on mouse out
-            layer.on('mouseout', function (e) {
-              this.closePopup();
-              // this.closeTooltip();
-            });
-            // on clicking a lake marker go to story
-            layer.on('click', function (e) {
-              window.location.href = `/${feature.properties.res_lbl}`;
-            });
+              );
+              layer.on('click', function (e) {
+                this.openPopup();
+              })
+            }
           };
 
           // label function for polygon reservoir layer; contains labeling & click to go to lake story
@@ -210,31 +214,25 @@
         });
 
         // carto sql api call to get enabled story count and update counter
-        // div in the upper right of the index/home map
-        var sql = new cartodb.SQL({ user: 'tnris-flood' });
-        sql.execute("SELECT COUNT(story) as lake_count FROM reservoirs WHERE story='enabled'")
-        .done(function(data) {
-          document.getElementById("count-output").innerHTML = data.rows[0].lake_count;
-        })
-        .error(function(errors) {
-          // errors contains a list of errors
-          console.log("errors:" + errors);
-        });
+        // div in the upper right of the index/home map - only for desktop size
+        if (window.innerWidth > 991) {
+          document.getElementsByClassName("count-container")[0].style.display = "block";
+
+          var sql = new cartodb.SQL({ user: 'tnris-flood' });
+          sql.execute("SELECT COUNT(story) as lake_count FROM reservoirs WHERE story='enabled'")
+          .done(function(data) {
+            document.getElementById("count-output").innerHTML = data.rows[0].lake_count;
+          })
+          .error(function(errors) {
+            // errors contains a list of errors
+            console.log("errors:" + errors);
+          });
+        }
 
         // switch out text in expand instructions button; expand/collapse
-        // also adjust #instructionModal css 'top' value from 20vh to 0 to give room for modal expansion
         function changeBtnTxt() {
           var btn = document.getElementById("expand-collapse-btn");
-          var modal = $("#instructionModalContent.modal-dialog");
-
           btn.innerText == "Show Instructions" ? btn.innerText = "Hide Instructions" : btn.innerText = "Show Instructions";
-
-          // console.log(modal);
-          // modal.css("top", "25vh") ? modal.css("top", "3vh") : modal.css("top", "25vh");
-          // if(modal.length) {
-          //   console.log($("#instructionModalContent.modal-body"));
-          //
-          // }
         };
 
     </script>

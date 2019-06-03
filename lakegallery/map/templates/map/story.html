@@ -409,7 +409,8 @@
                 var positionArray = [];
 
                 Object.values(labelObject).forEach(function (value) {
-                  value != 'Current' ? labelArray.push(`<a href="#" target="_blank" class="historical-link" title="get it on datahub">${value}</a>`)
+                  // value != 'Current' ? labelArray.push(`<a href="#" target="_blank" class="historical-link" title="get it on datahub">${value}</a>`)
+                  value != 'Current' ? labelArray.push(value)
                   : labelArray.push('Current');
                 });
                 // end label array function

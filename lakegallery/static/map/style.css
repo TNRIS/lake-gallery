@@ -169,7 +169,7 @@ img.texas-home:hover {
 #instructionModal > .modal-dialog {
 	display: block;
 	text-align: center;
-	/* top: 20vh; */
+	top: 3vh;
 }
 
 @media (min-width: 576px) {
@@ -182,9 +182,9 @@ img.texas-home:hover {
 	}
 }
 
-.modal-body > img {
+/* .modal-body > img {
 	padding: 40px;
-}
+} */
 
 .modal-body > div {
 	float: right;
@@ -212,11 +212,13 @@ img.texas-home:hover {
 
 #expand-instructions > ol > li {
 	margin-bottom: 20px;
+	font-weight: bold;
 }
 
 #expand-instructions > ol > img {
 	margin-bottom: 20px;
 }
+
 /*ABOUT PAGE*/
 #aboutPage > div.row {
 	padding: 20px;
@@ -358,7 +360,7 @@ img.texas-home:hover {
 @media (min-width: 576px) {
 	.modal-dialog {
 	    max-width: 80%;
-	    max-height: 90%;
+	    /* max-height: 90%; */
 	    width: auto !important;
     	display: inline-block;
     	text-align: center;
@@ -368,16 +370,16 @@ img.texas-home:hover {
 		max-height: 90%;
 	}
 
-	.modal-body {
+	/* .modal-body {
 		max-height: 90%;
-	}
+	} */
 
-	.modal-body > img {
+	/* .modal-body > img {
 		margin: 0 auto;
 		display: block;
 		max-width: 100%;
 		max-height: 80vh;
-	}
+	} */
 }
 
 .modal-body > img {
