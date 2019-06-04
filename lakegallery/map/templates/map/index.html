@@ -52,18 +52,25 @@
               <h4 style="text-align:left;">
                 <strong>Instructions:</strong>
               </h4>
-              <ol style="text-align:left;">
-                <li>Click a marker cluster to zoom closer to the area of those lake markers/locations.</li>
-                <img src="{% static 'map/images/instructions-step1.gif' %}">
-                <li>Hover over markers to view lake name and region.</li>
-                <img src="{% static 'map/images/instructions-step2.gif' %}">
-                <li>Click a marker to go to a lake story.</li>
-                <img style="width:600px; height:600px;" src="{% static 'map/images/instructions-step3.gif' %}">
-                <li>Keep zooming to view lake polygons and labels. Click a polygon to view that lakes' story.</li>
-                <img src="{% static 'map/images/instructions-step4.gif' %}">
-                <li>Click a polygon to go to a lake story.</li>
-                <img style="width:600px; height:600px;" src="{% static 'map/images/instructions-step5.gif' %}"
-              </ol>
+
+              <div class="container">
+                <div class="row">
+                  <div class="col-lg">
+                    <ol style="text-align:left;">
+                      <li>Click a marker cluster to zoom closer to the area of those lake markers/locations.</li>
+                      <img class="img-fluid" src="{% static 'map/images/instructions-step1.gif' %}">
+                      <li>Hover over markers to view lake name and region.</li>
+                      <img class="img-fluid" src="{% static 'map/images/instructions-step2.gif' %}">
+                      <li>Click a marker to go to a lake story.</li>
+                      <img class="img-fluid" style="width:600px; height:600px;" src="{% static 'map/images/instructions-step3.gif' %}">
+                      <li>Keep zooming to view lake polygons and labels. Click a polygon to view that lakes' story.</li>
+                      <img class="img-fluid" src="{% static 'map/images/instructions-step4.gif' %}">
+                      <li>Click a polygon to go to a lake story.</li>
+                      <img class="img-fluid" style="width:600px; height:600px;" src="{% static 'map/images/instructions-step5.gif' %}"
+                    </ol>
+                  </div>
+                </div>
+              </div>
             </div>
 
           </div>
@@ -215,19 +222,19 @@
 
         // carto sql api call to get enabled story count and update counter
         // div in the upper right of the index/home map - only for desktop size
-        if (window.innerWidth > 991) {
-          document.getElementsByClassName("count-container")[0].style.display = "block";
-
-          var sql = new cartodb.SQL({ user: 'tnris-flood' });
-          sql.execute("SELECT COUNT(story) as lake_count FROM reservoirs WHERE story='enabled'")
-          .done(function(data) {
-            document.getElementById("count-output").innerHTML = data.rows[0].lake_count;
-          })
-          .error(function(errors) {
-            // errors contains a list of errors
-            console.log("errors:" + errors);
-          });
-        }
+        // if (window.innerWidth > 991) {
+        //   document.getElementsByClassName("count-container")[0].style.display = "block";
+        //
+        //   var sql = new cartodb.SQL({ user: 'tnris-flood' });
+        //   sql.execute("SELECT COUNT(story) as lake_count FROM reservoirs WHERE story='enabled'")
+        //   .done(function(data) {
+        //     document.getElementById("count-output").innerHTML = data.rows[0].lake_count;
+        //   })
+        //   .error(function(errors) {
+        //     // errors contains a list of errors
+        //     console.log("errors:" + errors);
+        //   });
+        // }
 
         // switch out text in expand instructions button; expand/collapse
         function changeBtnTxt() {

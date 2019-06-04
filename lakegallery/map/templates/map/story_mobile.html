@@ -286,7 +286,6 @@
         </div>
       </div>
       <div class="col-12 mobileMapPanel">
-        <!-- <input id="historicalSlider" type="text" style="display:none;"/> -->
 
         <!-- story map tools menu - time slider and lake outline, etc -->
         <div id="slider-container-mobile" style="display: none;">
@@ -296,24 +295,30 @@
             <p>View <strong>{{ lake }}</strong> - Past to Present</p>
           </div>
 
-          <div style="width:100%; min-height:50px;">
+          <div style="width:auto; min-height:40px; padding:0 10px 0 10px; text-align:center;">
             <input id='historicalSlider' type='text'/>
           </div>
 
           <hr class="separator"></hr>
 
           <div class="slider-container-text bottom-container">
-            <div style="float:left; width:50%; padding-left:15px;">
-              <a id="zoom-extent" href="#" class="link">
-                <img class="extent" src="{% static 'map/images/extent.png' %}" />
-                Full Lake Extent
-              </a>
+
+            <div class="centering-div">
+              <div style="float:left;">
+                <a id="zoom-extent" href="#" class="link">
+                  <img class="extent" src="{% static 'map/images/extent.png' %}" />
+                </a>
+                <span>Full Lake Extent</span>
+              </div>
+
+              <div style="float:right;">
+                <div style="padding-top:5px; float:left; vertical-align:baseline; margin-right:3px;">
+                  <input type="checkbox" id="lakeOverlay" name="overlay" value="checked" checked />
+                </div>
+                <label for="lakeOverlay">Lake Outline</label>
+              </div>
             </div>
 
-            <div style="float:right; width:50%; padding-left:25px;">
-              <input type="checkbox" id="lakeOverlay" name="overlay" style="float:left; vertical-align:baseline;" value="checked" checked />
-              <label for="lakeOverlay" style="margin-left:-10px;">Lake Outline</label>
-            </div>
           </div>
 
         </div>
@@ -397,7 +402,9 @@
                 });
 
                 var len = ticks.length;
-                labelObject[len] = `<a href="https://tnris.org/texas-imagery-service/" class="historical-link" target="_blank" title="Texas Imagery Service">Current</a>`;
+                // labelObject[len] = `<a href="https://tnris.org/texas-imagery-service/" target="_blank" title="Texas Imagery Service">Current</a>`;
+                // labelObject[len] = `<a href="https://tnris.org/texas-imagery-service/" class="historical-link" target="_blank" title="Texas Imagery Service">Current</a>`;
+                labelObject[len] = `<a href="https://tnris.org/texas-imagery-service/" target="_blank" title="Google Texas Imagery Service"><img src="{% static 'map/images/google-22px.png' %}"</img></a>`;
                 ticks.push(len);
 
                 // create labels for time slider with links to datahub historical imagery
@@ -494,7 +501,7 @@
                     title: 'Open tools menu',
                     onClick: function(control){
                       control.state('open');
-                      $("#slider-container-mobile").css('display', 'block');
+                      $("#slider-container-mobile").fadeToggle();
                     }
                   },
                   {
@@ -503,7 +510,7 @@
                     title: 'Close tools menu',
                     onClick: function(control) {
                       control.state('closed');
-                      $("#slider-container-mobile").css('display', 'none');
+                      $("#slider-container-mobile").fadeToggle();
                     }
                   }
                 ]
@@ -511,8 +518,8 @@
 
               // set the easy button default state based on screen size & display or hide the custom control
               window.innerWidth > 991 ?
-                window.customEasyBtn.state('open') && $("#slider-container-mobile").css('display', 'block') :
-                window.customEasyBtn.state('closed') && $("#slider-container-mobile").css('display', 'none');
+                window.customEasyBtn.state('open') && $("#slider-container-mobile").fadeToggle() :
+                window.customEasyBtn.state('closed');
 
               // lake polygon overlay input checkbox function - inside custom time slider/layer control
               var checkbox = document.getElementById("lakeOverlay");

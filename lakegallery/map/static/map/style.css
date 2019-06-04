@@ -211,13 +211,16 @@ img.texas-home:hover {
 	padding: 10px;
 }
 
-#expand-instructions > ol > li {
+ol > li {
 	margin-bottom: 20px;
 	font-weight: bold;
+	word-wrap: normal;
 }
 
-#expand-instructions > ol > img {
+ol > img {
 	margin-bottom: 20px;
+	/* height: auto;
+	max-width: 100%; */
 }
 
 /*ABOUT PAGE*/
@@ -372,7 +375,8 @@ img.texas-home:hover {
 	}
 
 	/* .modal-body {
-		max-height: 90%;
+		max-height: 90vh;
+		max-width: 70vw;
 	} */
 
 	/* .modal-body > img {
@@ -456,7 +460,13 @@ div.leaflet-control-layers-overlays > label {
 
 .slider-tick-label-container {
 	color: white;
-	font-size: 14px;
+	font-size: 12px;
+}
+
+.slider-tick-label {
+	/* min-width: 40px; */
+	margin: 3px;
+	padding: 0 3px 0 3px;
 }
 
 #sliderToggler {
@@ -467,11 +477,9 @@ div.leaflet-control-layers-overlays > label {
 }
 
 div.slider.slider-horizontal {
-	width: 90%;
-	margin-left: auto;
-	margin-right: auto;
-	position: absolute;
-	/* margin: 5px; */
+	width: 100%;
+	position: relative;
+	margin-bottom: 20px;
 }
 
 /* .tooltip {
@@ -525,6 +533,7 @@ div.slider-handle.min-slider-handle.round {
 	padding: 10px;
 	width: auto;
 	height: auto;
+	min-width: 320px;
 }
 
 #slider-container-mobile {
@@ -535,7 +544,7 @@ div.slider-handle.min-slider-handle.round {
 	justify-content: center;
 	top: 45px;
 	right: 10px;
-	z-index: 999;
+	z-index: 100;
 	padding: 10px;
 	width: auto;
 	height: auto;
@@ -553,8 +562,12 @@ div.slider-handle.min-slider-handle.round {
 	width: 100%;
 	text-align: center;
 	display: inline-block;
-	max-height: 25px;
 	margin: 0 auto;
+}
+
+.centering-div {
+	margin-left: 5%;
+	margin-right: 5%;
 }
 
 hr.separator {
