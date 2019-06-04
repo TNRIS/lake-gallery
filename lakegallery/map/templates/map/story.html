@@ -24,7 +24,7 @@
             <nav id="navbar-contentPanel" class="navbar navbar-light bg-light">
               <ul id="storyNav" class="nav nav-pills">
                 <li class="nav-item">
-                  <a class="nav-link" href="#Overview">Overview</a>
+                  <a class="nav-link active" href="#Overview">Overview</a>
                 </li>
                 {% if story.history %}
                   <li class="nav-item">
@@ -301,7 +301,7 @@
           </div>
 
           <div style="width:100%; min-height:40px; padding:0 10px 0 10px; text-align:center;">
-            <input id='historicalSlider' type='text'/>
+            <input id='historicalSlider' type='text' />
           </div>
 
           <hr class="separator"></hr>
@@ -543,7 +543,7 @@
 
             // setup picture modal event to populate image in modal dynamically
             // setup page effect on story
-            var prevPage = $("#Overview").parent();
+            // var prevPage = $("#Overview").parent();
 
             $(function() {
               $('.picZoom').on('click', function() {
@@ -552,13 +552,14 @@
                 $('#imagemodal').modal('show');
               });
 
-              prevPage.addClass("focusPage");
+              // prevPage.addClass("focusPage");
+              console.log($('.contentText'));
 
               $('.contentText').on('activate.bs.scrollspy', function (e) {
                 var activeSection = $("#storyNav").find("li.nav-item a.nav-link.active").attr("href");
-                prevPage.removeClass("focusPage");
-                $(activeSection).parent().addClass("focusPage");
-                prevPage = $(activeSection).parent();
+                // prevPage.removeClass("focusPage");
+                // $(activeSection).parent().addClass("focusPage");
+                // prevPage = $(activeSection).parent();
               });
             });
 
