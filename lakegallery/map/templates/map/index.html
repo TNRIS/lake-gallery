@@ -10,93 +10,222 @@
             <p>
               <strong style="color:red;">Please note that this application is currently in beta and is still undergoing final testing before its official release.</strong>
             </p>
-            <h2 class="modal-title">Welcome to the Texas Lake Gallery!</h2>
+
+            <h2 class="modal-title">Welcome to Lakes of Texas!</h2>
+
             <br />
+
             <p>
               <strong>Disclaimer: </strong>The information provided by the Texas Water Development Board and the Texas Natural Resources Information System (TNRIS) in the
-              Texas Lake Gallery web application is for general informational purposes only. All information on the site/application is provided in good faith, however we
+              Lakes of Texas web application is for general information purposes only. All information on the site/application is provided in good faith, however we
               make no representation or warranty of any kind, express or implied, regarding the accuracy, adequacy, validity, reliability, availability or completeness of
               any information on the site/application.
             </p>
 
-            <img src="{% static 'map/images/modal_regions.png' %}" />
-            <p>
-            Lakes are grouped by the Planning Region within which they reside. Click a Region in the map to view the available lakes and reservoirs within that region.
-            </p>
-            <div>
+            <div style="bottom:0;">
               <label class="form-check-label">
                 <input id="modalHideCheckbox" class="form-check-input" type="checkbox" value="">
                 Don't show this message again
               </label>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button id="dismiss-modal-btn" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
+
+            <div style="padding:20px; bottom:0; float:left;">
+              <button id="expand-collapse-btn"
+                style="text-align:center;"
+                onclick="changeBtnTxt()"
+                class="btn btn-success"
+                type="button"
+                data-toggle="collapse"
+                data-target="#expand-instructions"
+                aria-expanded="false">
+                  Show Instructions
+              </button>
+            </div>
+
+            <div class="collapse" id="expand-instructions">
+              <h4 style="text-align:left;">
+                <strong>Instructions:</strong>
+              </h4>
+
+              <div class="container">
+                <div class="row">
+                  <div class="col-lg">
+                    <ol style="text-align:left;">
+                      <li>Click a marker cluster to zoom closer to the area of those lake markers/locations.</li>
+                      <img class="img-fluid" src="{% static 'map/images/instructions-step1.gif' %}">
+                      <li>Hover over markers to view lake name and region.</li>
+                      <img class="img-fluid" src="{% static 'map/images/instructions-step2.gif' %}">
+                      <li>Click a marker to go to a lake story.</li>
+                      <img class="img-fluid" style="width:600px; height:600px;" src="{% static 'map/images/instructions-step3.gif' %}">
+                      <li>Keep zooming to view lake polygons and labels. Click a polygon to view that lakes' story.</li>
+                      <img class="img-fluid" src="{% static 'map/images/instructions-step4.gif' %}">
+                      <li>Click a polygon to go to a lake story.</li>
+                      <img class="img-fluid" style="width:600px; height:600px;" src="{% static 'map/images/instructions-step5.gif' %}"
+                    </ol>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
     </div>
+
+    <div id="lake-count" class="count-container">
+      <p class="count-text">
+        <strong>Total lake stories available: <span id="count-output" class="count"></span></strong>
+      </p>
+    </div>
+
     {% leaflet_map "main" callback="main_map_init" %}
+
     <script type="text/javascript">
         function main_map_init (map, options) {
           L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}@2x.png').addTo(map);
           var account = 'tnris-flood'
-          var tileLayer;
-          var utfGrid;
+          var pointLayer = "{{ layers.reservoirs_pt.table_name }}";
+          var polyLayer = pointLayer;
+          var lakeClusters;
+          var pointUrl;
+          var polyUrl;
+          var bounds = map.getBounds();
 
-          var rwpasConfig = JSON.parse('{{ layers.rwpas }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
+          // easy button control to zoom to state extent
+          L.easyButton("<img src={% static 'map/images/texas_solid_blk.png' %} style='width:auto; height:100%; opacity:1; padding: 3px;' title='Zoom to statewide extent' />", function(btn, map){
+            map.fitBounds(bounds);
+          }).addTo(map);
 
-          function getTileUrls (config, regionLetter) {
-            var css = config.carto_css;
-            css += config.carto_lbl;
-            var interactivity = config.interactivity;
+          // sql statements for the carto sql api
+          var polySql = `SELECT * FROM ${polyLayer} WHERE story='enabled'`;
+          var pointSql = `SELECT type, story, region, status, res_lbl, res_name, ST_PointOnSurface(the_geom) as the_geom FROM ${pointLayer} WHERE story='enabled'`;
 
-            var sql = `select * from ${config.table_name}`;
+          // popup and tooltip function to be used each time point/marker clicked/hovered over
+          var lakePopup = function (feature, layer) {
+            // bind popup to lake markers; based on window size (mobile vs desktop)
+            // on desktop: open lake marker popup on mouse over; close on mouseout; click marker to go to story
+            if (window.innerWidth > 991) {
+              layer.bindPopup(
+                `<p style="text-align:center;">
+                  <b>${feature.properties.res_lbl}</b><br />
+                  <em>Region ${feature.properties.region}</em>
+                </p>`
+              );
+              layer.on('mouseover', function (e) {
+                this.openPopup();
+              });
+              layer.on('mouseout', function (e) {
+                this.closePopup();
+              });
+              layer.on('click', function (e) {
+                window.location.href = `/${feature.properties.res_lbl}`;
+              });
+            }
+            // on mobile: open lake marker popup on click and click link in popup to go to story
+            else {
+              layer.bindPopup(
+              `<p style="text-align:center;">
+                <b><a href="/${feature.properties.res_lbl}">${feature.properties.res_lbl}</a></b><br />
+                <em>Region ${feature.properties.region}</em>
+              </p>`
+              );
+              layer.on('click', function (e) {
+                this.openPopup();
+              })
+            }
+          };
 
-            var mapconfig = {
-              "version": "1.3.1",
-              "layers": [{
-                "type": "mapnik",
-                "options": {
-                  "cartocss_version": "2.1.1",
-                  "cartocss": css,
-                  "sql": sql,
-                  "interactivity": interactivity
-                }
-              }]
+          // label function for polygon reservoir layer; contains label (permanent tooltip), popup content, & click to go to lake story
+          var lakeLabel = function (feature, layer) {
+            // bind tooltip label to lake polygons
+            layer.bindTooltip(`
+              <strong class="lake-label">
+                ${feature.properties.res_lbl}
+              </strong>`,
+              {permanent: true}
+            );
+
+            if (window.innerWidth > 991) {
+              // bind popup content to layer
+              layer.bindPopup(
+                `<p style="text-align:center;">Click the <strong>${feature.properties.res_lbl}</strong> polygon to view the story</p>`
+              );
+              // on hover lake polygon, show popup at cursor
+              layer.on('mouseover', function (e) {
+                var popup = e.target.getPopup();
+                popup.setLatLng(e.latlng).openOn(map);
+              });
+              // close popup on mouse out at cursor
+              layer.on('mouseout', function (e) {
+                e.target.closePopup();
+              });
+              // follow the cursor
+              layer.on('mousemove', function (e) {
+                e.target.closePopup();
+                var popup = e.target.getPopup();
+                popup.setLatLng(e.latlng).openOn(map);
+              });
+              // on clicking a lake polygon go to the story
+              layer.on('click', function (e) {
+                window.location.href = `/${feature.properties.res_lbl}`;
+              });
+            }
+            else {
+              layer.bindPopup(
+              `<p style="text-align:center;">
+                <b><a href="/${feature.properties.res_lbl}">${feature.properties.res_lbl}</a></b><br />
+                <em>Region ${feature.properties.region}</em>
+              </p>`
+              );
+              layer.on('click', function (e) {
+                var popup = e.target.getPopup();
+                popup.setLatLng(e.latlng).openOn(map);
+              })
             }
 
-            $.ajax({
-              crossOrigin: true,
-              type: 'POST',
-              dataType: 'json',
-              contentType: 'application/json',
-              url: `https://${account}.carto.com/api/v1/map`,
-              data: JSON.stringify(mapconfig),
-              success: function(data) {
-                var url = `https://${account}.carto.com/api/v1/map/` + data.layergroupid + '/{z}/{x}/{y}.png'
-                tileLayer = new L.tileLayer(url);
-                tileLayer.addTo(map);
+          };
 
-                var gridUrl = `https://${account}.carto.com/api/v1/map/` + data.layergroupid + '/0/{z}/{x}/{y}.grid.json'
-                utfGrid = new L.utfGrid(gridUrl);
-                utfGrid.on('mouseover', function (e) {
-                  $('.leaflet-container').css('cursor', 'pointer');
-                });
-                utfGrid.on('mouseout', function (e) {
-                  $('.leaflet-container').css('cursor', '');
-                });
-                utfGrid.on('click', function (e) {
-                  if (e.data) {
-                    var regionLink = '/' + e.data.letter;
-                    window.location.href = regionLink;
-                  }
-                });
-                utfGrid.addTo(map);
-              }
-            })
-          }
+          // on map load use point sql for point/marker lake locations
+          // points and/or clusters will be visible at all times
+          pointUrl = `https://${account}.carto.com/api/v2/sql?format=GeoJSON&q=${pointSql}`;
+          polyUrl = `https://${account}.carto.com/api/v2/sql?format=GeoJSON&q=${polySql}`;
 
-          getTileUrls(rwpasConfig);
-        }
+          $.getJSON(pointUrl, function (data) {
+            lakeClusters = L.markerClusterGroup({
+              spiderfyOnMaxZoom: true,
+              maxClusterRadius: 100, // increase radius from default 80
+              animate: true,
+              showCoverageOnHover: true,
+              zoomToBoundsOnClick: true
+            });
+            pointLayer = L.geoJson(data, {
+              onEachFeature: lakePopup
+            });
+            lakeClusters.addLayer(pointLayer);
+            map.addLayer(lakeClusters);
+          });
+
+          // on map zoom, if zoom level greater than 9 use poly sql; else use point sql
+          map.on('zoomend', function() {
+            var zoomLevel = map.getZoom();
+            console.log(zoomLevel);
+
+            map.removeLayer(polyLayer);
+            
+            if (zoomLevel > 9) {
+              $.getJSON(polyUrl, function(data) {
+                polyLayer = L.geoJson(data, {
+                  onEachFeature: lakeLabel
+                }).addTo(map);
+              });
+              map.removeLayer(lakeClusters);
+            }
+            else {
+              map.addLayer(lakeClusters);
+            }
+          })
+        } //end main_map_init function
 
         // show modal on load if localstorage doesn't say they've opt'd out
         $(function() {
@@ -113,5 +242,28 @@
             });
           }
         });
+
+        // carto sql api call to get enabled story count and update counter
+        // div in the upper right of the index/home map - only for desktop size
+        // if (window.innerWidth > 991) {
+        //   document.getElementsByClassName("count-container")[0].style.display = "block";
+        //
+        //   var sql = new cartodb.SQL({ user: 'tnris-flood' });
+        //   sql.execute("SELECT COUNT(story) as lake_count FROM reservoirs WHERE story='enabled'")
+        //   .done(function(data) {
+        //     document.getElementById("count-output").innerHTML = data.rows[0].lake_count;
+        //   })
+        //   .error(function(errors) {
+        //     // errors contains a list of errors
+        //     console.log("errors:" + errors);
+        //   });
+        // }
+
+        // switch out text in expand instructions button; expand/collapse
+        function changeBtnTxt() {
+          var btn = document.getElementById("expand-collapse-btn");
+          btn.innerText == "Show Instructions" ? btn.innerText = "Hide Instructions" : btn.innerText = "Show Instructions";
+        };
+
     </script>
 {% endblock %}

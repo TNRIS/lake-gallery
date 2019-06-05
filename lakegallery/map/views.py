@@ -16,16 +16,9 @@ utility functions
 """
 
 
-def get_region_header_list():
-    l = RWPAs.objects.values_list('reg_name', 'letter')
-    labels = [{'name': r[0], 'letter': r[1]} for r in l]
-    labels.sort(key=lambda x: x['name'])
-    return labels
-
-
 def get_lake_header_list():
-    r = MajorReservoirs.objects.values_list('res_lbl', 'region', 'story')
-    res = [{'name': n[0], 'region': n[1], 'class': n[2]} for n
+    r = MajorReservoirs.objects.values_list('res_lbl', 'story')
+    res = [{'name': n[0], 'class': n[1]} for n
            in r]
     res.sort(key=lambda x: x['name'])
     return res
@@ -37,44 +30,20 @@ views/templates & redirects
 
 
 def index(request):
-    labels = get_region_header_list()
     res = get_lake_header_list()
-    context = {'header_regions': labels, 'header_lakes': res,
+    context = {'header_lakes': res,
                'layers': layers, 'version': settings.VERSION}
 
     return render(request, 'map/index.html', context)
 
 
-def region(request, letter):
-    labels = get_region_header_list()
+def redirect_story(request, lake):
+    return redirect('/' + lake)
+
+
+def story(request, lake):
     res = get_lake_header_list()
-
-    r = RWPAs.objects.get(letter=letter)
-    ext = list(GEOSGeometry(r.geom).extent)
-
-    context = {'header_regions': labels, 'header_lakes': res,
-               'layers': layers, 'region': letter, 'extent': ext}
-
-    return render(request, 'map/region.html', context)
-
-
-def redirect_region(request, letter):
-    uppercase = letter.upper()
-    return redirect('/' + uppercase)
-
-
-def redirect_story(request, letter, lake):
-    uppercase = letter.upper()
-    return redirect('/' + uppercase + '/' + lake)
-
-
-def story(request, letter, lake):
-    labels = get_region_header_list()
-    res = get_lake_header_list()
-
     m = MajorReservoirs.objects.get(res_lbl=lake)
-    if m.region != letter:
-        raise Http404()
 
     ext = list(GEOSGeometry(m.geom).extent)
 
@@ -124,8 +93,8 @@ def story(request, letter, lake):
     except:
         low_list = []
 
-    context = {'header_regions': labels, 'header_lakes': res, 'extent': ext,
-               'layer': layers['reservoirs'], 'lake': lake, 'links': links,
+    context = {'header_lakes': res, 'extent': ext,
+               'layer': layers['reservoirs_pt'], 'lake': lake, 'links': links,
                'story': c, 'stats': s, 'high_events': high_list,
                'low_events': low_list, 'overlays': overlays,
                'overlay_order': overlay_order, 'overlay_query': m.id}
@@ -137,9 +106,8 @@ def story(request, letter, lake):
 
 
 def about(request):
-    labels = get_region_header_list()
     res = get_lake_header_list()
-    context = {'header_regions': labels, 'header_lakes': res,
+    context = {'header_lakes': res,
                'version': settings.VERSION}
 
     return render(request, 'map/about.html', context)
@@ -151,12 +119,11 @@ error code handling
 
 
 def bad_request(request):
-    labels = get_region_header_list()
     res = get_lake_header_list()
 
     snark = "Maybe this story book is in a different language?"
 
-    context = {'header_regions': labels, 'header_lakes': res,
+    context = {'header_lakes': res,
                'code': 400, 'text': 'Bad Request',
                'snark': snark}
     response = render_to_response('map/error.html', context)
@@ -165,12 +132,11 @@ def bad_request(request):
 
 
 def permission_denied(request):
-    labels = get_region_header_list()
     res = get_lake_header_list()
 
     snark = "Sorry, this story book is locked down."
 
-    context = {'header_regions': labels, 'header_lakes': res,
+    context = {'header_lakes': res,
                'code': 403, 'text': 'Permission Denied',
                'snark': snark}
     response = render_to_response('map/error.html', context)
@@ -179,13 +145,12 @@ def permission_denied(request):
 
 
 def page_not_found(request):
-    labels = get_region_header_list()
     res = get_lake_header_list()
 
     snark = ("Seems like you're looking for a page that's not in this story "
              "book.")
 
-    context = {'header_regions': labels, 'header_lakes': res,
+    context = {'header_lakes': res,
                'code': 404, 'text': 'Page Not Found',
                'snark': snark}
     response = render_to_response('map/error.html', context)
@@ -194,12 +159,11 @@ def page_not_found(request):
 
 
 def server_error(request):
-    labels = get_region_header_list()
     res = get_lake_header_list()
 
     snark = "Looks like the bookshelf fell out from under this story book."
 
-    context = {'header_regions': labels, 'header_lakes': res,
+    context = {'header_lakes': res,
                'code': 500, 'text': 'Server Error',
                'snark': snark}
     response = render_to_response('map/error.html', context)
