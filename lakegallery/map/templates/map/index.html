@@ -88,7 +88,8 @@
           var pointLayer = "{{ layers.reservoirs_pt.table_name }}";
           var polyLayer = pointLayer;
           var lakeClusters;
-          var url;
+          var pointUrl;
+          var polyUrl;
           var bounds = map.getBounds();
 
           // easy button control to zoom to state extent
@@ -135,7 +136,7 @@
             }
           };
 
-          // label function for polygon reservoir layer; contains labeling & click to go to lake story
+          // label function for polygon reservoir layer; contains label (permanent tooltip), popup content, & click to go to lake story
           var lakeLabel = function (feature, layer) {
             // bind tooltip label to lake polygons
             layer.bindTooltip(`
@@ -144,29 +145,53 @@
               </strong>`,
               {permanent: true}
             );
-            // bind popup to act as a traditional tooltip (give user instructions)
-            // layer.bindPopup(
-            //   `<b>Click polygon to view lake story</b>`
-            // );
-            // on hover lake polygon show popup
-            // layer.on('mouseover', function (e) {
-            //   layer.openPopup();
-            // });
-            // close tooltip on mouse out
-            // layer.on('mouseout', function (e) {
-            //   layer.closePopup();
-            // });
-            // on clicking a lake polygon go to story
-            layer.on('click', function (e) {
-              window.location.href = `/${feature.properties.res_lbl}`;
-            });
+
+            if (window.innerWidth > 991) {
+              // bind popup content to layer
+              layer.bindPopup(
+                `<p style="text-align:center;">Click the <strong>${feature.properties.res_lbl}</strong> polygon to view the story</p>`
+              );
+              // on hover lake polygon, show popup at cursor
+              layer.on('mouseover', function (e) {
+                var popup = e.target.getPopup();
+                popup.setLatLng(e.latlng).openOn(map);
+              });
+              // close popup on mouse out at cursor
+              layer.on('mouseout', function (e) {
+                e.target.closePopup();
+              });
+              // follow the cursor
+              layer.on('mousemove', function (e) {
+                e.target.closePopup();
+                var popup = e.target.getPopup();
+                popup.setLatLng(e.latlng).openOn(map);
+              });
+              // on clicking a lake polygon go to the story
+              layer.on('click', function (e) {
+                window.location.href = `/${feature.properties.res_lbl}`;
+              });
+            }
+            else {
+              layer.bindPopup(
+              `<p style="text-align:center;">
+                <b><a href="/${feature.properties.res_lbl}">${feature.properties.res_lbl}</a></b><br />
+                <em>Region ${feature.properties.region}</em>
+              </p>`
+              );
+              layer.on('click', function (e) {
+                var popup = e.target.getPopup();
+                popup.setLatLng(e.latlng).openOn(map);
+              })
+            }
+
           };
 
           // on map load use point sql for point/marker lake locations
           // points and/or clusters will be visible at all times
-          url = `https://${account}.carto.com/api/v2/sql?format=GeoJSON&q=${pointSql}`;
+          pointUrl = `https://${account}.carto.com/api/v2/sql?format=GeoJSON&q=${pointSql}`;
+          polyUrl = `https://${account}.carto.com/api/v2/sql?format=GeoJSON&q=${polySql}`;
 
-          $.getJSON(url, function (data) {
+          $.getJSON(pointUrl, function (data) {
             lakeClusters = L.markerClusterGroup({
               spiderfyOnMaxZoom: true,
               maxClusterRadius: 100, // increase radius from default 80
@@ -185,16 +210,19 @@
           map.on('zoomend', function() {
             var zoomLevel = map.getZoom();
             console.log(zoomLevel);
+
             map.removeLayer(polyLayer);
-
-            if(zoomLevel > 9) {
-              url = `https://${account}.carto.com/api/v2/sql?format=GeoJSON&q=${polySql}`;
-
-              $.getJSON(url, function(data) {
+            
+            if (zoomLevel > 9) {
+              $.getJSON(polyUrl, function(data) {
                 polyLayer = L.geoJson(data, {
                   onEachFeature: lakeLabel
                 }).addTo(map);
               });
+              map.removeLayer(lakeClusters);
+            }
+            else {
+              map.addLayer(lakeClusters);
             }
           })
         } //end main_map_init function

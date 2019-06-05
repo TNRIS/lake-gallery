@@ -46,7 +46,7 @@ img.texas-home:hover {
 	min-width: 300px;
 	max-height: 600px;
 	overflow: hidden;
-    overflow-y: auto;
+  overflow-y: auto;
 }
 
 .dropdown-item {
@@ -124,10 +124,15 @@ img.texas-home:hover {
 
 /*LEAFLET FOR ALL*/
 /* remove label background elements */
+.leaflet-marker-icon {
+	z-index: 200;
+}
+
 .leaflet-tooltip {
 	background-color: transparent;
   border: transparent;
   box-shadow: none;
+	z-index: 199;
 }
 
 .leaflet-tooltip-right:before {
@@ -171,7 +176,12 @@ img.texas-home:hover {
 	display: block;
 	text-align: center;
 	top: 3vh;
-	max-width: 60vw;
+}
+
+@media (min-width: 992px) {
+	#instructionModal > .modal-dialog {
+		max-width: 60vw;
+	}
 }
 
 @media (min-width: 576px) {
