@@ -171,6 +171,7 @@ img.texas-home:hover {
 	display: block;
 	text-align: center;
 	top: 3vh;
+	max-width: 60vw;
 }
 
 @media (min-width: 576px) {
@@ -320,8 +321,11 @@ ol > img {
 
 .contentText {
 	overflow: hidden;
-  overflow-y: auto;
+  /* overflow-y: auto; */
+	overflow-y: scroll;
   padding: 0px 20px 20px 20px;
+	position: relative;
+	height: 100%;
 }
 
 .lakeTitle {
@@ -460,7 +464,7 @@ div.leaflet-control-layers-overlays > label {
 
 .slider-tick-label-container {
 	color: white;
-	font-size: 12px;
+	font-size: 14px;
 }
 
 .slider-tick-label {

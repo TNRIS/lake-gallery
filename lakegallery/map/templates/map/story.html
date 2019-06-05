@@ -408,8 +408,8 @@
 
                 var len = ticks.length;
                 // labelObject[len] = `<a href="https://tnris.org/texas-imagery-service/" target="_blank" title="Texas Imagery Service">Current</a>`;
-                // labelObject[len] = `<a href="https://tnris.org/texas-imagery-service/" class="historical-link" target="_blank" title="Texas Imagery Service">Current</a>`;
-                labelObject[len] = `<a href="https://tnris.org/texas-imagery-service/" target="_blank" title="Google Texas Imagery Service"><img src="{% static 'map/images/google-22px.png' %}"</img></a>`;
+                labelObject[len] = `<a href="https://tnris.org/texas-imagery-service/" class="historical-link" target="_blank" title="Texas Imagery Service">Current</a>`;
+                // labelObject[len] = `<a href="https://tnris.org/texas-imagery-service/" target="_blank" title="Google Texas Imagery Service"><img src="{% static 'map/images/google-22px.png' %}"</img></a>`;
                 ticks.push(len);
 
                 // create labels for time slider with links to datahub historical imagery (future enhancement)
@@ -543,7 +543,7 @@
 
             // setup picture modal event to populate image in modal dynamically
             // setup page effect on story
-            // var prevPage = $("#Overview").parent();
+            var prevPage = $("#Overview").parent();
 
             $(function() {
               $('.picZoom').on('click', function() {
@@ -552,16 +552,18 @@
                 $('#imagemodal').modal('show');
               });
 
-              // prevPage.addClass("focusPage");
-              console.log($('.contentText'));
+              prevPage.addClass("focusPage");
 
               $('.contentText').on('activate.bs.scrollspy', function (e) {
                 var activeSection = $("#storyNav").find("li.nav-item a.nav-link.active").attr("href");
-                // prevPage.removeClass("focusPage");
-                // $(activeSection).parent().addClass("focusPage");
-                // prevPage = $(activeSection).parent();
+
+                prevPage.removeClass("focusPage");
+                $(activeSection).parent().addClass("focusPage");
+                prevPage = $(activeSection).parent();
               });
             });
+
+            // console.log($('.contentText').scrollspy());
 
             // for screen sizes greater than mobile breakpoint (991px), detect long lake names and navs with
             // more than ~4 pills that wrap to two lines; css calc story height for proper scroll
