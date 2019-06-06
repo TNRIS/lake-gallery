@@ -25,10 +25,10 @@ handler404 = 'map.views.page_not_found'
 handler500 = 'map.views.server_error'
 
 urlpatterns = [
-    url(r'^', include('map.urls')),
     url(r'^api/', include(router.urls)),
     # disabled browsable api authentication since nothing is editable
     # url(r'^api-auth/', include('rest_framework.urls',
     #     namespace='rest_framework')),
     url(r'^admin/', admin.site.urls),
+    url(r'^', include('map.urls'))
 ]

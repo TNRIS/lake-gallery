@@ -149,7 +149,7 @@
             if (window.innerWidth > 991) {
               // bind popup content to layer
               layer.bindPopup(
-                `<p style="text-align:center;">Click the <strong>${feature.properties.res_lbl}</strong> polygon to view the story</p>`
+                `<p style="text-align:center;">Click <strong>${feature.properties.res_lbl}</strong><br /> to view the story.</p>`
               );
               // on hover lake polygon, show popup at cursor
               layer.on('mouseover', function (e) {
@@ -204,15 +204,21 @@
             });
             lakeClusters.addLayer(pointLayer);
             map.addLayer(lakeClusters);
+
+            // set max zoom level
+            map.options.minZoom = map.getZoom();
+
+            // set max bounds to lakeBounds so user can't pan outside of lake area
+            // padding added to bounds so max is not too restrictive
+            map.setMaxBounds(bounds.pad(0.1));
           });
 
           // on map zoom, if zoom level greater than 9 use poly sql; else use point sql
           map.on('zoomend', function() {
             var zoomLevel = map.getZoom();
-            console.log(zoomLevel);
 
             map.removeLayer(polyLayer);
-            
+
             if (zoomLevel > 9) {
               $.getJSON(polyUrl, function(data) {
                 polyLayer = L.geoJson(data, {
