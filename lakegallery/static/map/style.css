@@ -133,6 +133,7 @@ img.texas-home:hover {
   border: transparent;
   box-shadow: none;
 	z-index: 199;
+	padding: 0;
 }
 
 .leaflet-tooltip-right:before {

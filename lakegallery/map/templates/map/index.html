@@ -92,6 +92,13 @@
           var polyUrl;
           var bounds = map.getBounds();
 
+          // set max zoom level
+          map.options.minZoom = map.getZoom();
+
+          // set max bounds to lakeBounds so user can't pan outside of lake area
+          // padding added to bounds so max is not too restrictive
+          map.setMaxBounds(bounds.pad(0.1));
+
           // easy button control to zoom to state extent
           L.easyButton("<img src={% static 'map/images/texas_solid_blk.png' %} style='width:auto; height:100%; opacity:1; padding: 3px;' title='Zoom to statewide extent' />", function(btn, map){
             map.fitBounds(bounds);
@@ -187,10 +194,11 @@
           };
 
           // on map load use point sql for point/marker lake locations
-          // points and/or clusters will be visible at all times
           pointUrl = `https://${account}.carto.com/api/v2/sql?format=GeoJSON&q=${pointSql}`;
           polyUrl = `https://${account}.carto.com/api/v2/sql?format=GeoJSON&q=${polySql}`;
 
+          // set up both point and poly layers; add point on initial load
+          // then add/remove layer based on zoom level in map.on function
           $.getJSON(pointUrl, function (data) {
             lakeClusters = L.markerClusterGroup({
               spiderfyOnMaxZoom: true,
@@ -204,30 +212,24 @@
             });
             lakeClusters.addLayer(pointLayer);
             map.addLayer(lakeClusters);
+          });
 
-            // set max zoom level
-            map.options.minZoom = map.getZoom();
-
-            // set max bounds to lakeBounds so user can't pan outside of lake area
-            // padding added to bounds so max is not too restrictive
-            map.setMaxBounds(bounds.pad(0.1));
+          $.getJSON(polyUrl, function(data) {
+            polyLayer = L.geoJson(data, {
+              onEachFeature: lakeLabel
+            });
           });
 
           // on map zoom, if zoom level greater than 9 use poly sql; else use point sql
           map.on('zoomend', function() {
             var zoomLevel = map.getZoom();
-
-            map.removeLayer(polyLayer);
-
+            // var count = lakeClusters.getLayers().length;
             if (zoomLevel > 9) {
-              $.getJSON(polyUrl, function(data) {
-                polyLayer = L.geoJson(data, {
-                  onEachFeature: lakeLabel
-                }).addTo(map);
-              });
               map.removeLayer(lakeClusters);
+              polyLayer.addTo(map);
             }
             else {
+              map.removeLayer(polyLayer);
               map.addLayer(lakeClusters);
             }
           })
