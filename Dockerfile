@@ -8,9 +8,9 @@ RUN apt-get update
 # setup locale for utf-8 decoding before major installations
 RUN apt-get install -y locales
 
-RUN locale-gen en_US.UTF-8  
-ENV LANG en_US.UTF-8  
-ENV LANGUAGE en_US:en  
+RUN locale-gen en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
 RUN apt-get install -y python3 python3-pip python3-venv gdal-bin nginx supervisor curl
@@ -26,7 +26,7 @@ RUN pip3 --version
 
 
 # install awscli
-RUN pip3 install awscli
+RUN pip3 install awscli --upgrade
 
 # set aws region
 ENV AWS_REGION us-east-1
