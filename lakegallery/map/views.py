@@ -37,10 +37,6 @@ def index(request):
     return render(request, 'map/index.html', context)
 
 
-def redirect_story(request, lake):
-    return redirect('/' + lake)
-
-
 def story(request, lake):
     res = get_lake_header_list()
     m = MajorReservoirs.objects.get(res_lbl=lake)
