@@ -46,7 +46,7 @@ img.texas-home:hover {
 	min-width: 300px;
 	max-height: 600px;
 	overflow: hidden;
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 
 .dropdown-item {
@@ -69,16 +69,20 @@ img.texas-home:hover {
 	filter: alpha(opacity=50);
 }
 
-#search {
+/* #search {
 	margin-left: 3px;
 	margin-top: 5px;
 	width: 98%;
-}
+} */
 
-#parent {
+/* #parent {
 	display: inline-block;
 	position: relative;
 	padding-right: 15px;
+} */
+
+#theForm {
+	right:
 }
 
 #noneAvailable {
@@ -87,10 +91,30 @@ img.texas-home:hover {
 	display: none;
 }
 
-#clear-span {
-	position: absolute;
-	top: 15px;
-	right: 30px;
+#lake-search-input {
+	border-radius: 5px;
+}
+
+#lake-search-btn {
+	border-radius: 5px;
+}
+
+#lake-search-btn:hover {
+	background-color: #a6a6a6;
+}
+
+.no-results-alert {
+	width: auto;
+	display: none;
+	z-index: 1500;
+	position: fixed;
+	right: 0;
+	background-color: white;
+	border: solid 1px grey;
+	border-radius: 5px;
+	padding: 10px;
+	text-align: center;
+	max-width: 90vw;
 }
 
 .count-container {
@@ -320,7 +344,12 @@ ol > img {
 	background-color: #01253d;
 }
 
-@media (max-width: 991px) {
+/* .ml-auto .dropdown-menu {
+    left: auto !important;
+    right: 0px;
+} */
+
+/* @media (max-width: 991px) {
 	#navbar-contentPanel {
 		display: none;
 	}
@@ -328,7 +357,7 @@ ol > img {
 		border-bottom: 1px solid #d9d9d9;
 		padding-bottom: 10px;
 	}
-}
+} */
 
 .contentText {
 	overflow: hidden;

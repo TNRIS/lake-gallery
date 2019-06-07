@@ -73,10 +73,20 @@
       </div>
     </div>
 
-    <div id="lake-count" class="count-container">
+    <!-- <div id="lake-count" class="count-container">
       <p class="count-text">
         <strong>Total lake stories available: <span id="count-output" class="count"></span></strong>
       </p>
+    </div> -->
+
+    <div id="no-results" class="no-results-alert">
+      <p>
+        <strong>No lakes in search result. Try searching again or using the map to find a lake.</strong>
+      </p>
+    </div>
+
+    <div>
+
     </div>
 
     {% leaflet_map "main" callback="main_map_init" %}
@@ -232,7 +242,54 @@
               map.removeLayer(polyLayer);
               map.addLayer(lakeClusters);
             }
-          })
+          });
+
+          // search button function - if user searches a lake that is available, zoom to
+          // the lake on the index/home map; user will then need to click the lake polygon;
+          // if lake unavailable, alert that says not available
+          // NOTE: these element ids exist in base.html
+          var searchButton = document.getElementById("lake-search-btn");
+          searchButton.addEventListener("click", function(e) {
+            if (!searchInput.value) {
+              console.log('no input value');
+              return;
+            }
+            else {
+              var searchValue = searchInput.value.toUpperCase();
+              var poly = polyLayer._layers;
+              var matchArray = [];
+
+              for (var i in poly) {
+                if (poly[i].feature.properties.res_name.includes(searchValue)) {
+                  matchArray.push(poly[i]);
+                  console.log('match');
+                  map.fitBounds(matchArray[0].getBounds());
+                }
+                else {
+                  searchInput.value = "";
+                  $("#no-results").fadeIn();
+                  setTimeout(function() {
+                    $("#no-results").fadeOut(250);
+                  }, 1000);
+                }
+              }
+              console.log(matchArray);
+            }
+
+          });
+
+          // if user clicks enter in search, function as if button was clicked
+          var searchInput = document.getElementById("lake-search-input");
+          searchInput.addEventListener("keyup", function(e) {
+            // number 13 is the 'enter' key
+            if (e.keyCode === 13) {
+              e.preventDefault();
+              // trigger the search button with click
+              document.getElementById("lake-search-btn").click();
+            }
+          });
+          // end search button function
+
         } //end main_map_init function
 
         // show modal on load if localstorage doesn't say they've opt'd out
