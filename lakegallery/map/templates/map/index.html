@@ -79,14 +79,16 @@
       </p>
     </div> -->
 
-    <div id="no-results" class="no-results-alert">
+    <div id="no-results" class="search-results-container">
       <p>
-        <strong>No lakes in search result. Try searching again or using the map to find a lake.</strong>
+        <strong>No results. Try searching again or using the map to find a lake.</strong>
       </p>
     </div>
 
-    <div>
-
+    <div id="many-results" class="search-results-container">
+      <p>
+        <strong><span id="search-num"></span> results. Try limiting your search with more text.</strong>
+      </p>
     </div>
 
     {% leaflet_map "main" callback="main_map_init" %}
@@ -244,9 +246,9 @@
             }
           });
 
-          // search button function - if user searches a lake that is available, zoom to
-          // the lake on the index/home map; user will then need to click the lake polygon;
-          // if lake unavailable, alert that says not available
+          // index map search function - if user searches a lake that is available, zoom to
+          // the lake on the index/home map; user will then need to click the lake polygon to
+          // get to a lake story. if lake is unavailable, alert that says not available
           // NOTE: these element ids exist in base.html
           var searchButton = document.getElementById("lake-search-btn");
           searchButton.addEventListener("click", function(e) {
@@ -258,22 +260,36 @@
               var searchValue = searchInput.value.toUpperCase();
               var poly = polyLayer._layers;
               var matchArray = [];
-
+              // create array of lakes that include search value
               for (var i in poly) {
                 if (poly[i].feature.properties.res_name.includes(searchValue)) {
                   matchArray.push(poly[i]);
-                  console.log('match');
-                  map.fitBounds(matchArray[0].getBounds());
-                }
-                else {
-                  searchInput.value = "";
-                  $("#no-results").fadeIn();
-                  setTimeout(function() {
-                    $("#no-results").fadeOut(250);
-                  }, 1000);
                 }
               }
-              console.log(matchArray);
+              // if one item in matchArray, zoom to bounds of lake
+              if (matchArray.length == 1) {
+                // console.log(matchArray[0].feature.properties.res_lbl);
+                map.fitBounds(matchArray[0].getBounds());
+              }
+              // return alert that too many lakes matched search value
+              else if (matchArray.length > 1) {
+                $("#search-num").html(matchArray.length);
+                $("#many-results").fadeIn();
+                setTimeout(function() {
+                  $("#many-results").fadeOut(2000);
+                }, 1000);
+              }
+              // return alert that no lakes matched search term
+              else if (matchArray.length == 0) {
+                // searchInput.value = "";
+                $("#no-results").fadeIn();
+                setTimeout(function() {
+                  $("#no-results").fadeOut(2000);
+                }, 1000);
+              }
+              else {
+                console.log('search error');
+              }
             }
 
           });

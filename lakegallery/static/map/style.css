@@ -103,8 +103,8 @@ img.texas-home:hover {
 	background-color: #a6a6a6;
 }
 
-.no-results-alert {
-	width: auto;
+.search-results-container {
+	width: 220px;
 	display: none;
 	z-index: 1500;
 	position: fixed;
@@ -114,7 +114,7 @@ img.texas-home:hover {
 	border-radius: 5px;
 	padding: 10px;
 	text-align: center;
-	max-width: 90vw;
+	margin-right: 21px;
 }
 
 .count-container {

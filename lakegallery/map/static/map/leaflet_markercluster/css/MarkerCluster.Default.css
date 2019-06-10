@@ -1,10 +1,11 @@
 /* marker cluster colors have been altered from the default (lake blue color scheme) */
+
 .marker-cluster-small {
-	background-color: rgba(4, 122, 200, 0.6);
-	}
+	background-color: rgba(4, 91, 149, 0.6);
+  }
 .marker-cluster-small div {
-	background-color: rgba(4, 106, 174, 0.6);
-	}
+	background-color: rgba(3, 76, 125, 0.6);
+  }
 
 .marker-cluster-medium {
 	background-color: rgba(4, 91, 149, 0.6);
@@ -14,11 +15,25 @@
 	}
 
 .marker-cluster-large {
+	background-color: rgba(4, 91, 149, 0.6);
+	}
+.marker-cluster-large div {
+	background-color: rgba(3, 76, 125, 0.6);
+	}
+
+/* .marker-cluster-small {
+	background-color: rgba(4, 122, 200, 0.6);
+	}
+.marker-cluster-small div {
+	background-color: rgba(4, 106, 174, 0.6);
+	} */
+
+/* .marker-cluster-large {
 	background-color: rgba(2, 61, 100, 0.6);
 	}
 .marker-cluster-large div {
 	background-color: rgba(1, 37, 61, 0.6);
-	}
+	} */
 /* end custom cluster colors */
 
 	/* IE 6-8 fallback colors */
