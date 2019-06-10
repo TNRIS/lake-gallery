@@ -65,6 +65,11 @@
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'map:about' %}" title="About" alt="About">
+              About
+            </a>
+          </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" title="Search for a lake" alt="Search" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Lakes
@@ -77,11 +82,6 @@
                 {% endif %}
               {% endfor %}
             </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'map:about' %}" title="About" alt="About">
-              About
-            </a>
           </li>
         </ul>
 

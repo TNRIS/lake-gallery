@@ -251,13 +251,24 @@
           // get to a lake story. if lake is unavailable, alert that says not available
           // NOTE: these element ids exist in base.html
           var searchButton = document.getElementById("lake-search-btn");
+          var searchInput = document.getElementById("lake-search-input");
+          var storySearch = sessionStorage.getItem("storySearch");
+
+          if (storySearch) {
+            console.log(storySearch);
+            searchInput.value = storySearch;
+            searchButton.click();
+          }
+
           searchButton.addEventListener("click", function(e) {
+            console.log('click');
             if (!searchInput.value) {
               console.log('no input value');
               return;
             }
             else {
               var searchValue = searchInput.value.toUpperCase();
+              console.log(searchValue);
               var poly = polyLayer._layers;
               var matchArray = [];
               // create array of lakes that include search value
@@ -266,6 +277,7 @@
                   matchArray.push(poly[i]);
                 }
               }
+              console.log(matchArray);
               // if one item in matchArray, zoom to bounds of lake
               if (matchArray.length == 1) {
                 // console.log(matchArray[0].feature.properties.res_lbl);
@@ -291,11 +303,9 @@
                 console.log('search error');
               }
             }
-
           });
 
           // if user clicks enter in search, function as if button was clicked
-          var searchInput = document.getElementById("lake-search-input");
           searchInput.addEventListener("keyup", function(e) {
             // number 13 is the 'enter' key
             if (e.keyCode === 13) {
