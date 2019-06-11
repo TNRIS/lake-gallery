@@ -65,7 +65,7 @@
       </button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul id="nav-list-items" class="navbar-nav mr-auto">
+        <ul id="nav-list-items" class="navbar-nav ml-auto" style="margin-right:15px;">
           <li class="nav-item">
             <a class="nav-link" href="{% url 'map:about' %}" title="About" alt="About">
               About
@@ -108,20 +108,17 @@
       // dont show search when viewing story or on mobile
       function showSearch() {
         if (window.location.pathname !== '/') {
-          console.log('hide search');
           searchDiv.style.display = 'none';
         }
         else if (window.innerWidth < 992) {
-          console.log('hide search');
           searchDiv.style.display = 'none';
         }
         else {
-          console.log('show search');
           searchDiv.style.display = 'block';
         }
       }
 
-      // run showSearch function
+      // run showSearch function on load
       showSearch();
 
       // on resize, run function again to determine showSearch
@@ -129,15 +126,15 @@
         showSearch();
       }
 
-      // switch out nav list items bootstrap class to align right when not on index map
-      if (window.location.pathname != '/') {
-        navList.classList.remove('mr-auto');
-        navList.classList.add('ml-auto');
-      }
-      else {
-        navList.classList.remove('ml-auto');
-        navList.classList.add('mr-auto');
-      }
+      // switch out nav list items bootstrap class to align right when viewing story
+      // if (window.location.pathname != '/') {
+      //   navList.classList.remove('mr-auto');
+      //   navList.classList.add('ml-auto');
+      // }
+      // else {
+      //   navList.classList.remove('ml-auto');
+      //   navList.classList.add('mr-auto');
+      // }
 
     </script>
 

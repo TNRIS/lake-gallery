@@ -45,9 +45,9 @@ img.texas-home:hover {
 
 .dropdown-menu {
 	z-index: 1000;
-	position: relative;
-	min-width: 300px;
-	max-height: 600px;
+	width: auto;
+	max-height: 50vh;
+	overflow: hidden;
   overflow-y: scroll;
 }
 
@@ -469,9 +469,18 @@ div.leaflet-control-layers-overlays > label {
 }
 
 .slider-tick-label {
-	/* min-width: 40px; */
-	margin: 3px;
-	padding: 0 3px 0 3px;
+	width: auto;
+	/* min-width: 40px !important; */
+	/* display: inline-block; */
+	/* margin: 3px; */
+	/* padding: 0 3px 0 3px; */
+}
+
+#sliderDiv {
+	width: 100%;
+	min-height: 45px;
+	padding: 0 15px 0 15px;
+	text-align: center;
 }
 
 #sliderToggler {
@@ -490,17 +499,17 @@ div.slider.slider-horizontal {
 /* .tooltip {
 	opacity: 1 !important;
 	cursor: pointer;
-} */
+}
 
-/* .tooltip.top .tooltip-arrow {
+.tooltip.top .tooltip-arrow {
   bottom: -5;
   left: 50%;
   margin-left: -5px;
   border-width: 5px 5px 0;
   border-top-color: #3C5163;
-} */
+}
 
-/* .tooltip-arrow {
+.tooltip-arrow {
   position: absolute;
   width: 0;
   height: 0;
@@ -529,7 +538,7 @@ div.slider-handle.min-slider-handle.round {
 #slider-container {
 	position: absolute;
 	background: #01253d; /* older browsers (no transparency) */
-	background: rgb(1,37,61,0.7); /* newer browsers (transparent) */
+	background: rgba(1,37,61,0.7); /* newer browsers (transparent) */
 	border-radius: 5px;
 	justify-content: center;
 	top: 10px;
@@ -598,6 +607,14 @@ hr.separator {
 .link:hover {
 	color: #d9d9d9;
 	text-decoration: none;
+}
+
+.google-logo {
+	opacity: 1;
+}
+
+.google-logo:hover {
+	opacity: 0.7;
 }
 
 .historical-link {
