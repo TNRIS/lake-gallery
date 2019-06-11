@@ -105,10 +105,31 @@
       var navList = document.getElementById("nav-list-items");
       var lakeMenu = document.getElementById("lakeMenu");
 
-      //
-      window.location.pathname !== '/' ? searchDiv.style.display = 'none' : searchDiv.style.display = 'block';
+      // dont show search when viewing story or on mobile
+      function showSearch() {
+        if (window.location.pathname !== '/') {
+          console.log('hide search');
+          searchDiv.style.display = 'none';
+        }
+        else if (window.innerWidth < 992) {
+          console.log('hide search');
+          searchDiv.style.display = 'none';
+        }
+        else {
+          console.log('show search');
+          searchDiv.style.display = 'block';
+        }
+      }
 
-      // switch out bootstrap class for nav list items to align right when not on index map
+      // run showSearch function
+      showSearch();
+
+      // on resize, run function again to determine showSearch
+      window.onresize = function() {
+        showSearch();
+      }
+
+      // switch out nav list items bootstrap class to align right when not on index map
       if (window.location.pathname != '/') {
         navList.classList.remove('mr-auto');
         navList.classList.add('ml-auto');
