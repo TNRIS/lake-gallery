@@ -8,8 +8,15 @@
 	url("font/SVG/ClearSans-Light.svg#filename") format("svg");
 }
 
+html {
+	max-width: 100%;
+	overflow-x: hidden;
+}
+
 body {
 	font-family: "Clear Sans";
+	max-width: 100%;
+	overflow-x: hidden;
 }
 
 /*SITE HEADER*/

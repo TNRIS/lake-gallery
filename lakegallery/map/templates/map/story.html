@@ -533,28 +533,6 @@
                 map.fitBounds(lakeLayer.getBounds());
               });
 
-              // index map search function - sends user back to home/index map
-              // takes search term and runs on index.html map
-              var searchButton = document.getElementById("lake-search-btn");
-              searchButton.addEventListener("click", function(e) {
-                // var searchValue = searchInput.value.toUpperCase();
-                var searchValue = searchInput.value;
-                sessionStorage.setItem("storySearch", searchValue);
-                window.location.href = "/";
-              });
-
-              // if user clicks enter in search, function as if button was clicked
-              var searchInput = document.getElementById("lake-search-input");
-              searchInput.addEventListener("keyup", function(e) {
-                // number 13 is the 'enter' key
-                if (e.keyCode === 13) {
-                  e.preventDefault();
-                  // trigger the search button with click
-                  document.getElementById("lake-search-btn").click();
-                }
-              });
-              // end search index map function
-
             } // end of main_map_init function
 
             // below are general functions available outside main_map_init

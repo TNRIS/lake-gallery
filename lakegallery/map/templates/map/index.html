@@ -252,35 +252,24 @@
           // NOTE: these element ids exist in base.html
           var searchButton = document.getElementById("lake-search-btn");
           var searchInput = document.getElementById("lake-search-input");
-          var storySearch = sessionStorage.getItem("storySearch");
-
-          if (storySearch) {
-            console.log(storySearch);
-            searchInput.value = storySearch;
-            searchButton.click();
-          }
 
           searchButton.addEventListener("click", function(e) {
-            console.log('click');
             if (!searchInput.value) {
               console.log('no input value');
               return;
             }
             else {
               var searchValue = searchInput.value.toUpperCase();
-              console.log(searchValue);
               var poly = polyLayer._layers;
               var matchArray = [];
-              // create array of lakes that include search value
+              // create array of lakes that include search string
               for (var i in poly) {
                 if (poly[i].feature.properties.res_name.includes(searchValue)) {
                   matchArray.push(poly[i]);
                 }
               }
-              console.log(matchArray);
               // if one item in matchArray, zoom to bounds of lake
               if (matchArray.length == 1) {
-                // console.log(matchArray[0].feature.properties.res_lbl);
                 map.fitBounds(matchArray[0].getBounds());
               }
               // return alert that too many lakes matched search value
@@ -293,7 +282,6 @@
               }
               // return alert that no lakes matched search term
               else if (matchArray.length == 0) {
-                // searchInput.value = "";
                 $("#no-results").fadeIn();
                 setTimeout(function() {
                   $("#no-results").fadeOut(2000);
