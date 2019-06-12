@@ -52,6 +52,10 @@ img.texas-home:hover {
   overflow-y: scroll;
 }
 
+#lakeMenu {
+	max-height: 200px;
+}
+
 .dropdown-item {
 	width: 100%;
 }
@@ -205,10 +209,11 @@ img.texas-home:hover {
 		overflow: auto;
 	}
 
-	#instructionModalContent > .modal-body {
+	/* #instructionModalContent > .modal-body {
+		width: 100%;
 		overflow: auto;
 		overflow-y: scroll;
-	}
+	} */
 }
 
 .modal-body > div {
@@ -376,11 +381,11 @@ ol > img {
 
 @media (min-width: 576px) {
 	.modal-dialog {
-	    max-width: 80%;
-	    max-height: 90%;
-	    width: auto !important;
-    	display: inline-block;
-    	text-align: center;
+    max-width: 80%;
+    max-height: 90%;
+    width: auto !important;
+  	display: inline-block;
+  	text-align: center;
 	}
 
 	.modal-content {
