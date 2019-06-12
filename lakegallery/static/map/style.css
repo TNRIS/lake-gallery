@@ -228,8 +228,7 @@ img.texas-home:hover {
 	cursor: pointer;
 }
 
-#expand-instructions {
-	float: left;
+#expand-all-instructions {
 	width: auto;
 	height: 100%;
 	padding: 10px;
