@@ -300,7 +300,7 @@
             <p>View <strong>{{ lake }}</strong> - Past to Present</p>
           </div>
 
-          <div style="width:100%; min-height:40px; padding:0 10px 0 10px; text-align:center;">
+          <div id="sliderDiv">
             <input id='historicalSlider' type='text' />
           </div>
 
@@ -405,7 +405,11 @@
                 });
 
                 var len = ticks.length;
-                labelObject[len] = `<a href="https://tnris.org/texas-imagery-service/" class="historical-link" target="_blank" title="Texas Imagery Service">Current</a>`;
+                labelObject[len] = `<a href="https://tnris.org/texas-imagery-service/"
+                                      target="_blank"
+                                      title="Texas Imagery Service">
+                                        <img class="google-logo" src={% static 'map/images/google-22px.png' %} />
+                                    </a>`;
                 ticks.push(len);
 
                 // create labels for time slider with links to datahub historical imagery (future enhancement)
@@ -428,6 +432,9 @@
                     positionArray.push(positionInterval * i);
                   }
                 };
+
+                console.log(positionArray);
+                console.log(labelArray);
                 // end positionArray
 
                 $("#historicalSlider").slider({
@@ -489,6 +496,9 @@
               if (linkConfig.length > 0) {
                 setupHistoricalSlider(linkConfig);
               }
+
+              // var sliderDiv = document.getElementById("sliderDiv").clientWidth;
+              // console.log(parseFloat(window.getComputedStyle(document.getElementById("sliderDiv")).width));
 
               // custom easy button control to turn off and on container div w/ time slider
               window.customEasyBtn = L.easyButton({

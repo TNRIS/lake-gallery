@@ -56,42 +56,26 @@
   </head>
   <body>
     <nav id="topNav" class="navbar navbar-expand-lg navbar-dark">
-
       <a class="navbar-brand" href="{% url 'map:index' %}" title="Home" alt="Home">
         <img class="headerLogo" src="{% static 'map/images/lot-blue.jpg' %}" />
       </a>
+
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ml-auto">
-          <!-- <li class="nav-item">
-            <a class="nav-link" href="{% url 'map:index' %}" title="Home" alt="Home">
-              <img class="texas-home" src="{% static 'map/images/texas_solid.png' %}" />
+        <ul id="nav-list-items" class="navbar-nav ml-auto" style="margin-right:15px;">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'map:about' %}" title="About" alt="About">
+              About
             </a>
-          </li> -->
-
+          </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" title="Search for a lake" alt="Search" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" title="Select a lake to view story" alt="Select lake" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Lakes
             </a>
             <div class="dropdown-menu dropdown-menu-right" id="lakeMenu" aria-labelledby="navbarDropdownMenuLink">
-              <script type="text/javascript" src="{% static 'map/base_script.js' %}"></script>
-                <form id="theForm">
-                  <div id="parent" class="container">
-                    <input type="text" id="search" class="form-control" onkeyup="lakeSearch();" placeholder="Search for a lake..." />
-                    <span id="clear-span" onclick="clearSearch();">
-                      <a href="#">
-                        <img class="clear-image" src="{% static 'map/images/glyphicons-remove.png' %}" />
-                      </a>
-                    </span>
-                  </div>
-                </form>
-              <div class="dropdown-divider"></div>
-              <p id="noneAvailable">
-                <strong>Lake unavailable.</strong>
-              </p>
               {% for l in header_lakes %}
                 {% if l.class == "enabled" %}
                   <a class="dropdown-item {{ l.class }}" href="/{{ l.name }}">{{ l.name }}</a>
@@ -99,18 +83,63 @@
               {% endfor %}
             </div>
           </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'map:about' %}" title="About" alt="About">
-              About
-            </a>
-          </li>
         </ul>
+
+        <div id="search-div" class="row">
+          <div class="col-lg-12">
+            <div class="input-group">
+              <span class="input-group-btn mr-1">
+                <button id="lake-search-btn" class="btn btn-default" type="button" title="Search for a lake">Go</button>
+              </span>
+              <input id="lake-search-input" type="search" class="form-control mr-sm-1" placeholder="Search for a lake..." title="Search for a lake"/>
+            </div>
+          </div>
+        </div>
 
       </div>
     </nav>
 
+    <script type="text/javascript">
+
+      var searchDiv = document.getElementById("search-div");
+      var navList = document.getElementById("nav-list-items");
+      var lakeMenu = document.getElementById("lakeMenu");
+
+      // dont show search when viewing story or on mobile
+      function showSearch() {
+        if (window.location.pathname !== '/') {
+          searchDiv.style.display = 'none';
+        }
+        else if (window.innerWidth < 992) {
+          searchDiv.style.display = 'none';
+        }
+        else {
+          searchDiv.style.display = 'block';
+        }
+      }
+
+      // run showSearch function on load
+      showSearch();
+
+      // on resize, run function again to determine showSearch
+      window.onresize = function() {
+        showSearch();
+      }
+
+      // switch out nav list items bootstrap class to align right when viewing story
+      // if (window.location.pathname != '/') {
+      //   navList.classList.remove('mr-auto');
+      //   navList.classList.add('ml-auto');
+      // }
+      // else {
+      //   navList.classList.remove('ml-auto');
+      //   navList.classList.add('mr-auto');
+      // }
+
+    </script>
+
     {% block content %}
     {% endblock %}
+
   </body>
 </html>

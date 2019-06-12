@@ -57,11 +57,11 @@
                       <li>Hover over markers to view lake name and region.</li>
                       <img class="img-fluid" src="{% static 'map/images/instructions-step2.gif' %}">
                       <li>Click a marker to go to a lake story.</li>
-                      <img class="img-fluid" style="width:600px; height:600px;" src="{% static 'map/images/instructions-step3.gif' %}">
+                      <img class="img-fluid" src="{% static 'map/images/instructions-step3.gif' %}">
                       <li>Keep zooming to view lake polygons and labels. Click a polygon to view that lakes' story.</li>
                       <img class="img-fluid" src="{% static 'map/images/instructions-step4.gif' %}">
                       <li>Click a polygon to go to a lake story.</li>
-                      <img class="img-fluid" style="width:600px; height:600px;" src="{% static 'map/images/instructions-step5.gif' %}"
+                      <img class="img-fluid" src="{% static 'map/images/instructions-step5.gif' %}"
                     </ol>
                   </div>
                 </div>
@@ -73,9 +73,21 @@
       </div>
     </div>
 
-    <div id="lake-count" class="count-container">
+    <!-- <div id="lake-count" class="count-container">
       <p class="count-text">
         <strong>Total lake stories available: <span id="count-output" class="count"></span></strong>
+      </p>
+    </div> -->
+
+    <div id="no-results" class="search-results-container">
+      <p>
+        <strong>No results. Try searching again or using the map to find a lake.</strong>
+      </p>
+    </div>
+
+    <div id="many-results" class="search-results-container">
+      <p>
+        <strong><span id="search-num"></span> results. Try limiting your search with more text.</strong>
       </p>
     </div>
 
@@ -91,6 +103,13 @@
           var pointUrl;
           var polyUrl;
           var bounds = map.getBounds();
+
+          // set max zoom level
+          map.options.minZoom = map.getZoom();
+
+          // set max bounds to lakeBounds so user can't pan outside of lake area
+          // padding added to bounds so max is not too restrictive
+          map.setMaxBounds(bounds.pad(0.1));
 
           // easy button control to zoom to state extent
           L.easyButton("<img src={% static 'map/images/texas_solid_blk.png' %} style='width:auto; height:100%; opacity:1; padding: 3px;' title='Zoom to statewide extent' />", function(btn, map){
@@ -187,10 +206,11 @@
           };
 
           // on map load use point sql for point/marker lake locations
-          // points and/or clusters will be visible at all times
           pointUrl = `https://${account}.carto.com/api/v2/sql?format=GeoJSON&q=${pointSql}`;
           polyUrl = `https://${account}.carto.com/api/v2/sql?format=GeoJSON&q=${polySql}`;
 
+          // set up both point and poly layers; add point on initial load
+          // then add/remove layer based on zoom level in map.on function
           $.getJSON(pointUrl, function (data) {
             lakeClusters = L.markerClusterGroup({
               spiderfyOnMaxZoom: true,
@@ -204,33 +224,86 @@
             });
             lakeClusters.addLayer(pointLayer);
             map.addLayer(lakeClusters);
+          });
 
-            // set max zoom level
-            map.options.minZoom = map.getZoom();
-
-            // set max bounds to lakeBounds so user can't pan outside of lake area
-            // padding added to bounds so max is not too restrictive
-            map.setMaxBounds(bounds.pad(0.1));
+          $.getJSON(polyUrl, function(data) {
+            polyLayer = L.geoJson(data, {
+              onEachFeature: lakeLabel
+            });
           });
 
           // on map zoom, if zoom level greater than 9 use poly sql; else use point sql
           map.on('zoomend', function() {
             var zoomLevel = map.getZoom();
-
-            map.removeLayer(polyLayer);
-
+            // var count = lakeClusters.getLayers().length;
             if (zoomLevel > 9) {
-              $.getJSON(polyUrl, function(data) {
-                polyLayer = L.geoJson(data, {
-                  onEachFeature: lakeLabel
-                }).addTo(map);
-              });
               map.removeLayer(lakeClusters);
+              polyLayer.addTo(map);
             }
             else {
+              map.removeLayer(polyLayer);
               map.addLayer(lakeClusters);
             }
-          })
+          });
+
+          // index map search function - if user searches a lake that is available, zoom to
+          // the lake on the index/home map; user will then need to click the lake polygon to
+          // get to a lake story. if lake is unavailable, alert that says not available
+          // NOTE: these element ids exist in base.html
+          var searchButton = document.getElementById("lake-search-btn");
+          var searchInput = document.getElementById("lake-search-input");
+
+          searchButton.addEventListener("click", function(e) {
+            if (!searchInput.value) {
+              console.log('no input value');
+              return;
+            }
+            else {
+              var searchValue = searchInput.value.toUpperCase();
+              var poly = polyLayer._layers;
+              var matchArray = [];
+              // create array of lakes that include search string
+              for (var i in poly) {
+                if (poly[i].feature.properties.res_name.includes(searchValue)) {
+                  matchArray.push(poly[i]);
+                }
+              }
+              // if one item in matchArray, zoom to bounds of lake
+              if (matchArray.length == 1) {
+                map.fitBounds(matchArray[0].getBounds());
+              }
+              // return alert that too many lakes matched search value
+              else if (matchArray.length > 1) {
+                $("#search-num").html(matchArray.length);
+                $("#many-results").fadeIn();
+                setTimeout(function() {
+                  $("#many-results").fadeOut(2000);
+                }, 1000);
+              }
+              // return alert that no lakes matched search term
+              else if (matchArray.length == 0) {
+                $("#no-results").fadeIn();
+                setTimeout(function() {
+                  $("#no-results").fadeOut(2000);
+                }, 1000);
+              }
+              else {
+                console.log('search error');
+              }
+            }
+          });
+
+          // if user clicks enter in search, function as if button was clicked
+          searchInput.addEventListener("keyup", function(e) {
+            // number 13 is the 'enter' key
+            if (e.keyCode === 13) {
+              e.preventDefault();
+              // trigger the search button with click
+              document.getElementById("lake-search-btn").click();
+            }
+          });
+          // end search button function
+
         } //end main_map_init function
 
         // show modal on load if localstorage doesn't say they've opt'd out
