@@ -165,6 +165,7 @@
               {permanent: true}
             );
 
+            // popup functionality for desktop
             if (window.innerWidth > 991) {
               // bind popup content to layer
               layer.bindPopup(
@@ -190,6 +191,7 @@
                 window.location.href = `/${feature.properties.res_lbl}`;
               });
             }
+            // popup functionality for mobile/smaller screens (hover doesn't work on mobile)
             else {
               layer.bindPopup(
               `<p style="text-align:center;">
@@ -217,7 +219,8 @@
               maxClusterRadius: 100, // increase radius from default 80
               animate: true,
               showCoverageOnHover: true,
-              zoomToBoundsOnClick: true
+              zoomToBoundsOnClick: true,
+              polygonOptions: {color: '#ffa64d'} // change default (blue) hover polygon to orange
             });
             pointLayer = L.geoJson(data, {
               onEachFeature: lakePopup
@@ -225,7 +228,7 @@
             lakeClusters.addLayer(pointLayer);
             map.addLayer(lakeClusters);
           });
-
+          // poly lake layer
           $.getJSON(polyUrl, function(data) {
             polyLayer = L.geoJson(data, {
               onEachFeature: lakeLabel
