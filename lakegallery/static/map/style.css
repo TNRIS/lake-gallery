@@ -207,6 +207,7 @@ img.texas-home:hover {
 
 	#instructionModalContent > .modal-body {
 		overflow: auto;
+		overflow-y: scroll;
 	}
 }
 
