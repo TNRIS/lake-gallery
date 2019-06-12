@@ -14,7 +14,8 @@ html {
 }
 
 body {
-	font-family: "Clear Sans";
+	/* font-family: "Clear Sans"; */
+	font-family: 'Roboto', sans-serif;
 	max-width: 100%;
 	overflow-x: hidden;
 }
@@ -206,6 +207,7 @@ img.texas-home:hover {
 
 	#instructionModalContent > .modal-body {
 		overflow: auto;
+		overflow-y: scroll;
 	}
 }
 
@@ -226,8 +228,7 @@ img.texas-home:hover {
 	cursor: pointer;
 }
 
-#expand-instructions {
-	float: left;
+#expand-all-instructions {
 	width: auto;
 	height: 100%;
 	padding: 10px;

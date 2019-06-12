@@ -7,8 +7,8 @@
       <div class="modal-dialog" role="document">
         <div id="instructionModalContent" class="modal-content">
           <div class="modal-body">
-            <p>
-              <strong style="color:red;">Please note that this application is currently in beta and is still undergoing final testing before its official release.</strong>
+            <p style="color:red;">
+              Please note that this application is currently in beta and is still undergoing final testing before its official release.
             </p>
 
             <h2 class="modal-title">Welcome to Lakes of Texas!</h2>
@@ -22,37 +22,60 @@
               any information on the site/application.
             </p>
 
-            <div style="bottom:0;">
-              <label class="form-check-label">
-                <input id="modalHideCheckbox" class="form-check-input" type="checkbox" value="">
-                Don't show this message again
-              </label>
-              <button id="dismiss-modal-btn" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <div class="container">
+              <div class="row">
+                <div class="col-md" style="bottom:0; margin-bottom:20px;">
+                  <button id="expand-collapse-btn"
+                    onclick="changeBtnTxt()"
+                    class="btn btn-info"
+                    type="button"
+                    data-toggle="collapse"
+                    data-target="#expand-all-instructions"
+                    aria-expanded="false">
+                      Show Instructions
+                  </button>
+                </div>
+                <div class="col-md" style="bottom:0;">
+                  <label class="form-check-label">
+                    <input id="modalHideCheckbox" class="form-check-input" type="checkbox" value="">
+                    Don't show this message again
+                  </label>
+                  <button id="dismiss-modal-btn" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
             </div>
 
-            <div style="padding:20px; bottom:0; float:left;">
-              <button id="expand-collapse-btn"
-                style="text-align:center;"
-                onclick="changeBtnTxt()"
-                class="btn btn-success"
-                type="button"
-                data-toggle="collapse"
-                data-target="#expand-instructions"
-                aria-expanded="false">
-                  Show Instructions
-              </button>
-            </div>
+            <div class="collapse" id="expand-all-instructions" style="width:100%;">
 
-            <div class="collapse" id="expand-instructions">
-              <h4 style="text-align:left;">
+              <h4 id="top" style="text-align:left;">
                 <strong>Instructions:</strong>
               </h4>
 
-              <div class="container">
+              <button id="expand-index-btn"
+                style="text-align:center; margin:5px;"
+                class="btn btn-default"
+                type="button"
+                data-toggle="collapse"
+                data-target="#index-instructions"
+                aria-expanded="false">
+                  Home Map Instructions
+              </button>
+
+              <button id="expand-story-btn"
+                style="text-align:center; margin:5px;"
+                class="btn btn-default"
+                type="button"
+                data-toggle="collapse"
+                data-target="#story-instructions"
+                aria-expanded="false">
+                  Story Map Instructions
+              </button>
+
+              <div id="index-instructions" class="collapse" style="margin:20px 0;">
                 <div class="row">
                   <div class="col-lg">
                     <ol style="text-align:left;">
-                      <li>Click a marker cluster to zoom closer to the area of those lake markers/locations.</li>
+                      <li>Click a marker cluster to zoom closer to the area of those lake locations.</li>
                       <img class="img-fluid" src="{% static 'map/images/instructions-step1.gif' %}">
                       <li>Hover over markers to view lake name and region.</li>
                       <img class="img-fluid" src="{% static 'map/images/instructions-step2.gif' %}">
@@ -61,23 +84,48 @@
                       <li>Keep zooming to view lake polygons and labels. Click a polygon to view that lakes' story.</li>
                       <img class="img-fluid" src="{% static 'map/images/instructions-step4.gif' %}">
                       <li>Click a polygon to go to a lake story.</li>
-                      <img class="img-fluid" src="{% static 'map/images/instructions-step5.gif' %}"
+                      <img class="img-fluid" src="{% static 'map/images/instructions-step5.gif' %}">
                     </ol>
                   </div>
                 </div>
+                <button id="back-to-top"
+                  style="text-align:center; margin:5px;"
+                  class="btn btn-link"
+                  type="button">
+                    <a href="#top"><small>Back to top</small></a>
+                </button>
               </div>
+
+              <div id="story-instructions" class="collapse" style="margin:20px 0;">
+                <div class="row">
+                  <div class="col-lg">
+                    <ol style="text-align:left;">
+                      <li>Lake story content is in the left pane. A map with the lake boundary is in the right pane.</li>
+                      <li>Click a content section header to jump to different sections of the story.</li>
+                      <img class="img-fluid" src="{% static 'map/images/instructions-step6.gif' %}">
+                      <li>In the map pane, there is a tools menu. Click a year in the slider tool to view historical imagery layers.</li>
+                      <img class="img-fluid" src="{% static 'map/images/instructions-step7.gif' %}">
+                      <li>Zooming and panning is enabled, but limited to near the selected lake. Use the 'Full Lake Extent' button to zoom back to the extent.</li>
+                      <img class="img-fluid" src="{% static 'map/images/instructions-step8.gif' %}">
+                      <li>Use the 'swiper' tool to view the changes between historical imagery layers and 'current' google imagery.</li>
+                      <img class="img-fluid" src="{% static 'map/images/instructions-step9.gif' %}">
+                    </ol>
+                  </div>
+                </div>
+                <button id="back-to-top"
+                  style="text-align:center; margin:5px;"
+                  class="btn btn-link"
+                  type="button">
+                    <a href="#top"><small>Back to top</small></a>
+                </button>
+              </div>
+
             </div>
 
           </div>
         </div>
       </div>
     </div>
-
-    <!-- <div id="lake-count" class="count-container">
-      <p class="count-text">
-        <strong>Total lake stories available: <span id="count-output" class="count"></span></strong>
-      </p>
-    </div> -->
 
     <div id="no-results" class="search-results-container">
       <p>
@@ -165,6 +213,7 @@
               {permanent: true}
             );
 
+            // popup functionality for desktop
             if (window.innerWidth > 991) {
               // bind popup content to layer
               layer.bindPopup(
@@ -190,6 +239,7 @@
                 window.location.href = `/${feature.properties.res_lbl}`;
               });
             }
+            // popup functionality for mobile/smaller screens (hover doesn't work on mobile)
             else {
               layer.bindPopup(
               `<p style="text-align:center;">
@@ -217,7 +267,8 @@
               maxClusterRadius: 100, // increase radius from default 80
               animate: true,
               showCoverageOnHover: true,
-              zoomToBoundsOnClick: true
+              zoomToBoundsOnClick: true,
+              polygonOptions: {color: '#ffa64d'} // change default (blue) hover polygon to orange
             });
             pointLayer = L.geoJson(data, {
               onEachFeature: lakePopup
@@ -225,7 +276,7 @@
             lakeClusters.addLayer(pointLayer);
             map.addLayer(lakeClusters);
           });
-
+          // poly lake layer
           $.getJSON(polyUrl, function(data) {
             polyLayer = L.geoJson(data, {
               onEachFeature: lakeLabel
