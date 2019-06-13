@@ -59,6 +59,7 @@ class HistoricalAerialLinks(models.Model):
     year = models.IntegerField(choices=YEAR_CHOICES,
                                default=datetime.datetime.now().year)
     lake = models.ForeignKey(MajorReservoirs)
+    datahub_collection_id = models.CharField(default="", max_length=36, blank=True)
 
     def __str__(self):
         return self.link

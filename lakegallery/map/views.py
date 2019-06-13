@@ -44,10 +44,20 @@ def story(request, lake):
     ext = list(GEOSGeometry(m.geom).extent)
 
     n = HistoricalAerialLinks.objects.filter(lake=m)
+
     links = [obj.as_dict() for obj in n]
     links.append({'year': 2015, 'link': 'https://webservices.tnris.org/arcgis/services/TOP/TOP15_NC_CIR_50cm/ImageServer/WMSServer'})
     links.append({'year': 2016, 'link': 'https://webservices.tnris.org/arcgis/services/NAIP/NAIP16_NC_CIR_1m/ImageServer/WMSServer'})
     links.sort(key=lambda x: x['year'])
+
+    datahub = []
+
+    for obj in n:
+        datahub.append({'year': obj.year, 'id': obj.datahub_collection_id})
+
+    datahub.append({'year': 2015, 'id': 'b7e5b638-99f0-4676-9411-c88d06d49943'})
+    datahub.append({'year': 2016, 'id': 'a40c2ff9-ccac-4c76-99a1-2382c09cf716'})
+    datahub.sort(key=lambda x: x['year'])
 
     try:
         c = StoryContent.objects.get(lake=m)
@@ -93,7 +103,7 @@ def story(request, lake):
                'layer': layers['reservoirs_pt'], 'lake': lake, 'links': links,
                'story': c, 'stats': s, 'high_events': high_list,
                'low_events': low_list, 'overlays': overlays,
-               'overlay_order': overlay_order, 'overlay_query': m.id}
+               'overlay_order': overlay_order, 'overlay_query': m.id, 'data_hub_ids': datahub}
 
     if request.is_mobile is False:
         return render(request, 'map/story.html', context)
