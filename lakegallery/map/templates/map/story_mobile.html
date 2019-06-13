@@ -400,22 +400,28 @@
                 });
 
                 var len = ticks.length;
-                labelObject[len] = `<a href="https://tnris.org/texas-imagery-service/"
-                                      target="_blank"
-                                      title="Texas Imagery Service">
+                var txGoogleImagery = `<a href="https://tnris.org/texas-imagery-service/" target="_blank" title="Texas Imagery Service">
                                         <img class="google-logo" src={% static 'map/images/google-22px.png' %} />
-                                    </a>`;
+                                      </a>`;
+
+                labelObject[len] = txGoogleImagery;
                 ticks.push(len);
+
+                // data hub collection ids used for links to the datahub in the historical imagery slider tool
+                var dataHub = JSON.parse('{{ data_hub_ids }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
 
                 // create labels for time slider with links to datahub historical imagery
                 var labelArray = [];
-                var positionArray = [];
 
                 Object.values(labelObject).forEach(function (value) {
-                  // value != 'Current' ? labelArray.push(`<a href="#" target="_blank" class="historical-link" title="get it on datahub">${value}</a>`)
-                  value != 'Current' ? labelArray.push(value)
-                  : labelArray.push('Current');
+                  dataHub.forEach(function (item) {
+                    if (value == item['year']) {
+                      item['id'] != "" ? labelArray.push(`<a href="https://data.tnris.org/collection/${item['id']}" target="_blank" class="historical-link" title="get it on dataHub">${value}</a>`)
+                      : labelArray.push(value);
+                    }
+                  })
                 });
+                labelArray.push(txGoogleImagery);
                 // end label array function
 
                 // create positionArray; used to position labels below ticks
