@@ -343,7 +343,7 @@
                   })
 
               };
-              // var overlays = {};
+
               var lakeLayer;
 
               basemaps['Google Imagery'].addTo(map);
@@ -501,9 +501,6 @@
                 setupHistoricalSlider(linkConfig);
               }
 
-              // var sliderDiv = document.getElementById("sliderDiv").clientWidth;
-              // console.log(parseFloat(window.getComputedStyle(document.getElementById("sliderDiv")).width));
-
               // custom easy button control to turn off and on container div w/ time slider
               window.customEasyBtn = L.easyButton({
                 position: 'topright',
@@ -579,12 +576,20 @@
             var lakeStory = document.getElementById('lakeStory');
 
             window.onload = function() {
-              if (window.innerWidth > 991 && lakeHeader.clientHeight > 99) {
-                lakeStory.style.height = `calc(100% - ${lakeHeader.clientHeight}px)`;
-              }
-              else {
-                lakeStory.style.height = 'calc(100% - 99px)';
-              }
+              window.innerWidth > 991 && (lakeHeader.clientHeight > 99) ?
+                lakeStory.style.height = `calc(100% - ${lakeHeader.clientHeight}px)`
+                : lakeStory.style.height = 'calc(100% - 99px)';
+
+              // hack to align tick labels underneath ticks on initial load
+              $(document).ready(function() {
+                var sliderContainerWidth = document.querySelector("#slider-container").clientWidth;
+                var tickLabels = document.getElementsByClassName("slider-tick-label");
+                var tickLabelWidth = sliderContainerWidth / tickLabels.length;
+                var tickLabelMargin = '-' + (tickLabelWidth / 2);
+
+                $(tickLabels).width(tickLabelWidth);
+                $(tickLabels).css('margin-left', tickLabelMargin);
+              });
             };
 
         </script>
