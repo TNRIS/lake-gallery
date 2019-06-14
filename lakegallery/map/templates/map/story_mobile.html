@@ -295,7 +295,7 @@
             <p>View <strong>{{ lake }}</strong> - Past to Present</p>
           </div>
 
-          <div style="width:auto; min-height:40px; padding:0 10px 0 10px; text-align:center;">
+          <div id="sliderDiv">
             <input id='historicalSlider' type='text'/>
           </div>
 
@@ -526,6 +526,19 @@
               window.innerWidth > 991 ?
                 window.customEasyBtn.state('open') && $("#slider-container-mobile").fadeToggle() :
                 window.customEasyBtn.state('closed');
+
+              // hack to align tick labels underneath ticks when customEasyBtn state is 'open'
+              $("#customEasyBtn").on('click', function() {
+                if (window.customEasyBtn.state('open')) {
+                  var sliderContainerWidth = document.querySelector("#slider-container-mobile").clientWidth;
+                  var tickLabels = document.getElementsByClassName("slider-tick-label");
+                  var tickLabelWidth = sliderContainerWidth / tickLabels.length;
+                  var tickLabelMargin = '-' + (tickLabelWidth / 2);
+
+                  $(tickLabels).width(tickLabelWidth);
+                  $(tickLabels).css('margin-left', tickLabelMargin);
+                }
+              });
 
               // lake polygon overlay input checkbox function - inside custom time slider/layer control
               var checkbox = document.getElementById("lakeOverlay");
