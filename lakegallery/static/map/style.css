@@ -101,7 +101,8 @@ img.texas-home:hover {
 }
 
 .search-results-container {
-	width: 220px;
+	width: auto;
+	height: auto;
 	display: none;
 	z-index: 1500;
 	position: fixed;
@@ -112,6 +113,7 @@ img.texas-home:hover {
 	padding: 10px;
 	text-align: center;
 	margin-right: 21px;
+
 }
 
 .count-container {
@@ -473,21 +475,28 @@ div.leaflet-control-layers-overlays > label {
 .slider-tick-label-container {
 	color: white;
 	font-size: 14px;
+	box-sizing: border-box;
+	max-width: inherit;
+	max-height: inherit;
 }
 
 .slider-tick-label {
-	width: auto;
+	/* width: calc() !important; */
 	/* min-width: 40px !important; */
 	/* display: inline-block; */
 	/* margin: 3px; */
 	/* padding: 0 3px 0 3px; */
+	/* box-sizing: border-box; */
+	max-width: inherit;
+	max-height: inherit;
 }
 
 #sliderDiv {
 	width: 100%;
-	min-height: 45px;
+	min-height: 46px;
 	padding: 0 15px 0 15px;
 	text-align: center;
+	max-width: inherit;
 }
 
 #sliderToggler {
