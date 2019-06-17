@@ -153,11 +153,11 @@
           var bounds = map.getBounds();
 
           // set max zoom level
-          map.options.minZoom = map.getZoom();
+          map.options.minZoom = map.getZoom() - 1;
 
-          // set max bounds to lakeBounds so user can't pan outside of lake area
+          // set max bounds to lakeBounds so user can't pan outside of texas lakes area
           // padding added to bounds so max is not too restrictive
-          map.setMaxBounds(bounds.pad(0.1));
+          map.setMaxBounds(bounds.pad(0.2));
 
           // easy button control to zoom to state extent
           L.easyButton("<img src={% static 'map/images/texas_solid_blk.png' %} style='width:auto; height:100%; opacity:1; padding: 3px;' title='Zoom to statewide extent' />", function(btn, map){
