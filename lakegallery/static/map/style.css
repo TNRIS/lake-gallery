@@ -196,15 +196,19 @@ img.texas-home:hover {
 	height: calc(100vh - 56px);
 }
 
+body.modal-open {
+	overflow: hidden;
+}
+
 #instructionModal > .modal-dialog {
 	display: block;
 	text-align: center;
-	top: 3%;
 }
 
 @media (min-width: 992px) {
 	#instructionModal > .modal-dialog {
 		max-width: 60%;
+		top: 3%;
 	}
 }
 
