@@ -528,11 +528,12 @@
                 window.customEasyBtn.state('closed');
 
               // hack to align tick labels underneath ticks when customEasyBtn state is 'open'
+              var sliderContainer = document.querySelector("#slider-container-mobile");
+
               $("#customEasyBtn").on('click', function() {
-                if (window.customEasyBtn.state('open')) {
-                  var sliderContainerWidth = document.querySelector("#slider-container-mobile").clientWidth;
+                if (sliderContainer.clientWidth > 0) {
                   var tickLabels = document.getElementsByClassName("slider-tick-label");
-                  var tickLabelWidth = sliderContainerWidth / tickLabels.length;
+                  var tickLabelWidth = sliderContainer.clientWidth / tickLabels.length;
                   var tickLabelMargin = '-' + (tickLabelWidth / 2);
 
                   $(tickLabels).width(tickLabelWidth);
