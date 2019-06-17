@@ -193,7 +193,7 @@ img.texas-home:hover {
 
 /*INDEX & REGION TEMPLATE MAP*/
 #main {
-	height: calc(100% - 56px);
+	height: calc(100vh - 56px);
 }
 
 #instructionModal > .modal-dialog {
@@ -239,7 +239,6 @@ img.texas-home:hover {
 
 #expand-all-instructions {
 	width: auto;
-	height: 100%;
 	padding: 10px;
 }
 
