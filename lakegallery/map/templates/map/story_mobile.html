@@ -304,15 +304,15 @@
           <div class="slider-container-text bottom-container">
 
             <div class="centering-div">
-              <div style="float:left;">
+              <div style="float:left;" title="Zoom to lake extent">
                 <a id="zoom-extent" href="#" class="link">
                   <img class="extent" src="{% static 'map/images/extent.png' %}" />
+                  <span>Full Lake Extent</span>
                 </a>
-                <span>Full Lake Extent</span>
               </div>
 
-              <div style="float:right;">
-                <div style="padding-top:5px; float:left; vertical-align:baseline; margin-right:3px;">
+              <div style="float:right;" title="Turn lake boundary on/off">
+                <div class="checkbox-container">
                   <input type="checkbox" id="lakeOverlay" name="overlay" value="checked" checked />
                 </div>
                 <label for="lakeOverlay">Lake Outline</label>
