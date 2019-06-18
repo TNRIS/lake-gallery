@@ -624,7 +624,8 @@ hr.separator {
 }
 
 .link:hover {
-	color: #d9d9d9;
+	/* color: #d9d9d9; */
+	color: #bfbfbf;
 	text-decoration: none;
 }
 
@@ -654,11 +655,18 @@ hr.separator {
 }
 
 .extent:hover {
-	filter: opacity(50%);
+	filter: opacity(60%);
 }
 
 .menu-icon {
 	padding: 3px;
+}
+
+.checkbox-container {
+	padding-top: 5px;
+	float: left;
+	vertical-align: baseline;
+	margin-right: 3px;
 }
 
 /*--------------- STORY MOBILE ---------------*/

@@ -23,7 +23,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-VERSION = '2.1.5'
+VERSION = '2.1.6'
 
 ALLOWED_HOSTS = ['localhost', '0.0.0.0', '.tnris.org', '.tnris.org.']
 
