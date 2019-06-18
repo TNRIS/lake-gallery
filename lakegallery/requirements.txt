@@ -9,7 +9,7 @@ django-geojson==2.11.0
 django-leaflet==0.23.0
 django-multiselectfield==0.1.8
 django-storages==1.6.5
-djangorestframework==3.7.7
+djangorestframework==3.9.1
 djangorestframework-gis==0.14
 docutils==0.14
 drf-extensions==0.3.1
