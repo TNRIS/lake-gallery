@@ -377,7 +377,9 @@
 
                 // set max bounds to lakeBounds so user can't pan outside of lake area
                 // padding added to bounds so max is not too restrictive
-                map.setMaxBounds(map.getBounds(lakeBounds).pad(0.2));
+                // map.setMaxBounds(map.getBounds(lakeBounds).pad(0.2));
+                var maxBounds = map.getBounds(lakeBounds).pad(0.2);
+                map.setMaxBounds(maxBounds);
 
               } // end getLakeJson function
 
