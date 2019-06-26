@@ -193,7 +193,7 @@ img.texas-home:hover {
 
 /*INDEX & REGION TEMPLATE MAP*/
 #main {
-	height: calc(100vh - 56px);
+	height: calc(100% - 56px);
 }
 
 body.modal-open {
@@ -307,7 +307,7 @@ ol > img {
 
 /*STORY CONTENT PANEL*/
 .contentPanel {
-	height: calc(100vh - 56px);
+	height: calc(100% - 56px);
 	padding: 0;
 }
 
@@ -513,7 +513,7 @@ div.slider-handle.min-slider-handle.round {
 
 #storyMap {
 	z-index: 10;
-	height: calc(100vh - 56px);
+	height: calc(100% - 56px);
 }
 
 #slider-container {
@@ -633,7 +633,7 @@ hr.separator {
 /*--------------- STORY MOBILE ---------------*/
 
 #mobileContainer {
-	height: calc(100vh - 56px);
+	height: calc(100% - 56px);
 	margin: 0;
 	max-width: 100% !important;
 }
@@ -642,7 +642,8 @@ hr.separator {
 .togglerWrapper {
     text-align: center;
     width: 100%;
-    position: absolute;
+    position: sticky;
+		position: -webkit-sticky; /* Safari */
     z-index: 102;
     pointer-events: none;
 }
@@ -668,7 +669,7 @@ hr.separator {
 }
 
 .carousel-indicators {
-	top: 60px;
+	top: 25px;
 	bottom: auto;
 }
 
@@ -702,13 +703,13 @@ hr.separator {
 
 /*STORY PAGES*/
 .mobileStoryPage {
-	min-height: 90%;
 	padding-left: 10%;
 	padding-right: 10%;
+	max-height: inherit;
 }
 
 .mobileStoryPage > h2 {
-	margin-top: 68px;
+	margin-top: 40px;
 	text-align: center;
 }
 
