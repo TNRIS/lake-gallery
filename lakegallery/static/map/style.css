@@ -236,8 +236,9 @@ body.modal-open {
 }
 
 #expand-all-instructions {
-	width: auto;
 	padding: 10px;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
 }
 
 ol > li {
