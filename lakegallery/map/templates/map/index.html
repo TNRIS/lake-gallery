@@ -81,9 +81,9 @@
                       <img class="img-fluid" src="{% static 'map/images/instructions-step2.gif' %}">
                       <li>Click a marker to go to a lake story.</li>
                       <img class="img-fluid" src="{% static 'map/images/instructions-step3.gif' %}">
-                      <li>Keep zooming to view lake polygons and labels. Click a polygon to view that lakes' story.</li>
+                      <li>Keep zooming to view lake polygons and hover mouse over lake to view information.</li>
                       <img class="img-fluid" src="{% static 'map/images/instructions-step4.gif' %}">
-                      <li>Click a polygon to go to a lake story.</li>
+                      <li>Click a lake to go to a story.</li>
                       <img class="img-fluid" src="{% static 'map/images/instructions-step5.gif' %}">
                     </ol>
                   </div>
@@ -150,18 +150,21 @@
           var lakeClusters;
           var pointUrl;
           var polyUrl;
-          var bounds = map.getBounds();
+          // var bounds = map.getBounds();
+          var clusterBounds = map.getBounds(lakeClusters);
+
+          console.log(clusterBounds);
+
+          // set max bounds to lakeBounds so user can't pan outside of texas lakes area
+          // padding added to bounds so max is not too restrictive
+          map.setMaxBounds(clusterBounds.pad(0.2));
 
           // set max zoom level
           map.options.minZoom = map.getZoom() - 1;
 
-          // set max bounds to lakeBounds so user can't pan outside of texas lakes area
-          // padding added to bounds so max is not too restrictive
-          map.setMaxBounds(bounds.pad(0.2));
-
           // easy button control to zoom to state extent
           L.easyButton("<img src={% static 'map/images/texas_solid_blk.png' %} style='width:auto; height:100%; opacity:1; padding: 3px;' title='Zoom to statewide extent' />", function(btn, map){
-            map.fitBounds(bounds);
+            map.fitBounds(lakeClusters.getBounds());
           }).addTo(map);
 
           // sql statements for the carto sql api
@@ -286,7 +289,7 @@
           // on map zoom, if zoom level greater than 9 use poly sql; else use point sql
           map.on('zoomend', function() {
             var zoomLevel = map.getZoom();
-            // var count = lakeClusters.getLayers().length;
+
             if (zoomLevel > 9) {
               map.removeLayer(lakeClusters);
               polyLayer.addTo(map);
@@ -297,9 +300,10 @@
             }
           });
 
-          // index map search function - if user searches a lake that is available, zoom to
-          // the lake on the index/home map; user will then need to click the lake polygon to
-          // get to a lake story. if lake is unavailable, alert that says not available
+          // index map search function (only on desktop) - if user searches a lake that is available,
+          // zoom to the lake on the index/home map. if lake is unavailable, alert that says not available.
+          // if multiple lakes return for search term, alert that says number of lakes and to refine
+          // search terms.
           // NOTE: these element ids exist in base.html
           var searchButton = document.getElementById("lake-search-btn");
           var searchInput = document.getElementById("lake-search-input");
@@ -354,6 +358,10 @@
             }
           });
           // end search button function
+
+          // set initial map bounds to lake cluster bounds
+          // map.fitBounds(lakeClusters.getBounds());
+          // map.fitBounds(clusterBounds);
 
         } //end main_map_init function
 

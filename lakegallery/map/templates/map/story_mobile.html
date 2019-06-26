@@ -16,7 +16,7 @@
   </div>
   <div class="container" id="mobileContainer">
     <div class="row">
-      <div class="togglerWrapper">
+      <div class="togglerWrapper" id="togglerWrapper">
         <button class="btn" type="button" data-toggle="collapse" data-target="#mobileStoryPanelContainer" aria-expanded="false" aria-controls="mobileStoryPanelContainer" id="mobileStoryToggler">
           <img id="togglerImg" class="closed" src="{% static 'map/images/arrow-down.png' %}"/>
         </button>
@@ -285,6 +285,7 @@
 
         </div>
       </div>
+
       <div class="col-12 mobileMapPanel">
 
         <!-- story map tools menu - time slider and lake outline, etc -->
@@ -329,14 +330,13 @@
 
             function main_map_init (map, options) {
               var basemaps = {
-                  'Google Imagery': new L.TileLayer.WMTS('https://txgi.tnris.org/login/path/source-blonde-xray-cheese/wmts', {
-                      layer: 'texas',
-                      style: "default",
-                      tilematrixSet: "0to20",
-                      format: "image/png",
-                      attribution: '<a href="https://tnris.org/texas-imagery-service/" target="_blank">Google</a>'
-                  })
-
+                'Google Imagery': new L.TileLayer.WMTS('https://txgi.tnris.org/login/path/source-blonde-xray-cheese/wmts', {
+                    layer: 'texas',
+                    style: "default",
+                    tilematrixSet: "0to20",
+                    format: "image/png",
+                    attribution: '<a href="https://tnris.org/texas-imagery-service/" target="_blank">Google</a>'
+                })
               };
 
               var lakeLayer;
@@ -377,7 +377,8 @@
 
                 // set max bounds to lakeBounds so user can't pan outside of lake area
                 // padding added to bounds so max is not too restrictive
-                map.setMaxBounds(map.getBounds(lakeBounds).pad(0.2));
+                var maxBounds = map.getBounds(lakeBounds).pad(0.2);
+                map.setMaxBounds(maxBounds);
 
               } // end getLakeJson function
 
@@ -592,6 +593,18 @@
                   }
                 });
             });
+            // end picture modal event setup
+
+            // custom handler to turn togglerWrapper to white background if story expanded; fixed top toggler button
+            var togglerWrapper = document.getElementById("togglerWrapper");
+            var toggler = document.getElementById("mobileStoryToggler");
+            var panelContainer = document.getElementById("mobileStoryPanelContainer");
+
+            toggler.addEventListener("click", function() {
+              !panelContainer.classList.contains("show") ? togglerWrapper.style.backgroundColor = "#fff"
+              : togglerWrapper.style.backgroundColor = "transparent";
+            });
+            // end togglerWrapper custom handler
         </script>
       </div>
     </div>
