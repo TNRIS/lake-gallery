@@ -212,6 +212,11 @@ body.modal-open {
 	}
 }
 
+#instructionModalContent {
+	overflow-y: scroll; /* has to be scroll, not auto */
+  -webkit-overflow-scrolling: touch;
+}
+
 @media (min-width: 576px) {
 	#instructionModalContent {
 		overflow: auto;
