@@ -200,6 +200,24 @@ body.modal-open {
 	overflow: hidden;
 }
 
+#disclaimerModal > .modal-dialog {
+	display: block;
+	text-align: center;
+}
+
+@media (min-width: 992px) {
+	#disclaimerModal > .modal-dialog {
+		max-width: 60%;
+		top: 3%;
+	}
+}
+
+@media (min-width: 576px) {
+	#disclaimerModalContent {
+		overflow: auto;
+	}
+}
+
 #instructionModal > .modal-dialog {
 	display: block;
 	text-align: center;
@@ -233,10 +251,6 @@ body.modal-open {
 
 .modal-body > div > button {
 	cursor: pointer;
-}
-
-#expand-all-instructions {
-	padding: 10px;
 }
 
 ol > li {
