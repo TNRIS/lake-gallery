@@ -3,130 +3,13 @@
 {% load static %}
 
 {% block content %}
-    <div id="instructionModal" class="modal fade">
-      <div class="modal-dialog" role="document">
-        <div id="instructionModalContent" class="modal-content">
-          <div class="modal-body">
-            <p style="color:red;">
-              Please note that this application is currently in beta and is still undergoing final testing before its official release.
-            </p>
+    <!-- intro disclaimer modal shown if not stored in local storage -->
+    {% include 'map/disclaimer.html' %}
 
-            <h2 class="modal-title">Welcome to Lakes of Texas!</h2>
+    <!-- instruction modal template shown when #instructions-btn clicked above -->
+    {% include 'map/instructions.html' %}
 
-            <br />
-
-            <p>
-              <strong>Disclaimer: </strong>The information provided by the Texas Water Development Board and the Texas Natural Resources Information System (TNRIS) in the
-              Lakes of Texas web application is for general information purposes only. All information on the site/application is provided in good faith, however we
-              make no representation or warranty of any kind, express or implied, regarding the accuracy, adequacy, validity, reliability, availability or completeness of
-              any information on the site/application.
-            </p>
-
-            <div class="container">
-              <div class="row">
-                <div class="col-md" style="bottom:0; margin-bottom:20px;">
-                  <button id="expand-collapse-btn"
-                    onclick="changeBtnTxt()"
-                    class="btn btn-info"
-                    type="button"
-                    data-toggle="collapse"
-                    data-target="#expand-all-instructions"
-                    aria-expanded="false">
-                      Show Instructions
-                  </button>
-                </div>
-                <div class="col-md" style="bottom:0;">
-                  <label class="form-check-label">
-                    <input id="modalHideCheckbox" class="form-check-input" type="checkbox" value="">
-                    Don't show this message again
-                  </label>
-                  <button id="dismiss-modal-btn" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="collapse" id="expand-all-instructions" style="width:100%;">
-
-              <h4 id="top" style="text-align:left;">
-                <strong>Instructions:</strong>
-              </h4>
-
-              <button id="expand-index-btn"
-                style="text-align:center; margin:5px;"
-                class="btn btn-default"
-                type="button"
-                data-toggle="collapse"
-                data-target="#index-instructions"
-                aria-expanded="false">
-                  Home Map Instructions
-              </button>
-
-              <button id="expand-story-btn"
-                style="text-align:center; margin:5px;"
-                class="btn btn-default"
-                type="button"
-                data-toggle="collapse"
-                data-target="#story-instructions"
-                aria-expanded="false">
-                  Story Map Instructions
-              </button>
-
-              <div id="index-instructions" class="collapse" style="margin:20px 0;">
-                <div class="row">
-                  <div class="col-lg">
-                    <ol style="text-align:left;">
-                      <li>Click a marker cluster to zoom closer to the area of those lake locations.</li>
-                      <img class="img-fluid" src="{% static 'map/images/instructions-step1.gif' %}">
-                      <li>Hover over markers to view lake name and region.</li>
-                      <img class="img-fluid" src="{% static 'map/images/instructions-step2.gif' %}">
-                      <li>Click a marker to go to a lake story.</li>
-                      <img class="img-fluid" src="{% static 'map/images/instructions-step3.gif' %}">
-                      <li>Keep zooming to view lake polygons and hover mouse over lake to view information.</li>
-                      <img class="img-fluid" src="{% static 'map/images/instructions-step4.gif' %}">
-                      <li>Click a lake to go to a story.</li>
-                      <img class="img-fluid" src="{% static 'map/images/instructions-step5.gif' %}">
-                    </ol>
-                  </div>
-                </div>
-                <button id="back-to-top"
-                  style="text-align:center; margin:5px;"
-                  class="btn btn-link"
-                  type="button">
-                    <a href="#top"><small>Back to top</small></a>
-                </button>
-              </div>
-
-              <div id="story-instructions" class="collapse" style="margin:20px 0;">
-                <div class="row">
-                  <div class="col-lg">
-                    <ol style="text-align:left;">
-                      <li>Lake story content is in the left pane. A map with the lake boundary is in the right pane.</li>
-                      <li>Click a content section header to jump to different sections of the story.</li>
-                      <img class="img-fluid" src="{% static 'map/images/instructions-step6.gif' %}">
-                      <li>In the map pane, there is a tools menu. Click a year in the slider tool to view historical imagery layers.</li>
-                      <img class="img-fluid" src="{% static 'map/images/instructions-step7.gif' %}">
-                      <li>Zooming and panning is enabled, but limited to near the selected lake. Use the 'Full Lake Extent' button to zoom back to the extent.</li>
-                      <img class="img-fluid" src="{% static 'map/images/instructions-step8.gif' %}">
-                      <li>Use the 'swiper' tool to view the changes between historical imagery layers and 'current' google imagery.</li>
-                      <img class="img-fluid" src="{% static 'map/images/instructions-step9.gif' %}">
-                    </ol>
-                  </div>
-                </div>
-                <button id="back-to-top"
-                  style="text-align:center; margin:5px;"
-                  class="btn btn-link"
-                  type="button">
-                    <a href="#top"><small>Back to top</small></a>
-                </button>
-              </div>
-
-            </div>
-
-          </div>
-        </div>
-      </div>
-    </div>
-
+    <!-- search term notifications -->
     <div id="no-results" class="search-results-container">
       <p>
         <strong>No results. Try searching again or using the map to find a lake.</strong>
@@ -138,6 +21,7 @@
         <strong><span id="search-num"></span> results. Try limiting your search with more text.</strong>
       </p>
     </div>
+    <!-- end search term notifications -->
 
     {% leaflet_map "main" callback="main_map_init" %}
 
@@ -150,10 +34,7 @@
           var lakeClusters;
           var pointUrl;
           var polyUrl;
-          // var bounds = map.getBounds();
           var clusterBounds = map.getBounds(lakeClusters);
-
-          console.log(clusterBounds);
 
           // set max bounds to lakeBounds so user can't pan outside of texas lakes area
           // padding added to bounds so max is not too restrictive
@@ -369,16 +250,24 @@
         $(function() {
           var version = '{{ version }}';
           if (!localStorage.lakeGalleryModal || localStorage.lakeGalleryModal != version) {
-            $('#instructionModal').modal({
+            $('#disclaimerModal').modal({
               show: true
             });
 
-            $('#instructionModal').on('hide.bs.modal', function (e) {
+            $('#disclaimerModal').on('hide.bs.modal', function (e) {
               if ($('#modalHideCheckbox').is(":checked")) {
                 localStorage.setItem('lakeGalleryModal', version);
               }
             });
           }
+          // show instruction modal on button click
+          $('#instructions-btn').on('click', function (e) {
+            if (!$('#instructionModal').hasClass('show')) {
+              $('#instructionModal').modal({
+                show: true
+              });
+            }
+          })
         });
 
         // carto sql api call to get enabled story count and update counter
@@ -398,10 +287,10 @@
         // }
 
         // switch out text in expand instructions button; expand/collapse
-        function changeBtnTxt() {
-          var btn = document.getElementById("expand-collapse-btn");
-          btn.innerText == "Show Instructions" ? btn.innerText = "Hide Instructions" : btn.innerText = "Show Instructions";
-        };
+        // function changeBtnTxt() {
+        //   var btn = document.getElementById("expand-collapse-btn");
+        //   btn.innerText == "Show Instructions" ? btn.innerText = "Hide Instructions" : btn.innerText = "Show Instructions";
+        // };
 
     </script>
 {% endblock %}

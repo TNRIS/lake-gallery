@@ -1,0 +1,51 @@
+{% load static %}
+
+{% block content %}
+
+<div id="disclaimerModal" class="modal fade">
+  <div class="modal-dialog" role="document">
+    <div id="disclaimerModalContent" class="modal-content">
+      <div class="modal-body">
+        <p style="color:red;">
+          Please note that this application is currently in beta and is still undergoing final testing before its official release.
+        </p>
+
+        <h2 class="modal-title">Welcome to Lakes of Texas!</h2>
+
+        <br />
+
+        <p>
+          <strong>Disclaimer: </strong>The information provided by the Texas Water Development Board and the Texas Natural Resources Information System (TNRIS) in the
+          Lakes of Texas web application is for general information purposes only. All information on the site/application is provided in good faith, however we
+          make no representation or warranty of any kind, express or implied, regarding the accuracy, adequacy, validity, reliability, availability or completeness of
+          any information on the site/application.
+        </p>
+
+        <div class="container">
+          <div class="row">
+            <div class="col-md" style="bottom:0; margin-bottom:20px;">
+              <button id="instructions-btn"
+                class="btn btn-success"
+                style="width: 200px;"
+                type="button"
+                data-toggle="modal"
+                data-target="#instructionModal">
+                  Instructions
+              </button>
+            </div>
+            <div class="col-md" style="bottom:0;">
+              <label class="form-check-label">
+                <input id="modalHideCheckbox" class="form-check-input" type="checkbox" value="">
+                Don't show this message again
+              </label>
+              <button id="dismiss-modal-btn" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

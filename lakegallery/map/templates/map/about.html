@@ -2,6 +2,10 @@
 {% load static %}
 
 {% block content %}
+
+  <!-- instruction modal template shown when #instructions-btn clicked below in instruction section -->
+  {% include 'map/instructions.html' %}
+
   <div id="aboutPage" class="container">
 
     <div id="aboutTitleBlock" class="row">
@@ -25,6 +29,9 @@
         <!-- <li class="nav-item">
           <a class="nav-link" href="#Acknowledge">Acknowledge</a>
         </li> -->
+        <li class="nav-item">
+          <a class="nav-link" href="#Instructions">Instructions</a>
+        </li>
         <li class="nav-item">
           <a class="nav-link" href="#FAQ">FAQ</a>
         </li>
@@ -84,6 +91,25 @@
         <p><a href="#topNav"><small>Back to Top</small></a></p>
       </div>
     </div>
+    <div id="Instructions" class="row">
+      <div class="col">
+        <h2>Instructions</h2>
+        <ul>
+          <li>
+            <p>
+              <button id="instructions-btn"
+                class="btn btn-success"
+                type="button"
+                data-toggle="modal"
+                data-target="#instructionModal">
+                  Click here
+              </button> to learn how to navigate and use the Lakes of Texas web application.
+            </p>
+          </li>
+        </ul>
+        <p><a href="#topNav"><small>Back to Top</small></a></p>
+      </div>
+    </div>
     <div id="FAQ" class="row">
       <div class="col">
         <h2>Frequently Asked Questions (FAQ)</h2>
@@ -99,8 +125,8 @@
               <strong>Where does the lake/reservoir data come from?</strong><br />
               The data for this application comes from a variety of locations including:
                 <a href="https://waterdatafortexas.org" target="_blank">Water Data for Texas</a>,
-                <a href="www.twdb.texas.gov/surfacewater/rivers/reservoirs/index.asp" target="_blank">Texas Water Development Board's Texas Lakes & Reservoirs</a>,
-                &amp; the <a href="" target="_blank">Texas Water Development Board Hydrographic Survey</a>.
+                <a href="www.twdb.texas.gov/surfacewater/rivers/reservoirs/index.asp" target="_blank">Texas Water Development Board's Texas Lakes & Reservoirs</a>
+                and the <a href="" target="_blank">Texas Water Development Board Hydrographic Survey</a>.
             </p>
           </li>
         </ul>
@@ -124,7 +150,8 @@
         Lakes of Texas was developed and is maintained by the Texas Natural Resources Information System.
         </p>
         <p>
-        If you have any questions, comments, suggestions, or would like to report a bug, please contact us by completing the form at <a href="https://tnris.org/contact/" target="_blank">https://tnris.org/contact/</a>. Choose the option 'General Question or Comment'.
+        If you have any questions, comments, suggestions, or would like to report a bug, please contact us by completing the form at <a href="https://tnris.org/contact/" target="_blank">https://tnris.org/contact/</a>.
+        Choose the option 'General Question or Comment' and give us your feedback.
         </p>
         <p><a href="#topNav"><small>Back to Top</small></a></p>
       </div>
