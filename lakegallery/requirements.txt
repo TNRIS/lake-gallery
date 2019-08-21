@@ -12,7 +12,7 @@ django-storages==1.6.5
 djangorestframework==3.7.7
 djangorestframework-gis==0.14
 docutils==0.14
-drf-extensions==0.3.1
+drf-extensions==0.5.0
 first==2.0.1
 jmespath==0.9.3
 Markdown==2.6.11
