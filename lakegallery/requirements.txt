@@ -4,7 +4,7 @@ botocore==1.12.161
 click==6.7
 Django==1.11.21
 django-bootstrap4==0.0.5
-django-filter==1.1.0
+django-filter==2.2.0
 django-geojson==2.11.0
 django-leaflet==0.23.0
 django-multiselectfield==0.1.8
