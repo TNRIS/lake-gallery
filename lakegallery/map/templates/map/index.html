@@ -59,8 +59,7 @@
             if (window.innerWidth > 991) {
               layer.bindPopup(
                 `<p style="text-align:center;">
-                  <b>${feature.properties.res_lbl}</b><br />
-                  <em>Region ${feature.properties.region}</em>
+                  <b>${feature.properties.res_lbl}</b>
                 </p>`
               );
               layer.on('mouseover', function (e) {
@@ -77,8 +76,7 @@
             else {
               layer.bindPopup(
               `<p style="text-align:center;">
-                <b><a href="/${feature.properties.res_lbl}">${feature.properties.res_lbl}</a></b><br />
-                <em>Region ${feature.properties.region}</em>
+                <b><a href="/${feature.properties.res_lbl}">${feature.properties.res_lbl}</a></b>
               </p>`
               );
               layer.on('click', function (e) {
@@ -127,8 +125,7 @@
             else {
               layer.bindPopup(
               `<p style="text-align:center;">
-                <b><a href="/${feature.properties.res_lbl}">${feature.properties.res_lbl}</a></b><br />
-                <em>Region ${feature.properties.region}</em>
+                <b><a href="/${feature.properties.res_lbl}">${feature.properties.res_lbl}</a></b>
               </p>`
               );
               layer.on('click', function (e) {
