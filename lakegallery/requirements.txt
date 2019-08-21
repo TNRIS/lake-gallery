@@ -14,10 +14,10 @@ djangorestframework-gis==0.14
 docutils==0.15.2
 drf-extensions==0.5.0
 first==2.0.2
-jmespath==0.9.3
-Markdown==2.6.11
-olefile==0.45.1
-Pillow==5.0.0
+jmespath==0.9.4
+Markdown==3.1.1
+olefile==0.46
+Pillow==6.1.0
 pip-tools==4.0.0
 psycopg2==2.7.4
 psycopg2-binary==2.7.4
