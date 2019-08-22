@@ -528,12 +528,13 @@
                 window.customEasyBtn.state('open') && $("#slider-container-mobile").fadeToggle() :
                 window.customEasyBtn.state('closed');
 
+              // click off tools menu (#slider-container-mobile) to close the menu
               $(window).click(function() {
-                console.log('click');
                 window.customEasyBtn.state('closed');
-                $("#slider-container-mobile").fadeToggle();
+                $("#slider-container-mobile").fadeOut();
               });
-
+              
+              // dont close or open menu when clicking inside the menu itself
               $("#slider-container-mobile").click(function(e) {
                 e.stopPropagation();
               });
