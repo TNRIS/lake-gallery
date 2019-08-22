@@ -528,6 +528,16 @@
                 window.customEasyBtn.state('open') && $("#slider-container-mobile").fadeToggle() :
                 window.customEasyBtn.state('closed');
 
+              $(window).click(function() {
+                console.log('click');
+                window.customEasyBtn.state('closed');
+                $("#slider-container-mobile").fadeToggle();
+              });
+
+              $("#slider-container-mobile").click(function(e) {
+                e.stopPropagation();
+              });
+
               // hack to align tick labels underneath ticks when customEasyBtn state is 'open'
               var sliderContainer = document.querySelector("#slider-container-mobile");
 
