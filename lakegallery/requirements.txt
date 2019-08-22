@@ -1,5 +1,5 @@
 beautifulsoup4==4.6.0
-boto3==1.9.161
+boto3==1.9.213
 botocore==1.12.161
 click==6.7
 Django==1.11.21
