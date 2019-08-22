@@ -19,16 +19,6 @@ class ReservoirsViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
     filter_fields = ('res_lbl', 'region')
 
 
-class RWPAsViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
-    """
-    API endpoint that allows RWPAs regions to be listed or detailed
-    """
-    serializer_class = RWPAsSerializer
-    lookup_field = 'letter'
-    queryset = RWPAs.objects.all().order_by('letter')
-    filter_fields = ('reg_name', 'letter')
-
-
 class RWPAsReservoirsViewSet(NestedViewSetMixin,
                              viewsets.ReadOnlyModelViewSet):
     """
