@@ -489,11 +489,6 @@ div.leaflet-control-layers-overlays > label {
 	max-height: inherit;
 }
 
-.slider-tick-label {
-	max-width: inherit;
-	max-height: inherit;
-}
-
 #sliderDiv {
 	width: 100%;
 	min-height: 46px;
