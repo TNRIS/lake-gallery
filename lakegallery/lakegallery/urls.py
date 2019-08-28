@@ -18,6 +18,7 @@ from django.conf.urls import (include, url, handler400, handler403,
 from django.contrib.gis import admin
 from django.conf import settings
 from api.api import router
+from django.views.generic.base import RedirectView
 
 handler400 = 'map.views.bad_request'
 handler403 = 'map.views.permission_denied'
@@ -30,5 +31,6 @@ urlpatterns = [
     # url(r'^api-auth/', include('rest_framework.urls',
     #     namespace='rest_framework')),
     url(r'^admin/', admin.site.urls),
+    url(r'^admin', RedirectView.as_view(url='admin/')),
     url(r'^', include('map.urls'))
 ]
