@@ -449,17 +449,30 @@
                 var secondBasemap;
                 var historicalLayer;
                 var sideBySideControl;
+                // slideStopArray used for double-click slideStopArray hack below
+                var slideStopArray = [];
 
                 $("#historicalSlider").on('change', function(e) {
                   slideStart = e.value.oldValue;
                 });
 
                 $("#historicalSlider").on('slideStop', function(e) {
+                  slideStopArray.unshift(slideStart);
+
                   if (active == true) {
                     map.removeLayer(secondBasemap);
                     map.removeLayer(historicalLayer);
                     map.removeControl(sideBySideControl);
                   }
+
+                  // start double-click slideStopArray hack
+                  // this is a solution to a previous issue with touch clicking on dataHub links for mobile (bootstrap slider prevents access to child anchor)
+                  var activeLabel = document.getElementsByClassName("slider-tick-label label-in-selection label-is-selection")[0];
+
+                  if (activeLabel.children[0] && slideStopArray[0] == slideStopArray[1]) {
+                    activeLabel.children[0].click();
+                  }
+                  // end double-click slideStopArray hack
 
                   if (e.value != (ticks.length - 1)) {
                     if (slideStart == (ticks.length - 1)) {
@@ -527,6 +540,17 @@
               window.innerWidth > 991 ?
                 window.customEasyBtn.state('open') && $("#slider-container-mobile").fadeToggle() :
                 window.customEasyBtn.state('closed');
+
+              // click off tools menu (#slider-container-mobile) to close the menu
+              $(window).click(function() {
+                window.customEasyBtn.state('closed');
+                $("#slider-container-mobile").fadeOut();
+              });
+              
+              // dont close or open menu when clicking inside the menu itself
+              $("#slider-container-mobile").click(function(e) {
+                e.stopPropagation();
+              });
 
               // hack to align tick labels underneath ticks when customEasyBtn state is 'open'
               var sliderContainer = document.querySelector("#slider-container-mobile");

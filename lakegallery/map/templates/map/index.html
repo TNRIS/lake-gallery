@@ -50,7 +50,7 @@
 
           // sql statements for the carto sql api
           var polySql = `SELECT * FROM ${polyLayer} WHERE story='enabled'`;
-          var pointSql = `SELECT type, story, region, status, res_lbl, res_name, ST_PointOnSurface(the_geom) as the_geom FROM ${pointLayer} WHERE story='enabled'`;
+          var pointSql = `SELECT type, story, status, res_lbl, res_name, ST_PointOnSurface(the_geom) as the_geom FROM ${pointLayer} WHERE story='enabled'`;
 
           // popup and tooltip function to be used each time point/marker clicked/hovered over
           var lakePopup = function (feature, layer) {
