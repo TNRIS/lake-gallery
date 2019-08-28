@@ -1,0 +1,59 @@
+{% load static %}
+
+{% block content %}
+
+
+<form>
+  <div class="form-group">
+    <label class="input-label" for="firstName">First name</label>
+    <input type="text" class="form-control" id="firstName" aria-describedby="firstName" required>
+    <small id="firstNameHelp" class="form-text text-muted">First name is required to submit form.</small>
+    <br>
+    <label class="input-label" for="lastName">Last name</label>
+    <input type="text" class="form-control" id="lastName" aria-describedby="lastName" required>
+    <small id="lastNameHelp" class="form-text text-muted">Last name is required to submit form.</small>
+    <br>
+    <label class="input-label" for="email">Email</label>
+    <input type="email" class="form-control" id="email" aria-describedby="email" required>
+    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else. Email is required to submit form.</small>
+    <br>
+    <label class="input-label" for="phone">Phone</label>
+    <input type="tel" class="form-control" id="phone" aria-describedby="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}">
+    <small id="phoneHelp" class="form-text text-muted">Enter phone number in format 123-45-678. Phone number is not required to submit form.</small>
+    <br>
+    <label class="input-label" for="industry">Industry</label>
+    <select class="form-control" id="industry">
+      <option></option>
+      <option>Agriculture</option>
+      <option>Cartography</option>
+      <option>Conservation</option>
+      <option>Construction</option>
+      <option>Consulting</option>
+      <option>Education</option>
+      <option>Emergency Management</option>
+      <option>Environmental</option>
+      <option>Forestry</option>
+      <option>Government</option>
+      <option>Insurance</option>
+      <option>Law Enforcement</option>
+      <option>Oil and Gas</option>
+      <option>Public Health</option>
+      <option>Retail</option>
+      <option>Utilities</option>
+      <option>Urban Planning</option>
+    </select>
+    <small id="emailHelp" class="form-text text-muted">Select your industry from the drop-down list. Not required to submit form.</small>
+    <br>
+    <label class="input-label" for="lastName">Message</label>
+    <textarea class="form-control" id="message" rows="5" aria-describedby="message" required></textarea>
+    <small id="emailHelp" class="form-text text-muted">Type your Lakes of Texas inquiry here. A message is required to submit form.</small>
+  </div>
+
+</form>
+
+
+<script>
+
+</script>
+
+{% endblock %}

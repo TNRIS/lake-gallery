@@ -267,6 +267,11 @@ ol > img {
 	padding: 20px;
 }
 
+.input-label {
+	color: #3C5163;
+	font-weight: bold;
+}
+
 #aboutTitleBlock {
 	margin-top: 20px;
 	text-align: center;
