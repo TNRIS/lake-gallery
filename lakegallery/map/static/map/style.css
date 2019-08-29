@@ -290,6 +290,10 @@ ol > img {
 	cursor: pointer!important;
 }
 
+/* input:invalid {
+	border-color: red;
+} */
+
 .btn-block {
 	display: block;
 	width: 100%;

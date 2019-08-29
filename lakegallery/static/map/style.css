@@ -267,6 +267,64 @@ ol > img {
 	padding: 20px;
 }
 
+#Contact {
+	margin-bottom: 20px;
+}
+
+.input-label {
+	color: #3C5163;
+	font-weight: bold;
+}
+
+.about-modal-btn {
+	background-color: #3C5163;
+	color: white;
+}
+
+.about-modal-btn:hover {
+	background: #56758f;
+	color: white;
+}
+
+.btn {
+	cursor: pointer!important;
+}
+
+/* input:invalid {
+	border-color: red;
+} */
+
+.btn-block {
+	display: block;
+	width: 100%;
+}
+
+.btn-tnris {
+  color: white;
+  background-color: #3C5163;
+  border-color: #56758f;
+  margin-top: 5px;
+}
+
+.btn-tnris:hover {
+  background: #56758f;
+  color: white;
+}
+
+.submit {
+	margin-top: 10px;
+}
+
+.center-block {
+	display: block;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.submit.center-block {
+	width: 50%;
+}
+
 #aboutTitleBlock {
 	margin-top: 20px;
 	text-align: center;
@@ -485,11 +543,6 @@ div.leaflet-control-layers-overlays > label {
 	color: white;
 	font-size: 14px;
 	box-sizing: border-box;
-	max-width: inherit;
-	max-height: inherit;
-}
-
-.slider-tick-label {
 	max-width: inherit;
 	max-height: inherit;
 }

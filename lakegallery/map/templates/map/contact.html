@@ -3,18 +3,18 @@
 {% block content %}
 
 
-<form>
+<form name="contactForm" onsubmit="contactSubmit()" action="contact_success.html" method="post">
   <div class="form-group">
     <div class="form-row">
       <div class="col-md-6 mb-2">
         <label class="input-label" for="firstName">First name</label>
-        <input type="text" class="form-control" id="firstName" aria-describedby="firstName" required>
+        <input type="text" class="form-control" id="firstName" name="firstName" aria-describedby="firstName" required>
         <!-- <div class="invalid-feedback">First name is required.</div> -->
         <!-- <small id="firstNameHelp" class="form-text text-muted">First name is required to submit form.</small> -->
       </div>
       <div class="col-md-6 mb-2">
         <label class="input-label" for="lastName">Last name</label>
-        <input type="text" class="form-control" id="lastName" aria-describedby="lastName" required>
+        <input type="text" class="form-control" id="lastName" name="lastName" aria-describedby="lastName" required>
         <!-- <div class="invalid-feedback">Last name is required.</div> -->
         <!-- <small id="lastNameHelp" class="form-text text-muted">Last name is required to submit form.</small> -->
       </div>
@@ -23,20 +23,20 @@
     <div class="form-row">
       <div class="col-md-6 mb-2">
         <label class="input-label" for="email">Email</label>
-        <input type="email" class="form-control" id="email" aria-describedby="email" required>
+        <input type="email" class="form-control" id="email" name="email" aria-describedby="email" required>
         <!-- <div class="invalid-feedback">A valid email address is required.</div> -->
         <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
       </div>
       <div class="col-md-6 mb-2">
         <label class="input-label" for="phone">Phone</label>
-        <input type="tel" class="form-control" id="phone" aria-describedby="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
+        <input type="tel" class="form-control" id="phone" name="phone" aria-describedby="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
         <small id="phoneHelp" class="form-text text-muted">Enter number in format 123-456-7890. Phone number is not required to submit form.</small>
       </div>
     </div>
     <div class="form-row">
       <div class="col-md-6">
         <label class="input-label" for="industry">Industry</label>
-        <select class="form-control" id="industry">
+        <select class="form-control" id="industry" name="industry" aria-describedby="industry">
           <option></option>
           <option>Agriculture</option>
           <option>Cartography</option>
@@ -63,7 +63,7 @@
     <div class="form-row">
       <div class="col-md-12">
         <label class="input-label" for="lastName">Message</label>
-        <textarea class="form-control" id="message" rows="5" aria-describedby="message" required></textarea>
+        <textarea class="form-control" id="message" name="message" rows="5" aria-describedby="message" required></textarea>
         <!-- <div class="invalid-feedback">Message content is required.</div> -->
         <small id="emailHelp" class="form-text text-muted">Type your Lakes of Texas inquiry here.</small>
       </div>
@@ -71,7 +71,7 @@
   </div>
   <div class="form-group">
     <div class="submit center-block">
-      <button class="btn btn-md btn-tnris btn-block" type="submit" onclick="contactSubmit()">
+      <button class="btn btn-md btn-tnris btn-block" type="submit" value="Submit">
         Submit
       </button>
     </div>
@@ -79,7 +79,10 @@
 </form>
 
 <script type="text/javascript">
+
   function contactSubmit() {
+
+    // set up variables with form input values
     const firstName = document.getElementById("firstName").value.trim();
     const lastName = document.getElementById("lastName").value.trim();
     const fullName = firstName + " " + lastName;
@@ -99,6 +102,39 @@
     };
 
     console.log(formInfo);
+
+    // Handle HTTP errors since fetch won't.
+    function handleErrors(response) {
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+      return response;
+    }
+
+    const contactUrl = 'https://contact.tnris.org/';
+
+    const payload = {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json; charset=utf-8"
+      },
+      body: JSON.stringify(formInfo)
+    };
+
+    // fetch(contactUrl, payload).then(handleErrors)
+    // .then(res => res.json())
+    // .then(json => {
+    //   if (json.status === "success") {
+    //     dispatch(submitContactSuccess());
+    //   }
+    //     else if (json.status === "error") {
+    //       dispatch(submitContactFailure(json.message));
+    //     }
+    //   })
+    //   .catch(error => dispatch(submitContactFailure(error)));
+
+    console.log(payload);
+
   }
 
 </script>
