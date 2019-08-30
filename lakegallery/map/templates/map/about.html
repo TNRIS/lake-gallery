@@ -114,8 +114,14 @@
         <p>
           If you have any questions, comments, suggestions, etc, regarding the Lakes of Texas web application, please contact us by completing the form below:
         </p>
+
+
         <!-- insert lakes of texas contact.html template -->
         {% include 'map/contact.html' %}
+        <!-- if contact form successfully submitted, show contact_success template -->
+        <!-- {% if about.contact_response == 'good' %} -->
+        {% include 'map/contact_success.html' %}
+        <!-- {% endif %} -->
       </div>
     </div>
 

@@ -3,7 +3,8 @@
 {% block content %}
 
 
-<form name="contactForm" onsubmit="contactSubmit()" action="contact_success.html" method="post">
+<form action="/about/" method="POST" id="contactForm">
+  {% csrf_token %}
   <div class="form-group">
     <div class="form-row">
       <div class="col-md-6 mb-2">
@@ -80,18 +81,24 @@
 
 <script type="text/javascript">
 
+  // Submit post on submit
+  $('#contactForm').on('submit', function(event){
+    // event.preventDefault();
+    console.log("form submitted!")  // sanity check
+    contactSubmit();
+  });
+
   function contactSubmit() {
-
     // set up variables with form input values
-    const firstName = document.getElementById("firstName").value.trim();
-    const lastName = document.getElementById("lastName").value.trim();
+    const firstName = document.getElementById("firstName").value.trim(); // required field
+    const lastName = document.getElementById("lastName").value.trim(); // required field
     const fullName = firstName + " " + lastName;
-    const email = document.getElementById("email").value;
-    const phone = document.getElementById("phone").value ? document.getElementById("phone").value : ""; // condition because this field is not required
-    const industry = document.getElementById("industry").value ? document.getElementById("industry").value : ""; // condition because this field is not required
-    const message = document.getElementById("message").value;
+    const email = document.getElementById("email").value; // required field
+    const phone = document.getElementById("phone").value ? document.getElementById("phone").value : ""; // condition --> field is not required
+    const industry = document.getElementById("industry").value ? document.getElementById("industry").value : ""; // condition --> field is not required
+    const message = document.getElementById("message").value; // required field
 
-    // build the json formInfo variable based on input values from form
+    // build the json formInfo variable based on input values from contact form
     const formInfo = {
       'Name': fullName,
       'Email': email,
@@ -101,40 +108,21 @@
       'form_id': 'lakes-of-texas'
     };
 
-    console.log(formInfo);
-
-    // Handle HTTP errors since fetch won't.
-    function handleErrors(response) {
-      if (!response.ok) {
-        throw Error(response.statusText);
-      }
-      return response;
-    }
-
     const contactUrl = 'https://contact.tnris.org/';
 
     const payload = {
       method: 'POST',
+      body: JSON.stringify(formInfo),
       headers: {
         "Content-Type": "application/json; charset=utf-8"
-      },
-      body: JSON.stringify(formInfo)
+      }
     };
 
-    // fetch(contactUrl, payload).then(handleErrors)
-    // .then(res => res.json())
-    // .then(json => {
-    //   if (json.status === "success") {
-    //     dispatch(submitContactSuccess());
-    //   }
-    //     else if (json.status === "error") {
-    //       dispatch(submitContactFailure(json.message));
-    //     }
-    //   })
-    //   .catch(error => dispatch(submitContactFailure(error)));
+    fetch(contactUrl, payload).then(res => res.json())
+    .then(response => console.log('Success:', JSON.stringify(response)))
+    .catch(error => console.error('Error:', error));
 
     console.log(payload);
-
   }
 
 </script>
