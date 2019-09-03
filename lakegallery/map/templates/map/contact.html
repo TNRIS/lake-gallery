@@ -2,22 +2,17 @@
 
 {% block content %}
 
-
-<form action="/about/" method="POST" id="contactForm">
+<form method="POST" id="contactForm">
   {% csrf_token %}
   <div class="form-group">
     <div class="form-row">
       <div class="col-md-6 mb-2">
         <label class="input-label" for="firstName">First name</label>
         <input type="text" class="form-control" id="firstName" name="firstName" aria-describedby="firstName" required>
-        <!-- <div class="invalid-feedback">First name is required.</div> -->
-        <!-- <small id="firstNameHelp" class="form-text text-muted">First name is required to submit form.</small> -->
       </div>
       <div class="col-md-6 mb-2">
         <label class="input-label" for="lastName">Last name</label>
         <input type="text" class="form-control" id="lastName" name="lastName" aria-describedby="lastName" required>
-        <!-- <div class="invalid-feedback">Last name is required.</div> -->
-        <!-- <small id="lastNameHelp" class="form-text text-muted">Last name is required to submit form.</small> -->
       </div>
     </div>
     <br>
@@ -25,8 +20,6 @@
       <div class="col-md-6 mb-2">
         <label class="input-label" for="email">Email</label>
         <input type="email" class="form-control" id="email" name="email" aria-describedby="email" required>
-        <!-- <div class="invalid-feedback">A valid email address is required.</div> -->
-        <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
       </div>
       <div class="col-md-6 mb-2">
         <label class="input-label" for="phone">Phone</label>
@@ -65,7 +58,6 @@
       <div class="col-md-12">
         <label class="input-label" for="lastName">Message</label>
         <textarea class="form-control" id="message" name="message" rows="5" aria-describedby="message" required></textarea>
-        <!-- <div class="invalid-feedback">Message content is required.</div> -->
         <small id="emailHelp" class="form-text text-muted">Type your Lakes of Texas inquiry here.</small>
       </div>
     </div>
@@ -81,11 +73,11 @@
 
 <script type="text/javascript">
 
-  // Submit post on submit
+  // On submit, prevent default and run the submitContact function
   $('#contactForm').on('submit', function(event){
-    // event.preventDefault();
+    event.preventDefault(); // prevent default page refresh after form submission
     console.log("form submitted!")  // sanity check
-    contactSubmit();
+    contactSubmit(); // run function
   });
 
   function contactSubmit() {
@@ -97,6 +89,7 @@
     const phone = document.getElementById("phone").value ? document.getElementById("phone").value : ""; // condition --> field is not required
     const industry = document.getElementById("industry").value ? document.getElementById("industry").value : ""; // condition --> field is not required
     const message = document.getElementById("message").value; // required field
+    const date = new Date();
 
     // build the json formInfo variable based on input values from contact form
     const formInfo = {
@@ -105,6 +98,7 @@
       'Phone': phone,
       'Industry': industry,
       'Message': message,
+      'Date': date,
       'form_id': 'lakes-of-texas'
     };
 
@@ -118,11 +112,11 @@
       }
     };
 
+    // send payload to the contact url/app
     fetch(contactUrl, payload).then(res => res.json())
     .then(response => console.log('Success:', JSON.stringify(response)))
     .catch(error => console.error('Error:', error));
 
-    console.log(payload);
   }
 
 </script>

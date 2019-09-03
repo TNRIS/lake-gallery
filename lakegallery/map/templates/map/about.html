@@ -107,20 +107,27 @@
     <div id="Contact" class="row">
       <div class="col">
         <h2>Contact</h2>
+
         <p>
           Lakes of Texas was developed and is maintained by the <a href="https://tnris.org/" target="_blank">Texas Natural Resources Information System</a>.
         </p>
+
         <p>
           If you have any questions, comments, suggestions, etc, regarding the Lakes of Texas web application, please contact us by completing the form below:
         </p>
 
+        <div id="contact-notify" style="color:green; display:none;">
+          <!-- if contact form successfully submitted, show text below -->
+          <h4>Success!</h4>
+          <h5>Your contact form was successfully submitted.</h5>
+          <br>
+        </div>
 
-        <!-- insert lakes of texas contact.html template -->
-        {% include 'map/contact.html' %}
-        <!-- if contact form successfully submitted, show contact_success template -->
-        <!-- {% if about.contact_response == 'good' %} -->
-        {% include 'map/contact_success.html' %}
-        <!-- {% endif %} -->
+        <div id="contact-form">
+          <!-- insert lakes of texas contact.html template -->
+          {% include 'map/contact.html' %}
+        </div>
+
       </div>
     </div>
 
@@ -148,4 +155,14 @@
     </div>
 
   </div>
+
+  <script>
+    // Hide contact form on submit and show success notification
+    $('#contactForm').on('submit', function(event){
+      document.getElementById('contact-notify').style.display = 'block';
+      // document.getElementById('form').style.display = 'none';
+      document.getElementById('contactForm').reset();
+    });
+  </script>
+
 {% endblock %}
