@@ -70,7 +70,7 @@
           <li>
             <p>
               <button id="instructions-btn"
-                class="btn btn-success"
+                class="btn about-modal-btn"
                 type="button"
                 data-toggle="modal"
                 data-target="#instructionModal">
@@ -96,9 +96,8 @@
             <p>
               <strong>Where does the lake/reservoir data come from?</strong><br />
               The data for this application comes from a variety of locations including:
-                <a href="https://waterdatafortexas.org" target="_blank">Water Data for Texas</a>,
-                <a href="www.twdb.texas.gov/surfacewater/rivers/reservoirs/index.asp" target="_blank">Texas Water Development Board's Texas Lakes & Reservoirs</a>
-                and the <a href="" target="_blank">Texas Water Development Board Hydrographic Survey</a>.
+                <a href="https://waterdatafortexas.org" target="_blank">Water Data for Texas</a>, <a href="https://www.twdb.texas.gov/surfacewater/rivers/reservoirs/index.asp" target="_blank">Texas Water Development Board's Texas Lakes & Reservoirs</a>
+                and the <a href="http://www.twdb.texas.gov/surfacewater/surveys/index.asp" target="_blank">Texas Water Development Board Hydrographic Survey</a>.
             </p>
           </li>
         </ul>
@@ -108,14 +107,27 @@
     <div id="Contact" class="row">
       <div class="col">
         <h2>Contact</h2>
+
         <p>
-          Lakes of Texas was developed and is maintained by the Texas Natural Resources Information System.
+          Lakes of Texas was developed and is maintained by the <a href="https://tnris.org/" target="_blank">Texas Natural Resources Information System</a>.
         </p>
+
         <p>
-          If you have any questions, comments, suggestions, or would like to report a bug, please contact us by completing the form below:
+          If you have any questions, comments, suggestions, etc, regarding the Lakes of Texas web application, please contact us by completing the form below:
         </p>
-        <!-- insert contact-app section here for lakes of texas contact method -->
-        
+
+        <div id="contact-notify" style="color:green; display:none;">
+          <!-- if contact form successfully submitted, show text below -->
+          <h4>Success!</h4>
+          <h5>Your contact form was successfully submitted.</h5>
+          <br>
+        </div>
+
+        <div id="contact-form">
+          <!-- insert lakes of texas contact.html template -->
+          {% include 'map/contact.html' %}
+        </div>
+
       </div>
     </div>
 
@@ -143,4 +155,13 @@
     </div>
 
   </div>
+
+  <script>
+    // Hide contact form on submit and show success notification
+    $('#contactForm').on('submit', function(event){
+      document.getElementById('contact-notify').style.display = 'block';
+      document.getElementById('contactForm').reset();
+    });
+  </script>
+
 {% endblock %}

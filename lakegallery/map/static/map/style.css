@@ -159,9 +159,25 @@ img.texas-home:hover {
 	padding: 0;
 }
 
+.leaflet-tooltip-top:before,
+.leaflet-tooltip-bottom:before,
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
+	border: none !important;
+}
+
 .leaflet-tooltip-right:before {
 	border-right-color: transparent;
 	margin-left: 0;
+}
+
+.hover-instruction {
+	display: none;
+	text-align: center;
+	background-color: white;
+	border-radius: 10px;
+	padding: 10px 10px 10px 10px;
+	box-shadow: 5px 5px 10px rgba(0,0,0,0.3);
 }
 
 .lake-label {
@@ -265,6 +281,60 @@ ol > img {
 /*ABOUT PAGE*/
 #aboutPage > div.row {
 	padding: 20px;
+}
+
+#Contact {
+	margin-bottom: 20px;
+}
+
+.input-label {
+	color: #3C5163;
+	font-weight: bold;
+}
+
+.about-modal-btn {
+	background-color: #3C5163;
+	color: white;
+}
+
+.about-modal-btn:hover {
+	background: #56758f;
+	color: white;
+}
+
+.btn {
+	cursor: pointer!important;
+}
+
+.btn-block {
+	display: block;
+	width: 100%;
+}
+
+.btn-tnris {
+  color: white;
+  background-color: #3C5163;
+  border-color: #56758f;
+  margin-top: 5px;
+}
+
+.btn-tnris:hover {
+  background: #56758f;
+  color: white;
+}
+
+.submit {
+	margin-top: 10px;
+}
+
+.center-block {
+	display: block;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.submit.center-block {
+	width: 50%;
 }
 
 #aboutTitleBlock {
