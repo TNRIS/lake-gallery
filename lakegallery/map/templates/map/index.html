@@ -50,7 +50,7 @@
 
           // sql statements for the carto sql api
           var polySql = `SELECT * FROM ${polyLayer} WHERE story='enabled'`;
-          var pointSql = `SELECT type, story, region, status, res_lbl, res_name, ST_PointOnSurface(the_geom) as the_geom FROM ${pointLayer} WHERE story='enabled'`;
+          var pointSql = `SELECT type, story, status, res_lbl, res_name, ST_PointOnSurface(the_geom) as the_geom FROM ${pointLayer} WHERE story='enabled'`;
 
           // popup and tooltip function to be used each time point/marker clicked/hovered over
           var lakePopup = function (feature, layer) {
@@ -62,12 +62,35 @@
                   <b>${feature.properties.res_lbl}</b>
                 </p>`
               );
+
+              // instruction tooltip for user to click marker; set to display none initially; on hover for 3 seconds display tooltip
+              layer.bindTooltip(
+                `<p id="hover-tooltip" class="hover-instruction">
+                  <img src={% static "map/images/glyphicons-arrow-left.png" %} /> Click the marker to view the lake story.
+                </p>`,
+                {offset:[30,0]}
+              );
+
+              // setup toolTip variable and function to be used for mouseover setTimeout and mouseout clearTimeout functionality
+              var toolTip;
+              function setTooltipTimeout() {
+                toolTip = setTimeout(function() {
+                  $("#hover-tooltip").fadeIn('slow');
+                }, 3000);
+              };
+
               layer.on('mouseover', function (e) {
                 this.openPopup();
+                // on 3 second lake marker hover, display instruction tooltip
+                setTooltipTimeout();
               });
+
               layer.on('mouseout', function (e) {
                 this.closePopup();
+                // if mouseout, reset timer by clearing setTimeout
+                clearTimeout(toolTip);
               });
+
               layer.on('click', function (e) {
                 window.location.href = `/${feature.properties.res_lbl}`;
               });
@@ -79,17 +102,18 @@
                 <b><a href="/${feature.properties.res_lbl}">${feature.properties.res_lbl}</a></b>
               </p>`
               );
+
               layer.on('click', function (e) {
                 this.openPopup();
-              })
+              });
             }
           };
 
           // label function for polygon reservoir layer; contains label (permanent tooltip), popup content, & click to go to lake story
           var lakeLabel = function (feature, layer) {
             // bind tooltip label to lake polygons
-            layer.bindTooltip(`
-              <strong class="lake-label">
+            layer.bindTooltip(
+            `<strong class="lake-label">
                 ${feature.properties.res_lbl}
               </strong>`,
               {permanent: true}
@@ -101,21 +125,25 @@
               layer.bindPopup(
                 `<p style="text-align:center;">Click <strong>${feature.properties.res_lbl}</strong><br /> to view the story.</p>`
               );
+
               // on hover lake polygon, show popup at cursor
               layer.on('mouseover', function (e) {
                 var popup = e.target.getPopup();
                 popup.setLatLng(e.latlng).openOn(map);
               });
+
               // close popup on mouse out at cursor
               layer.on('mouseout', function (e) {
                 e.target.closePopup();
               });
+
               // follow the cursor
               layer.on('mousemove', function (e) {
                 e.target.closePopup();
                 var popup = e.target.getPopup();
                 popup.setLatLng(e.latlng).openOn(map);
               });
+
               // on clicking a lake polygon go to the story
               layer.on('click', function (e) {
                 window.location.href = `/${feature.properties.res_lbl}`;
@@ -128,10 +156,11 @@
                 <b><a href="/${feature.properties.res_lbl}">${feature.properties.res_lbl}</a></b>
               </p>`
               );
+
               layer.on('click', function (e) {
                 var popup = e.target.getPopup();
                 popup.setLatLng(e.latlng).openOn(map);
-              })
+              });
             }
 
           };

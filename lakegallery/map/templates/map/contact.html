@@ -1,0 +1,124 @@
+{% load static %}
+
+{% block content %}
+
+<form method="POST" id="contactForm">
+  {% csrf_token %}
+  <div class="form-group">
+    <div class="form-row">
+      <div class="col-md-6 mb-2">
+        <label class="input-label" for="firstName">First name</label>
+        <input type="text" class="form-control" id="firstName" name="firstName" aria-describedby="firstName" required>
+      </div>
+      <div class="col-md-6 mb-2">
+        <label class="input-label" for="lastName">Last name</label>
+        <input type="text" class="form-control" id="lastName" name="lastName" aria-describedby="lastName" required>
+      </div>
+    </div>
+    <br>
+    <div class="form-row">
+      <div class="col-md-6 mb-2">
+        <label class="input-label" for="email">Email</label>
+        <input type="email" class="form-control" id="email" name="email" aria-describedby="email" required>
+      </div>
+      <div class="col-md-6 mb-2">
+        <label class="input-label" for="phone">Phone</label>
+        <input type="tel" class="form-control" id="phone" name="phone" aria-describedby="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
+        <small id="phoneHelp" class="form-text text-muted">Enter number in format 123-456-7890. Phone number is not required to submit form.</small>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-md-6">
+        <label class="input-label" for="industry">Industry</label>
+        <select class="form-control" id="industry" name="industry" aria-describedby="industry">
+          <option></option>
+          <option>Agriculture</option>
+          <option>Cartography</option>
+          <option>Conservation</option>
+          <option>Construction</option>
+          <option>Consulting</option>
+          <option>Education</option>
+          <option>Emergency Management</option>
+          <option>Environmental</option>
+          <option>Forestry</option>
+          <option>Government</option>
+          <option>Insurance</option>
+          <option>Law Enforcement</option>
+          <option>Oil and Gas</option>
+          <option>Public Health</option>
+          <option>Retail</option>
+          <option>Utilities</option>
+          <option>Urban Planning</option>
+        </select>
+        <small id="emailHelp" class="form-text text-muted">Select your industry from the drop-down list. Not required to submit form.</small>
+      </div>
+    </div>
+    <br>
+    <div class="form-row">
+      <div class="col-md-12">
+        <label class="input-label" for="lastName">Message</label>
+        <textarea class="form-control" id="message" name="message" rows="5" aria-describedby="message" required></textarea>
+        <small id="emailHelp" class="form-text text-muted">Type your Lakes of Texas inquiry here.</small>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="submit center-block">
+      <button class="btn btn-md btn-tnris btn-block" type="submit" value="Submit">
+        Submit
+      </button>
+    </div>
+  </div>
+</form>
+
+<script type="text/javascript">
+
+  // On submit, prevent default and run the submitContact function
+  $('#contactForm').on('submit', function(event){
+    event.preventDefault(); // prevent default page refresh after form submission
+    console.log("form submitted!")  // sanity check
+    contactSubmit(); // run function
+  });
+
+  function contactSubmit() {
+    // set up variables with form input values
+    const firstName = document.getElementById("firstName").value.trim(); // required field
+    const lastName = document.getElementById("lastName").value.trim(); // required field
+    const fullName = firstName + " " + lastName;
+    const email = document.getElementById("email").value; // required field
+    const phone = document.getElementById("phone").value ? document.getElementById("phone").value : ""; // condition --> field is not required
+    const industry = document.getElementById("industry").value ? document.getElementById("industry").value : ""; // condition --> field is not required
+    const message = document.getElementById("message").value; // required field
+    const date = new Date();
+
+    // build the json formInfo variable based on input values from contact form
+    const formInfo = {
+      'Name': fullName,
+      'Email': email,
+      'Phone': phone,
+      'Industry': industry,
+      'Message': message,
+      'Date': date,
+      'form_id': 'lakes-of-texas'
+    };
+
+    const contactUrl = 'https://contact.tnris.org/';
+
+    const payload = {
+      method: 'POST',
+      body: JSON.stringify(formInfo),
+      headers: {
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    };
+
+    // send payload to the contact url/app
+    fetch(contactUrl, payload).then(res => res.json())
+    .then(response => console.log('Success:', JSON.stringify(response)))
+    .catch(error => console.error('Error:', error));
+
+  }
+
+</script>
+
+{% endblock %}
