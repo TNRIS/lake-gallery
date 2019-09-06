@@ -64,11 +64,12 @@
               </div>
             </div>
 
-            <button id="back-to-top"
-              style="text-align:center; margin:5px;"
+            <button style="text-align:center; margin:5px;"
               class="btn btn-link"
               type="button">
-                <a href="#top"><small>Back to top</small></a>
+                <a id="back-to-top" >
+                  <small>Back to top</small>
+                </a>
             </button>
           </div>
 
@@ -78,5 +79,12 @@
     </div>
   </div>
 </div>
+
+<script>
+  // scroll to top function
+  $("#back-to-top").click(function() {
+    $('.modal-body').animate({'scrollTop': 0},500);
+  });
+</script>
 
 {% endblock %}
