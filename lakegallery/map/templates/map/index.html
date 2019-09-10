@@ -36,13 +36,6 @@
           var polyUrl;
           var clusterBounds = map.getBounds(lakeClusters);
 
-          // set max bounds to lakeBounds so user can't pan outside of texas lakes area
-          // padding added to bounds so max is not too restrictive
-          map.setMaxBounds(clusterBounds.pad(0.2));
-
-          // set max zoom level
-          map.options.minZoom = map.getZoom() - 1;
-
           // easy button control to zoom to state extent
           L.easyButton("<img src={% static 'map/images/texas_solid_blk.png' %} style='width:auto; height:100%; opacity:1; padding: 3px;' title='Zoom to statewide extent' />", function(btn, map){
             map.fitBounds(lakeClusters.getBounds());
@@ -162,7 +155,6 @@
                 popup.setLatLng(e.latlng).openOn(map);
               });
             }
-
           };
 
           // on map load use point sql for point/marker lake locations
@@ -185,7 +177,18 @@
             });
             lakeClusters.addLayer(pointLayer);
             map.addLayer(lakeClusters);
+
+            // on load fitBounds to lakeClusters bounds
+            map.fitBounds(lakeClusters.getBounds());
           });
+
+          // set max bounds to lakeBounds so user can't pan outside of texas lakes area
+          // padding added to bounds so max is not too restrictive
+          map.setMaxBounds(clusterBounds.pad(0.2));
+
+          // set max zoom level
+          map.options.minZoom = map.getZoom() - 1;
+
           // poly lake layer
           $.getJSON(polyUrl, function(data) {
             polyLayer = L.geoJson(data, {
