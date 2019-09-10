@@ -379,8 +379,8 @@
                 map.fitBounds(lakeBounds);
 
                 // set max zoom level minus one to give some extra room
-                var maxZoomLevel = map.getZoom() - 1;
-                map.options.minZoom = maxZoomLevel;
+                var minZoomLevel = map.getZoom() - 1;
+                map.options.minZoom = minZoomLevel;
 
                 // set max bounds to lakeBounds so user can't pan outside of lake area
                 // padding added to bounds so max is not too restrictive

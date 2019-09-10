@@ -374,13 +374,30 @@
                 map.fitBounds(lakeBounds);
 
                 // set max zoom level minus one to give some extra room
-                var maxZoomLevel = map.getZoom() - 1;
-                map.options.minZoom = maxZoomLevel;
-
+                var minZoomLevel = map.getZoom() - 1;
+                map.options.minZoom = minZoomLevel;
                 // set max bounds to lakeBounds so user can't pan outside of lake area
                 // padding added to bounds so max is not too restrictive
                 var maxBounds = map.getBounds(lakeBounds).pad(0.2);
                 map.setMaxBounds(maxBounds);
+
+                // start hack --- resolves a previous zoom level issue on mobile for some lakes
+                // and is a failsafe if the above min zoom level and max bounds is not set
+                var count = 0;
+                map.on('zoomend', function() {
+                  count += 1;
+                  if (count == 1) {
+                    console.log('zoomend');
+                    // set max zoom level minus one to give some extra room
+                    var minZoomLevel = map.getZoom() - 1;
+                    map.options.minZoom = minZoomLevel;
+                    // set max bounds to lakeBounds so user can't pan outside of lake area
+                    // padding added to bounds so max is not too restrictive
+                    var maxBounds = map.getBounds(lakeBounds).pad(0.2);
+                    map.setMaxBounds(maxBounds);
+                  }
+                });
+                // end hack
 
               } // end getLakeJson function
 
@@ -631,6 +648,7 @@
               : togglerWrapper.style.backgroundColor = "transparent";
             });
             // end togglerWrapper custom handler
+
         </script>
       </div>
     </div>
