@@ -387,7 +387,6 @@
                 map.on('zoomend', function() {
                   count += 1;
                   if (count == 1) {
-                    console.log('zoomend');
                     // set max zoom level minus one to give some extra room
                     var minZoomLevel = map.getZoom() - 1;
                     map.options.minZoom = minZoomLevel;
