@@ -20,7 +20,6 @@ class MajorReservoirs(gismodels.Model):
     type = models.CharField(max_length=50)
     status = models.CharField(max_length=50)
     res_lbl = models.CharField(max_length=100)
-    region = models.CharField(max_length=1)
     story = models.CharField(max_length=8, choices=story_choices,
                              default='disabled')
 

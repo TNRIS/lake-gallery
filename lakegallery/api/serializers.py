@@ -11,7 +11,7 @@ class ReservoirsSerializer(GeoFeatureModelSerializer):
         model = MajorReservoirs
         geo_field = 'geom'
         auto_bbox = True
-        fields = ('res_lbl', 'region')
+        fields = ('res_lbl',)
 
 
 class ReservoirURLSerializer(serializers.HyperlinkedModelSerializer):

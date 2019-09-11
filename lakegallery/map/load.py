@@ -1,6 +1,6 @@
 import os
 from django.contrib.gis.utils import LayerMapping
-from .models import (MajorReservoirs, RWPAs, BoatRamps, ChannelMarkers,
+from .models import (MajorReservoirs, BoatRamps, ChannelMarkers,
                      Hazards, Parks)
 
 majorreservoirs_mapping = {
@@ -8,7 +8,6 @@ majorreservoirs_mapping = {
     'type': 'TYPE',
     'status': 'STATUS',
     'res_lbl': 'RES_LBL',
-    'region': 'Region',
     'geom': 'MULTIPOLYGON25D',
 }
 

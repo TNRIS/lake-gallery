@@ -5,16 +5,18 @@ from .models import (MajorReservoirs, HistoricalAerialLinks,
 
 
 class MajorReservoirsAdmin(admin.OSMGeoAdmin):
-    list_display = ['res_lbl', 'region', 'story']
-    ordering = ['region', 'res_lbl']
-    list_filter = ['region']
+    list_display = ['res_lbl', 'story']
+    ordering = ['res_lbl']
+    list_per_page = 50
+    list_filter = ['story', 'type', 'status']
+    search_fields = ['res_lbl']
 
 
 class HistoricalAerialLinksAdmin(admin.ModelAdmin):
     list_display = ('lake', 'year', 'link')
     ordering = ('lake', 'year', 'link')
     list_per_page = 50
-    list_filter = ['lake']
+    search_fields = ['lake__res_lbl', 'year'] # search related field
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "lake":
@@ -60,6 +62,7 @@ class StoryContentAdmin(admin.ModelAdmin):
     readonly_fields = ('summ_main_tag', 'hist_main_tag', 'hist_tag',
                        'one_main_tag', 'one_tag', 'two_main_tag', 'two_tag',
                        'three_main_tag', 'three_tag')
+    search_fields = ['lake__res_lbl'] # search related res_lbl field
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "lake":
@@ -98,6 +101,8 @@ class LakeStatisticsAdmin(admin.ModelAdmin):
                                        'num_of_floodgates',
                                        'discharge_capacity']})
     ]
+    list_filter = ['primary_purposes', 'location']
+    search_fields = ['lake__res_lbl'] # search related res_lbl field & location
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "lake":
@@ -111,7 +116,8 @@ class SignificantEventsAdmin(admin.ModelAdmin):
     list_display = ('lake', 'event_type', 'date', 'height')
     ordering = ('lake', 'event_type', 'date')
     list_per_page = 50
-    list_filter = ['lake', 'event_type']
+    list_filter = ['event_type']
+    search_fields = ['lake__res_lbl'] # search related res_lbl field
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "lake":
@@ -127,10 +133,11 @@ Overlay Layers for stories (points of interest)
 
 
 class BoatRampsAdmin(admin.OSMGeoAdmin):
-    list_display = ('lake', 'name')
-    ordering = ('lake', 'name')
+    list_display = ('lake', 'name', 'operator')
+    ordering = ('lake', 'name', 'operator')
     list_per_page = 50
-    list_filter = ['lake']
+    list_filter = ['operator']
+    search_fields = ['lake__res_lbl', 'name'] # search related res_lbl field, name & operator
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "lake":
@@ -141,10 +148,11 @@ class BoatRampsAdmin(admin.OSMGeoAdmin):
 
 
 class ChannelMarkersAdmin(admin.OSMGeoAdmin):
-    list_display = ('lake', 'marker_id')
-    ordering = ('lake', 'marker_id')
+    list_display = ('lake', 'marker_id', 'year')
+    ordering = ('lake', 'marker_id', 'year')
     list_per_page = 50
-    list_filter = ['lake']
+    list_filter = ['year']
+    search_fields = ['lake__res_lbl'] # search related res_lbl field
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "lake":
@@ -158,7 +166,8 @@ class HazardsAdmin(admin.OSMGeoAdmin):
     list_display = ('lake', 'hazard_type', 'num_buoys')
     ordering = ('lake', 'hazard_type')
     list_per_page = 50
-    list_filter = ['lake']
+    list_filter = ['hazard_type']
+    search_fields = ['lake__res_lbl'] # search related res_lbl field
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "lake":
@@ -172,7 +181,8 @@ class ParksAdmin(admin.OSMGeoAdmin):
     list_display = ('lake', 'name', 'park_type')
     ordering = ('lake', 'name')
     list_per_page = 50
-    list_filter = ['lake']
+    list_filter = ['park_type']
+    search_fields = ['lake__res_lbl'] # search related res_lbl field
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "lake":

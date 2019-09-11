@@ -16,4 +16,4 @@ class ReservoirsViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
     serializer_class = ReservoirsSerializer
     lookup_field = 'res_lbl'
     queryset = MajorReservoirs.objects.all().order_by('res_lbl')
-    filter_fields = ('res_lbl', 'region')
+    filter_fields = ('res_lbl')
