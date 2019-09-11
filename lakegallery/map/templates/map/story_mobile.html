@@ -7,7 +7,9 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-body">
-          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <button type="button" class="close" data-dismiss="modal" title="Close">
+            <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+          </button>
           <img src="" class="imagepreview" />
           <p class="imagepreview-caption" style="font-style: italic;"></p>
         </div>
@@ -297,7 +299,7 @@
           </div>
 
           <div id="sliderDiv">
-            <input id='historicalSlider' type='text'/>
+            <input id='historicalSlider' type='text' />
           </div>
 
           <hr class="separator"></hr>
@@ -372,13 +374,29 @@
                 map.fitBounds(lakeBounds);
 
                 // set max zoom level minus one to give some extra room
-                var maxZoomLevel = map.getZoom() - 1;
-                map.options.minZoom = maxZoomLevel;
-
+                var minZoomLevel = map.getZoom() - 1;
+                map.options.minZoom = minZoomLevel;
                 // set max bounds to lakeBounds so user can't pan outside of lake area
                 // padding added to bounds so max is not too restrictive
                 var maxBounds = map.getBounds(lakeBounds).pad(0.2);
                 map.setMaxBounds(maxBounds);
+
+                // start hack --- resolves a previous zoom level issue on mobile for some lakes
+                // and is a failsafe if the above min zoom level and max bounds is not set
+                var count = 0;
+                map.on('zoomend', function() {
+                  count += 1;
+                  if (count == 1) {
+                    // set max zoom level minus one to give some extra room
+                    var minZoomLevel = map.getZoom() - 1;
+                    map.options.minZoom = minZoomLevel;
+                    // set max bounds to lakeBounds so user can't pan outside of lake area
+                    // padding added to bounds so max is not too restrictive
+                    var maxBounds = map.getBounds(lakeBounds).pad(0.2);
+                    map.setMaxBounds(maxBounds);
+                  }
+                });
+                // end hack
 
               } // end getLakeJson function
 
@@ -546,7 +564,7 @@
                 window.customEasyBtn.state('closed');
                 $("#slider-container-mobile").fadeOut();
               });
-              
+
               // dont close or open menu when clicking inside the menu itself
               $("#slider-container-mobile").click(function(e) {
                 e.stopPropagation();
@@ -629,6 +647,7 @@
               : togglerWrapper.style.backgroundColor = "transparent";
             });
             // end togglerWrapper custom handler
+
         </script>
       </div>
     </div>

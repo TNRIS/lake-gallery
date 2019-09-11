@@ -8,7 +8,7 @@
 
       <div class="modal-header">
         <img class="img-fluid" style="max-width: 50px; margin-right: 20px;" src="{% static 'map/images/lot-logo.jpg' %}" </img>
-        <h2 id="top" class="modal-title" style="align-text: center;">Instructions</h2>
+        <h2 class="modal-title" style="align-text: center;">Instructions</h2>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" title="Close instructions">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -16,7 +16,7 @@
 
       <div class="modal-body">
 
-        <p style="padding: 10px 10px 0 10px;">
+        <p id="top" style="padding: 10px 10px 0 10px;">
           The following instructions are brief how-to steps to navigate the Lakes of Texas web application. These instructions provide both information pertaining to
           the main home map, which allows users to choose which lake story they would like to view, as well as guidance for after a user selects a
           lake story, showing how to navigate the page and use the tools available within the lake story view.
@@ -64,12 +64,14 @@
               </div>
             </div>
 
-            <button id="back-to-top"
-              style="text-align:center; margin:5px;"
-              class="btn btn-link"
-              type="button">
-                <a href="#top"><small>Back to top</small></a>
-            </button>
+            <div>
+              <p>
+                <a href="#top">
+                  <small>Back to Top</small>
+                </a>
+              </p>
+            </div>
+
           </div>
 
         </div>
