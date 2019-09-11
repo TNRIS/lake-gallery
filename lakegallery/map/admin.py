@@ -1,5 +1,5 @@
 from django.contrib.gis import admin
-from .models import (MajorReservoirs, RWPAs, HistoricalAerialLinks,
+from .models import (MajorReservoirs, HistoricalAerialLinks,
                      StoryContent, LakeStatistics, SignificantEvents,
                      BoatRamps, ChannelMarkers, Hazards, Parks)
 
@@ -8,11 +8,6 @@ class MajorReservoirsAdmin(admin.OSMGeoAdmin):
     list_display = ['res_lbl', 'region', 'story']
     ordering = ['region', 'res_lbl']
     list_filter = ['region']
-
-
-class RWPAsAdmin(admin.OSMGeoAdmin):
-    list_display = ['letter', 'reg_name']
-    ordering = ['letter']
 
 
 class HistoricalAerialLinksAdmin(admin.ModelAdmin):
@@ -188,7 +183,6 @@ class ParksAdmin(admin.OSMGeoAdmin):
 
 
 admin.site.register(MajorReservoirs, MajorReservoirsAdmin)
-admin.site.register(RWPAs, RWPAsAdmin)
 admin.site.register(HistoricalAerialLinks, HistoricalAerialLinksAdmin)
 admin.site.register(StoryContent, StoryContentAdmin)
 admin.site.register(LakeStatistics, LakeStatisticsAdmin)

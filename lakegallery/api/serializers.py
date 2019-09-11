@@ -3,7 +3,7 @@ from rest_framework import serializers
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
 from rest_framework.reverse import reverse
 
-from map.models import MajorReservoirs, RWPAs
+from map.models import MajorReservoirs
 
 
 class ReservoirsSerializer(GeoFeatureModelSerializer):
@@ -12,14 +12,6 @@ class ReservoirsSerializer(GeoFeatureModelSerializer):
         geo_field = 'geom'
         auto_bbox = True
         fields = ('res_lbl', 'region')
-
-
-class RWPAsSerializer(GeoFeatureModelSerializer):
-    class Meta:
-        model = RWPAs
-        geo_field = 'geom'
-        auto_bbox = True
-        fields = ('reg_name', 'letter')
 
 
 class ReservoirURLSerializer(serializers.HyperlinkedModelSerializer):
