@@ -8,7 +8,7 @@ class MajorReservoirsAdmin(admin.OSMGeoAdmin):
     list_display = ['res_lbl', 'story']
     ordering = ['res_lbl']
     list_per_page = 50
-    list_filter = ['story', 'type', 'status']
+    list_filter = ['story']
     search_fields = ['res_lbl']
 
 
