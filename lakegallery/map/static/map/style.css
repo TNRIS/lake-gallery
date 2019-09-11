@@ -476,7 +476,8 @@ ol > img {
 	}
 
 	.modal-body {
-		max-height: 90%;
+		max-height: 90vh;
+		overflow-y: auto;
 	}
 }
 
@@ -485,7 +486,16 @@ ol > img {
 }
 
 .modal-body > .close {
+	width: 30px;
+	height: 30px;
+	top: 20px;
+	right: 20px;
 	cursor: pointer;
+	position: absolute;
+	background-color: white;
+	border-radius: 15px;
+  color: black;
+	font-size: 30px;
 }
 
 sources {

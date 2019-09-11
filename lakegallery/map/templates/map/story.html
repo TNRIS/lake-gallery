@@ -7,7 +7,9 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-body">
-          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <button type="button" class="close" data-dismiss="modal" title="Close">
+            <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+          </button>
           <img src="" class="imagepreview" />
           <p class="imagepreview-caption" style="font-style: italic;"></p>
         </div>
@@ -24,31 +26,31 @@
             <nav id="navbar-contentPanel" class="navbar navbar-light bg-light">
               <ul id="storyNav" class="nav nav-pills">
                 <li class="nav-item">
-                  <a class="nav-link active" href="#Overview">Overview</a>
+                  <a class="nav-link active" href="#Overview" tabindex="0">Overview</a>
                 </li>
                 {% if story.history %}
                   <li class="nav-item">
-                    <a class="nav-link" href="#History">History</a>
+                    <a class="nav-link" href="#History" tabindex="1">History</a>
                   </li>
                 {% endif %}
                 {% if stats.general_stats %}
                   <li class="nav-item">
-                    <a class="nav-link" href="#Statistics">Statistics</a>
+                    <a class="nav-link" href="#Statistics" tabindex="2">Statistics</a>
                   </li>
                 {% endif %}
                 {% if story.section_one_header %}
                   <li class="nav-item">
-                    <a class="nav-link" href="#{{ story.section_one_nav|cut:' ' }}">{{ story.section_one_nav }}</a>
+                    <a class="nav-link" href="#{{ story.section_one_nav|cut:' ' }}" tabindex="3">{{ story.section_one_nav }}</a>
                   </li>
                 {% endif %}
                 {% if story.section_two_header %}
                   <li class="nav-item">
-                    <a class="nav-link" href="#{{ story.section_two_nav|cut:' ' }}">{{ story.section_two_nav }}</a>
+                    <a class="nav-link" href="#{{ story.section_two_nav|cut:' ' }}" tabindex="4">{{ story.section_two_nav }}</a>
                   </li>
                 {% endif %}
                 {% if story.section_three_header %}
                   <li class="nav-item">
-                    <a class="nav-link" href="#{{ story.section_three_nav|cut:' ' }}">{{ story.section_three_nav }}</a>
+                    <a class="nav-link" href="#{{ story.section_three_nav|cut:' ' }}" tabindex="5">{{ story.section_three_nav }}</a>
                   </li>
                 {% endif %}
               </ul>
@@ -377,8 +379,8 @@
                 map.fitBounds(lakeBounds);
 
                 // set max zoom level minus one to give some extra room
-                var maxZoomLevel = map.getZoom() - 1;
-                map.options.minZoom = maxZoomLevel;
+                var minZoomLevel = map.getZoom() - 1;
+                map.options.minZoom = minZoomLevel;
 
                 // set max bounds to lakeBounds so user can't pan outside of lake area
                 // padding added to bounds so max is not too restrictive
