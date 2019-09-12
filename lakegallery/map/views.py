@@ -4,7 +4,7 @@ from .config import layers, overlays, overlay_order
 
 from django.shortcuts import render_to_response
 # from django.template import RequestContext
-from .models import (MajorReservoirs, RWPAs, HistoricalAerialLinks,
+from .models import (MajorReservoirs, HistoricalAerialLinks,
                      StoryContent, LakeStatistics, SignificantEvents)
 
 from django.contrib.gis.geos import GEOSGeometry
