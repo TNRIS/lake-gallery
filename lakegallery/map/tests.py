@@ -48,23 +48,6 @@ class MajorReservoirsModelTests(TestCase):
                          "Major Reservoirs")
 
 
-class RWPAsModelTests(TestCase):
-
-    def test_string_representation(self):
-        """
-        Test the string representation of the model return the Region Name
-        """
-        response = RWPAs(reg_name="Brand New Region")
-        self.assertEqual(str(response), response.reg_name)
-
-    def test_verbose_name_representations(self):
-        """
-        Test the name representations are formatted correctly
-        """
-        self.assertEqual(str(RWPAs._meta.verbose_name), "RWPA")
-        self.assertEqual(str(RWPAs._meta.verbose_name_plural), "RWPAs")
-
-
 class HistoricalAerialLinksModelTests(TestCase):
 
     def test_string_representation(self):
