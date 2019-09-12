@@ -1,5 +1,5 @@
 from rest_framework import routers
-from .views import (ReservoirsViewSet, RWPAsReservoirsViewSet)
+from .views import ReservoirsViewSet
 from rest_framework_extensions.routers import NestedRouterMixin
 
 
