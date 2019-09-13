@@ -398,6 +398,15 @@
                 });
                 // end hack
 
+                map.options.gestureHandling = true;
+                // map.options.gestureHandlingOptions = {
+                //   text: {
+                //     touch: "Hey bro, use two fingers to move the map",
+                //     scroll: "Hey bro, use ctrl + scroll to zoom the map",
+                //     scrollMac: "Hey bro, use \u2318 + scroll to zoom the map"
+                //   }
+                // };
+
               } // end getLakeJson function
 
               // run getLakeJson function with resConfig & lake name as args
@@ -483,8 +492,8 @@
                     map.removeControl(sideBySideControl);
                   }
 
-                  // start double-click slideStopArray hack
-                  // this is a solution to a previous issue with touch clicking on dataHub links for mobile (bootstrap slider prevents access to child anchor)
+                  // start double-click slideStopArray hack ---> when on mobile, you must click the year tick twice to visit a datahub collection url (if available)
+                  // this is a solution to a previous issue on mobile with touch clicking on dataHub links (bootstrap slider prevents access to child anchor so links did not work)
                   var activeLabel = document.getElementsByClassName("slider-tick-label label-in-selection label-is-selection")[0];
 
                   if (activeLabel.children[0] && slideStopArray[0] == slideStopArray[1]) {

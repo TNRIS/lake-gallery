@@ -185,10 +185,6 @@ LEAFLET_CONFIG = {
     'MIN_ZOOM': 2,
     'RESET_VIEW': False,
     'PLUGINS': {
-        'UTFGRID': {
-            'js': 'map/leaflet_utfgrid/L.UTFGrid-min.js',
-            'auto-include': True
-        },
         'SIDEBYSIDE': {
             'js': 'map/leaflet-side-by-side.js',
             'auto-include': True
@@ -204,6 +200,11 @@ LEAFLET_CONFIG = {
         'EASYBUTTON': {
             'js': 'map/leaflet_easybutton/easy-button.js',
             'css': 'map/leaflet_easybutton/easy-button.css',
+            'auto-include': True
+        },
+        'GESTURE': {
+            'js': 'map/leaflet_gesture/leaflet-gesture-handling.js',
+            'css': 'map/leaflet_gesture/leaflet-gesture-handling.css',
             'auto-include': True
         }
     },
