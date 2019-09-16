@@ -201,11 +201,6 @@ LEAFLET_CONFIG = {
             'js': 'map/leaflet_easybutton/easy-button.js',
             'css': 'map/leaflet_easybutton/easy-button.css',
             'auto-include': True
-        },
-        'GESTURE': {
-            'js': 'map/leaflet_gesture/leaflet-gesture-handling.js',
-            'css': 'map/leaflet_gesture/leaflet-gesture-handling.css',
-            'auto-include': True
         }
     },
     'TILES': []

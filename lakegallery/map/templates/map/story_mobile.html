@@ -341,6 +341,10 @@
                 })
               };
 
+              // disable one-finger dragging; allow two finger pinch-zoom
+              map.options.dragging = false;
+              map.options.touchZoom = true;
+
               var lakeLayer;
 
               basemaps['Google Imagery'].addTo(map);
@@ -376,36 +380,30 @@
                 // set max zoom level minus one to give some extra room
                 var minZoomLevel = map.getZoom() - 1;
                 map.options.minZoom = minZoomLevel;
+
                 // set max bounds to lakeBounds so user can't pan outside of lake area
                 // padding added to bounds so max is not too restrictive
                 var maxBounds = map.getBounds(lakeBounds).pad(0.2);
                 map.setMaxBounds(maxBounds);
 
                 // start hack --- resolves a previous zoom level issue on mobile for some lakes
-                // and is a failsafe if the above min zoom level and max bounds is not set
-                var count = 0;
-                map.on('zoomend', function() {
-                  count += 1;
-                  if (count == 1) {
-                    // set max zoom level minus one to give some extra room
-                    var minZoomLevel = map.getZoom() - 1;
-                    map.options.minZoom = minZoomLevel;
-                    // set max bounds to lakeBounds so user can't pan outside of lake area
-                    // padding added to bounds so max is not too restrictive
-                    var maxBounds = map.getBounds(lakeBounds).pad(0.2);
-                    map.setMaxBounds(maxBounds);
-                  }
-                });
+                // and is a failsafe if the above min zoom level and max bounds is not properly set
+                if (minZoomLevel < 10) {
+                  var count = 0;
+                  map.on('zoomend', function() {
+                    count += 1;
+                    if (count == 1) {
+                      // set max zoom level minus one to give some extra room
+                      var minZoomLevel = map.getZoom() - 1;
+                      map.options.minZoom = minZoomLevel;
+                      // set max bounds to lakeBounds so user can't pan outside of lake area
+                      // padding added to bounds so max is not too restrictive
+                      var maxBounds = map.getBounds(lakeBounds).pad(0.2);
+                      map.setMaxBounds(maxBounds);
+                    }
+                  });
+                }
                 // end hack
-
-                map.options.gestureHandling = true;
-                // map.options.gestureHandlingOptions = {
-                //   text: {
-                //     touch: "Hey bro, use two fingers to move the map",
-                //     scroll: "Hey bro, use ctrl + scroll to zoom the map",
-                //     scrollMac: "Hey bro, use \u2318 + scroll to zoom the map"
-                //   }
-                // };
 
               } // end getLakeJson function
 
