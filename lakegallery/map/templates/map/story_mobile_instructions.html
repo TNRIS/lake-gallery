@@ -1,0 +1,69 @@
+{% load static %}
+
+{% block content %}
+
+<div id="story-instruction-mobile-modal" class="modal fade">
+  <div class="modal-dialog" role="document">
+    <div id="mobile-modal-content" class="modal-content">
+
+      <div class="modal-header">
+        <h2 style="text-align: center;">Lake Story Map - Mobile Instructions</h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" title="Close instructions">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div id="story-modal-body" class="modal-body">
+
+        <div style="text-align: center;" class="container">
+          <div class="row">
+            <div class="col-md" style="bottom:0;">
+              <label class="form-check-label">
+                <input id="mobileModalHideCheckbox" class="form-check-input" type="checkbox" value="">
+                Don't show this message again
+              </label>
+              <button id="dismiss-modal-btn" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg">
+
+            <p>
+              <strong>Important:</strong> The lake story map requires the use of two fingers to pan and zoom around the lake area on a mobile device.
+            </p>
+
+            <p>
+              The map has restricted bounds based on each lakes' boundary. The map also has restricted minimum zoom (how far you can zoom out).
+            </p>
+
+            <p>
+              To view the available tools in a lake story view, click the tools menu icon in the top right of the map.
+              <img class="img-fluid" style="max-width:25px;" src="{% static 'map/images/tools-menu.png' %}" </img>
+            </p>
+
+            <p>
+              In the tools menu, some lakes have links to historical imagery collections via the <a href="https://data.tnris.org" target="_blank">TNRIS DataHub</a>.
+              To view an available DataHub collection for a lake story:
+              <ol>
+                <li>Open the tools menu in the top right of the map by clicking/touching the menu icon.</li>
+                <li>Click/touch a year on the swiper tool to add the overlay historical layer to the map.</li>
+                <li>Click/touch the same year again to open a new browser tab for that historical layer on the DataHub.</li>
+              </ol>
+            </p>
+
+            <p>
+              For any other questions or concerns, please read through the Lakes of Texas <a href="about/">About</a> page and use the <a href="about/#Contact">Contact</a>
+              form if needed.
+            </p>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
