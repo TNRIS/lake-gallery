@@ -342,8 +342,8 @@
               };
 
               // disable one-finger dragging; allow two finger pinch-zoom
-              map.options.dragging = false;
-              map.options.touchZoom = true;
+              map.dragging.disable();
+              map.touchZoom.enable();
 
               var lakeLayer;
 
