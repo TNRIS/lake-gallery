@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 VERSION = '2.5.0'
 
 ALLOWED_HOSTS = ['localhost', '0.0.0.0', '.tnris.org', '.tnris.org.']
@@ -185,10 +185,6 @@ LEAFLET_CONFIG = {
     'MIN_ZOOM': 2,
     'RESET_VIEW': False,
     'PLUGINS': {
-        'UTFGRID': {
-            'js': 'map/leaflet_utfgrid/L.UTFGrid-min.js',
-            'auto-include': True
-        },
         'SIDEBYSIDE': {
             'js': 'map/leaflet-side-by-side.js',
             'auto-include': True
