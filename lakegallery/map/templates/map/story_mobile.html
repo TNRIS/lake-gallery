@@ -3,6 +3,9 @@
 {% load static %}
 
 {% block content %}
+  <!-- instruction modal template shown when #instructions-btn clicked above -->
+  {% include 'map/story_mobile_instructions.html' %}
+
   <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -270,18 +273,6 @@
                 </div>
               {% endif %}
             </div>
-            <!-- <a class="carousel-control-prev" href="#mobileCarouselIndicators" role="button" data-slide="prev">
-              <p>
-                <img src="{% static 'map/images/glyphicons-arrow-left.png' %}"/>
-                <span class="sr-only">Previous</span>
-              </p>
-            </a>
-            <a class="carousel-control-next" href="#mobileCarouselIndicators" role="button" data-slide="next">
-              <p>
-                <img src="{% static 'map/images/glyphicons-arrow-right.png' %}"/>
-                <span class="sr-only">Next</span>
-              </p>
-            </a> -->
           </div>
 
 
@@ -341,6 +332,10 @@
                 })
               };
 
+              // disable one-finger dragging; allow two finger pinch-zoom and pan
+              map.dragging.disable();
+              map.touchZoom.enable();
+
               var lakeLayer;
 
               basemaps['Google Imagery'].addTo(map);
@@ -376,26 +371,29 @@
                 // set max zoom level minus one to give some extra room
                 var minZoomLevel = map.getZoom() - 1;
                 map.options.minZoom = minZoomLevel;
+
                 // set max bounds to lakeBounds so user can't pan outside of lake area
                 // padding added to bounds so max is not too restrictive
                 var maxBounds = map.getBounds(lakeBounds).pad(0.2);
                 map.setMaxBounds(maxBounds);
 
                 // start hack --- resolves a previous zoom level issue on mobile for some lakes
-                // and is a failsafe if the above min zoom level and max bounds is not set
-                var count = 0;
-                map.on('zoomend', function() {
-                  count += 1;
-                  if (count == 1) {
-                    // set max zoom level minus one to give some extra room
-                    var minZoomLevel = map.getZoom() - 1;
-                    map.options.minZoom = minZoomLevel;
-                    // set max bounds to lakeBounds so user can't pan outside of lake area
-                    // padding added to bounds so max is not too restrictive
-                    var maxBounds = map.getBounds(lakeBounds).pad(0.2);
-                    map.setMaxBounds(maxBounds);
-                  }
-                });
+                // and is a failsafe if the above min zoom level and max bounds is not properly set
+                if (minZoomLevel < 10) {
+                  var count = 0;
+                  map.on('zoomend', function() {
+                    count += 1;
+                    if (count == 1) {
+                      // set max zoom level minus one to give some extra room
+                      var minZoomLevel = map.getZoom() - 1;
+                      map.options.minZoom = minZoomLevel;
+                      // set max bounds to lakeBounds so user can't pan outside of lake area
+                      // padding added to bounds so max is not too restrictive
+                      var maxBounds = map.getBounds(lakeBounds).pad(0.2);
+                      map.setMaxBounds(maxBounds);
+                    }
+                  });
+                }
                 // end hack
 
               } // end getLakeJson function
@@ -483,8 +481,8 @@
                     map.removeControl(sideBySideControl);
                   }
 
-                  // start double-click slideStopArray hack
-                  // this is a solution to a previous issue with touch clicking on dataHub links for mobile (bootstrap slider prevents access to child anchor)
+                  // start double-click slideStopArray hack ---> when on mobile, you must click the year tick twice to visit a datahub collection url (if available)
+                  // this is a solution to a previous issue on mobile with touch clicking on dataHub links (bootstrap slider prevents access to child anchor so links did not work)
                   var activeLabel = document.getElementsByClassName("slider-tick-label label-in-selection label-is-selection")[0];
 
                   if (activeLabel.children[0] && slideStopArray[0] == slideStopArray[1]) {
@@ -647,6 +645,23 @@
               : togglerWrapper.style.backgroundColor = "transparent";
             });
             // end togglerWrapper custom handler
+
+            // mobile story map instructions --local storage function
+            $(function() {
+              var version = '{{ version }}';
+              if (!localStorage.lakeGalleryStoryModal || localStorage.lakeGalleryStoryModal != version) {
+                $('#story-instruction-mobile-modal').modal({
+                  show: true
+                });
+
+                $('#story-instruction-mobile-modal').on('hide.bs.modal', function (e) {
+                  if ($('#mobileModalHideCheckbox').is(":checked")) {
+                    localStorage.setItem('lakeGalleryStoryModal', version);
+                  }
+                });
+              }
+            });
+            // end mobile story map instructions --> local storage function
 
         </script>
       </div>

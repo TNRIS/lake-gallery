@@ -45,7 +45,7 @@ RUN pip3 install gunicorn
 
 # Setup Django environment
 ENV PYTHONPATH $PYTHONPATH: /lakegallery
-ENV DJANGO_SETTINGS_MODULE lakegallery.settings
+ENV DJANGO_SETTINGS_MODULE lakegallery.production_settings
 
 # Setup nginx
 RUN rm /etc/nginx/sites-enabled/default

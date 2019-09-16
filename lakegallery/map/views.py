@@ -103,7 +103,8 @@ def story(request, lake):
                'layer': layers['reservoirs_pt'], 'lake': lake, 'links': links,
                'story': c, 'stats': s, 'high_events': high_list,
                'low_events': low_list, 'overlays': overlays,
-               'overlay_order': overlay_order, 'overlay_query': m.id, 'data_hub_ids': datahub}
+               'overlay_order': overlay_order, 'overlay_query': m.id, 'data_hub_ids': datahub,
+               'version': settings.VERSION}
 
     if request.is_mobile is False:
         return render(request, 'map/story.html', context)
