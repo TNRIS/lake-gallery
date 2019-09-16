@@ -3,6 +3,9 @@
 {% load static %}
 
 {% block content %}
+  <!-- instruction modal template shown when #instructions-btn clicked above -->
+  {% include 'map/story_mobile_instructions.html' %}
+
   <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -270,18 +273,6 @@
                 </div>
               {% endif %}
             </div>
-            <!-- <a class="carousel-control-prev" href="#mobileCarouselIndicators" role="button" data-slide="prev">
-              <p>
-                <img src="{% static 'map/images/glyphicons-arrow-left.png' %}"/>
-                <span class="sr-only">Previous</span>
-              </p>
-            </a>
-            <a class="carousel-control-next" href="#mobileCarouselIndicators" role="button" data-slide="next">
-              <p>
-                <img src="{% static 'map/images/glyphicons-arrow-right.png' %}"/>
-                <span class="sr-only">Next</span>
-              </p>
-            </a> -->
           </div>
 
 
@@ -654,6 +645,23 @@
               : togglerWrapper.style.backgroundColor = "transparent";
             });
             // end togglerWrapper custom handler
+
+            // mobile story map instructions --local storage function
+            $(function() {
+              var version = '{{ version }}';
+              if (!localStorage.lakeGalleryStoryModal || localStorage.lakeGalleryStoryModal != version) {
+                $('#story-instruction-mobile-modal').modal({
+                  show: true
+                });
+
+                $('#story-instruction-mobile-modal').on('hide.bs.modal', function (e) {
+                  if ($('#mobileModalHideCheckbox').is(":checked")) {
+                    localStorage.setItem('lakeGalleryStoryModal', version);
+                  }
+                });
+              }
+            });
+            // end mobile story map instructions --> local storage function
 
         </script>
       </div>
