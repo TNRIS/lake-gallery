@@ -3,8 +3,10 @@
 
 {% block content %}
 
-  <!-- instruction modal template shown when #instructions-btn clicked below in instruction section -->
+  <!-- instruction modal template used in Instructions section of About page -->
   {% include 'map/instructions.html' %}
+  <!-- story instruction modal template used in Instructions section of About page-->
+  {% include 'map/story_mobile_instructions.html' %}
 
   <div id="aboutPage" class="container">
 
@@ -57,7 +59,7 @@
           </li>
           <li>
             <p>Historical Aerial Imagery</p>
-            <p>The Historical Aerial Imagery layers are composite mosaics of scanned photography from the TNRIS historical aerial archive. All images were researched, scanned, compiled, georeferenced, and served by TNRIS. Imagery from the archive is available for public acquisition and consumption. It can be acquired through TNRIS' <a href="https://tnris.org/maps-and-data/research-and-distribution/" target="_blank">Research &amp; Distribution Center</a>.</p>
+            <p>The Historical Aerial Imagery layers are composite mosaics of scanned photography from the TNRIS historical aerial archive. All images were researched, scanned, compiled, georeferenced, and served by TNRIS. Imagery from the archive is available for public acquisition and consumption. It can be acquired through TNRIS' <a href="https://tnris.org/research-distribution-center/" target="_blank">Research &amp; Distribution Center</a>.</p>
           </li>
         </ul>
       </div>
@@ -71,11 +73,26 @@
             <p>
               <button id="instructions-btn"
                 class="btn about-modal-btn"
+                style="width:120px;"
                 type="button"
                 data-toggle="modal"
                 data-target="#instructionModal">
-                  Click here
-              </button> to learn how to navigate and use the Lakes of Texas web application.
+                  Home Map
+              </button>
+              <span style="margin-left:10px;">Click the Home Map button to learn how to navigate and use the main home/index map.</span>
+            </p>
+          </li>
+          <li>
+            <p>
+              <button id="instructions-btn"
+                class="btn about-modal-btn"
+                style="width:120px;"
+                type="button"
+                data-toggle="modal"
+                data-target="#story-instruction-mobile-modal">
+                  Story Map
+              </button>
+              <span style="margin-left:10px;">Click the Story Map button to learn how to navigate and use the map in a lake story view.</span>
             </p>
           </li>
         </ul>

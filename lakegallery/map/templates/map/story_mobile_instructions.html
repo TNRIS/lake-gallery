@@ -7,31 +7,18 @@
     <div id="mobile-modal-content" class="modal-content">
 
       <div class="modal-header">
-        <h2 style="text-align: center;">Lake Story Map - Mobile Instructions</h2>
+        <img class="img-fluid" style="max-width: 50px; margin-right: 20px;" src="{% static 'map/images/lot-logo.jpg' %}" </img>
+        <h2 class="modal-title" style="align-text: center;">Lake Story Map - Mobile Instructions</h2>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" title="Close instructions">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
 
       <div id="story-modal-body" class="modal-body">
-
-        <div style="text-align: center;" class="container">
-          <div class="row">
-            <div class="col-md" style="bottom:0;">
-              <label class="form-check-label">
-                <input id="mobileModalHideCheckbox" class="form-check-input" type="checkbox" value="">
-                Don't show this message again
-              </label>
-              <button id="dismiss-modal-btn" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
-
         <div class="row">
-          <div class="col-lg">
-
+          <div class="col-sm">
             <p>
-              <strong>Important:</strong> The lake story map requires the use of two fingers to pan and zoom around the lake area on a mobile device.
+              <strong style="color:red;">Important:</strong> The lake story map requires the use of two fingers to pan and zoom around the lake area on a mobile device.
             </p>
 
             <p>
@@ -44,26 +31,51 @@
             </p>
 
             <p>
-              In the tools menu, some lakes have links to historical imagery collections via the <a href="https://data.tnris.org" target="_blank">TNRIS DataHub</a>.
-              To view an available DataHub collection for a lake story:
-              <ol>
-                <li>Open the tools menu in the top right of the map by clicking/touching the menu icon.</li>
-                <li>Click/touch a year on the swiper tool to add the overlay historical layer to the map.</li>
-                <li>Click/touch the same year again to open a new browser tab for that historical layer on the DataHub.</li>
-              </ol>
+              In the tools menu under the time slider, some lakes have hyperlinked years that will send you to that historical imagery collections
+              via the <a href="https://data.tnris.org" target="_blank">TNRIS DataHub</a>. To view an available DataHub collection for a lake story:
             </p>
+            <ol>
+              <li>Open the tools menu in the top right of the map by clicking/touching the menu icon.</li>
+              <li>Click/touch a year on the time slider to overlay a historical layer to the map.</li>
+              <li>Click/touch the same year again in the time slider. If there is an available collection for that year, a new browser tab will open and send you to the DataHub webpage.</li>
+            </ol>
 
             <p>
               For any other questions or concerns, please read through the Lakes of Texas <a href="about/">About</a> page and use the <a href="about/#Contact">Contact</a>
-              form if needed.
+              form if you would like to reach out to TNRIS.
             </p>
+
+            <div id="story-dismiss" style="text-align: center;" class="container">
+              <div class="row">
+                <div class="col-md">
+                  <label class="form-check-label">
+                    <input id="mobileModalHideCheckbox" class="form-check-input" type="checkbox" value="">
+                    Don't show this message again
+                  </label>
+                </div>
+              </div>
+              <div style="padding-top:10px;" class="row">
+                <div class="col-md">
+                  <button id="dismiss-modal-btn" type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
 
           </div>
         </div>
-
       </div>
+
     </div>
   </div>
 </div>
+
+<script>
+
+  // hide the close button and dont show this message again only in the About page Instruction section
+  window.location.pathname.includes("about") ? document.getElementById("story-dismiss").style.display = "none" : "";
+
+</script>
 
 {% endblock %}

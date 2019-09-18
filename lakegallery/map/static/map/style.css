@@ -453,8 +453,6 @@ ol>img {
     max-width: 80%;
     max-height: 90%;
     width: auto !important;
-    display: inline-block;
-    text-align: center;
   }
 
   .modal-content {
