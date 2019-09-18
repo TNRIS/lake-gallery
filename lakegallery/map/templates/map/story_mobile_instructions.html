@@ -41,7 +41,7 @@
             </ol>
 
             <p>
-              For any other questions or concerns, please read through the Lakes of Texas <a href="about/">About</a> page and use the <a href="about/#Contact">Contact</a>
+              For any other questions or concerns, please read through the Lakes of Texas <a id="about-link" href="">About</a> page and use the <a id="contact-link" href="">Contact</a>
               form if you would like to reach out to TNRIS.
             </p>
 
@@ -75,6 +75,10 @@
 
   // hide the close button and dont show this message again only in the About page Instruction section
   window.location.pathname.includes("about") ? document.getElementById("story-dismiss").style.display = "none" : "";
+
+  // switch out href for instruction modal id about-link based on current location.pathname
+  !window.location.pathname.includes("about") ? document.getElementById("about-link").href = "/about" : "";
+  !window.location.pathname.includes("about") ? document.getElementById("contact-link").href = "/about/#Contact" : "";
 
 </script>
 
