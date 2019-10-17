@@ -11,6 +11,9 @@ export DB_PORT=''
 export AWS_STORAGE_BUCKET_NAME=''
 export AWS_S3_REGION_NAME=''
 
+export CONTACT_SUBMIT_URL=''
+export RECAPTCHA_SITE_KEY=''
+
 echo 'Environment variables set!'
 
 # PSQL CONNECT:

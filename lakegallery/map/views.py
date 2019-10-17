@@ -115,7 +115,9 @@ def story(request, lake):
 def about(request):
     res = get_lake_header_list()
     context = {'header_lakes': res,
-               'version': settings.VERSION}
+               'version': settings.VERSION,
+               'contact_submit_url': settings.CONTACT_SUBMIT_URL,
+               'recaptcha_site_key': settings.RECAPTCHA_SITE_KEY}
 
     return render(request, 'map/about.html', context)
 
