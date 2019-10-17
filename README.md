@@ -27,22 +27,19 @@ You will need to use your configured AWS CLI when working locally. If not alread
 
 ## Develop
 
-1. Make sure `DEBUG = True` in ~/lake-gallery/lakegallery/lakegallery/settings.py
 1. run `make run-dev` to run the app locally and reference local static files. Will be available at `localhost:8000`. Media files will still be referenced from the production S3 bucket.
-1. run `make run-tests` to run the unit tests for the map application
+2. run `make run-tests` to run the unit tests for the map application
 
 ## Local Production Build
 
 In production, the app pulls/references all static files for all apps from the configured S3 bucket. Run **Deployment Prep** section's Step 1 to upload/push local static files into S3. **VERY DANGEROUS** if app is currently deployed as you will be overwriting the production static files!
-1. Make sure `DEBUG = True` in ~/lake-gallery/lakegallery/lakegallery/settings.py
 1. run `make run-prod` to run the app locally and reference prod s3 static files. Will be available at `localhost:8000`.
 
 ## Deployment Prep
 
-1. Make sure `DEBUG = False` in ~/lake-gallery/lakegallery/lakegallery/settings.py
 1. run `make push-static` to compile all static files and overwrite those in S3. **VERY DANGEROUS** if app is currently deployed as you will be overwriting the production static files!
-1. `pip freeze > requirements.txt` to save dependencies
-1. head over to the deployments repo to execute the actual application deployment
+2. `pip freeze > requirements.txt` to save dependencies
+3. head over to the deployments repo to execute the actual application deployment
 
 
 ## Notes
