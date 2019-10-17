@@ -1,7 +1,7 @@
 {% load static %}
 
 {% block content %}
-
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <form method="POST" id="contactForm">
   {% csrf_token %}
   <div class="form-group">
@@ -31,7 +31,7 @@
       <div class="col-md-6">
         <label class="input-label" for="industry">Industry</label>
         <select class="form-control" id="industry" name="industry" aria-describedby="industry">
-          <option></option>
+          <option>Choose industry...</option>
           <option>Agriculture</option>
           <option>Cartography</option>
           <option>Conservation</option>
@@ -61,6 +61,11 @@
         <small id="emailHelp" class="form-text text-muted">Type your Lakes of Texas inquiry here.</small>
       </div>
     </div>
+    <br>
+    <div class="form-row">
+      <div class="g-recaptcha" data-sitekey="{{ recaptcha_site_key }}" required></div>
+      <p id="recaptcha-notify" style="color: red; display: none;">Recaptcha verification required.</p>
+    </div>
   </div>
   <div class="form-group">
     <div class="submit center-block">
@@ -72,11 +77,12 @@
 </form>
 
 <script type="text/javascript">
-
   // On submit, prevent default and run the submitContact function
   $('#contactForm').on('submit', function(event){
     event.preventDefault(); // prevent default page refresh after form submission
-    console.log("form submitted!")  // sanity check
+    document.getElementById('contact-notify-error').style.display = 'none';
+    document.getElementById('contact-notify-success').style.display = 'none';
+    document.getElementById('recaptcha-notify').style.display = 'none';
     contactSubmit(); // run function
   });
 
@@ -87,9 +93,15 @@
     const fullName = firstName + " " + lastName;
     const email = document.getElementById("email").value; // required field
     const phone = document.getElementById("phone").value ? document.getElementById("phone").value : ""; // condition --> field is not required
-    const industry = document.getElementById("industry").value ? document.getElementById("industry").value : ""; // condition --> field is not required
+    const industry = document.getElementById("industry").value !== "Choose industry..." ? document.getElementById("industry").value : "N/A"; // condition --> field is not required
     const message = document.getElementById("message").value; // required field
     const date = new Date();
+    const recaptchaResp = grecaptcha.getResponse();
+    // check recaptcha response. if not present, raise alert and cancel submission
+    if (recaptchaResp == '') {
+      document.getElementById('recaptcha-notify').style.display = 'block';
+      return
+    }
 
     // build the json formInfo variable based on input values from contact form
     const formInfo = {
@@ -99,10 +111,11 @@
       'Industry': industry,
       'Message': message,
       'Date': date,
-      'form_id': 'lakes-of-texas'
+      'form_id': 'lakes-of-texas',
+      'recaptcha': recaptchaResp
     };
 
-    const contactUrl = 'https://contact.tnris.org/';
+    const contactUrl = '{{ contact_submit_url }}';
 
     const payload = {
       method: 'POST',
@@ -114,11 +127,32 @@
 
     // send payload to the contact url/app
     fetch(contactUrl, payload).then(res => res.json())
-    .then(response => console.log('Success:', JSON.stringify(response)))
-    .catch(error => console.error('Error:', error));
-
+    .then(response => {
+      console.log(response);
+      if (response.status === 'success') {
+        console.log('Success:', response.message);
+        document.getElementById('contact-notify-error').style.display = 'none';
+        document.getElementById('contact-notify-success').style.display = 'block';
+        document.getElementById('recaptcha-notify').style.display = 'none';
+        document.getElementById('contactForm').reset();
+        grecaptcha.reset();
+      }
+      else {
+        console.error('Error:', response.message);
+        document.getElementById('contact-notify-success').style.display = 'none';
+        document.getElementById('contact-notify-error').style.display = 'block';
+        document.getElementById('recaptcha-notify').style.display = 'none';
+        grecaptcha.reset();
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      document.getElementById('contact-notify-success').style.display = 'none';
+      document.getElementById('contact-notify-error').style.display = 'block';
+      document.getElementById('recaptcha-notify').style.display = 'none';
+      grecaptcha.reset();
+    });
   }
-
 </script>
 
 {% endblock %}
