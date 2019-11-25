@@ -27,8 +27,15 @@ You will need to use your configured AWS CLI when working locally. If not alread
 
 ## Develop
 
-1. run `make run-dev` to run the app locally and reference local static files. Will be available at `localhost:8000`. Media files will still be referenced from the production S3 bucket.
-2. run `make run-tests` to run the unit tests for the map application
+1. Run the app:
+
+run `make run-dev` to run the app locally and reference local static files. Will be available at `localhost:8000`. Media files will still be referenced from the production S3 bucket.
+
+  or
+
+run `make run-dev-local` to run the app locally and reference local static files if API (api.tnris.org) is already running locally. Will be available at `localhost:8030`. Media files will still be referenced from the production S3 bucket. **This command is for testing contact forms since they use the API.**
+
+1. run `make run-tests` to run the unit tests for the map application
 
 ## Local Production Build
 
