@@ -1,5 +1,5 @@
 
-FROM ubuntu:xenial
+FROM ubuntu:latest
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -13,7 +13,12 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
-RUN apt-get install -y python3 python3-pip python3-venv gdal-bin nginx supervisor curl
+RUN apt-get install -y python3 python3-pip python3-venv
+RUN apt-get install -y software-properties-common
+RUN add-apt-repository ppa:nginx/stable
+RUN apt-get update
+RUN apt-get install -y gdal-bin nginx supervisor curl
+RUN nginx -v
 
 # Setup python 3 virtualenv
 RUN mkdir /envs/
