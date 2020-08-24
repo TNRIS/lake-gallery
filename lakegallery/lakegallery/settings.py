@@ -135,13 +135,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 # AWS Bucket Settings for Static & Media
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',
-}
 
 AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME')
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+# AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_CUSTOM_DOMAIN = 'cdn.tnris.org'
 
 CONTACT_SUBMIT_URL = os.environ.get('CONTACT_SUBMIT_URL')
 RECAPTCHA_SITE_KEY = os.environ.get('RECAPTCHA_SITE_KEY')
