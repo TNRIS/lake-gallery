@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from django.http import Http404
-from .config import layers, overlays, overlay_order
 
 from django.shortcuts import render_to_response
 # from django.template import RequestContext
@@ -32,7 +31,7 @@ views/templates & redirects
 def index(request):
     res = get_lake_header_list()
     context = {'header_lakes': res,
-               'layers': layers, 'version': settings.VERSION}
+               'version': settings.VERSION}
 
     return render(request, 'map/index.html', context)
 
@@ -100,10 +99,10 @@ def story(request, lake):
         low_list = []
 
     context = {'header_lakes': res, 'extent': ext,
-               'layer': layers['reservoirs_pt'], 'lake': lake, 'links': links,
+               'lake': lake, 'links': links,
                'story': c, 'stats': s, 'high_events': high_list,
-               'low_events': low_list, 'overlays': overlays,
-               'overlay_order': overlay_order, 'overlay_query': m.id, 'data_hub_ids': datahub,
+               'low_events': low_list,
+               'data_hub_ids': datahub,
                'version': settings.VERSION}
 
     if request.is_mobile is False:

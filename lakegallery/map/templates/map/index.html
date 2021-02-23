@@ -28,9 +28,6 @@
     <script type="text/javascript">
         function main_map_init (map, options) {
           L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}@2x.png').addTo(map);
-          var account = 'tnris-flood'
-          var pointLayer = "{{ layers.reservoirs_pt.table_name }}";
-          var polyLayer = pointLayer;
           var lakeClusters;
           var pointUrl;
           var polyUrl;
@@ -40,10 +37,6 @@
           L.easyButton("<img src={% static 'map/images/texas_solid_blk.png' %} style='width:auto; height:100%; opacity:1; padding: 3px;' title='Zoom to statewide extent' />", function(btn, map){
             map.fitBounds(lakeClusters.getBounds());
           }).addTo(map);
-
-          // sql statements for the carto sql api
-          var polySql = `SELECT * FROM ${polyLayer} WHERE story='enabled'`;
-          var pointSql = `SELECT type, story, status, res_lbl, res_name, ST_PointOnSurface(the_geom) as the_geom FROM ${pointLayer} WHERE story='enabled'`;
 
           // popup and tooltip function to be used each time point/marker clicked/hovered over
           var lakePopup = function (feature, layer) {
@@ -157,9 +150,8 @@
             }
           };
 
-          // on map load use point sql for point/marker lake locations
-          pointUrl = `https://${account}.carto.com/api/v2/sql?format=GeoJSON&q=${pointSql}`;
-          polyUrl = `https://${account}.carto.com/api/v2/sql?format=GeoJSON&q=${polySql}`;
+          polyUrl = `https://mapserver.tnris.org/?map=/tnris_mapfiles/lg_reservoirs.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=StoryReservoirsPoly&outputformat=geojson&SRSNAME=EPSG:4326`;
+          pointUrl = `https://mapserver.tnris.org/?map=/tnris_mapfiles/lg_reservoirs.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=StoryReservoirsPoint&outputformat=geojson&SRSNAME=EPSG:4326`;
 
           // set up both point and poly layers; add point on initial load
           // then add/remove layer based on zoom level in map.on function
