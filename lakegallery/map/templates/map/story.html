@@ -350,21 +350,14 @@
 
               basemaps['Google Imagery'].addTo(map);
 
-              var account = 'tnris-flood';
-
-              var resConfig = JSON.parse('{{ layer }}'.replace(/&#39;/g, '"').replace(/&quot;/g, "'"));
               var linkConfig = JSON.parse('{{ links }}'.replace(/&#39;/g, '"'));
 
-              // begin getLakeJson function - config & lakeName as args
-              function getLakeJson (config, lakeName) {
-                var css = config.carto_story_css;
-                var interactivity = config.interactivity;
-                var sql = `SELECT * FROM ${config.table_name} WHERE story='enabled' AND res_lbl = '${lakeName}'`;
+              // begin getLakeJson function - lakeName as arg
+              function getLakeJson (lakeName) {
                 var bb = {{ extent }};
-
                 var lakeBounds = [[bb[1],bb[0]],[bb[3],bb[2]]];
 
-                var url = `https://${account}.carto.com/api/v2/sql?format=GeoJSON&q=${sql}`;
+                var url = `https://mapserver.tnris.org/?map=/tnris_mapfiles/lg_reservoirs.map&SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=StoryReservoirsPoly&outputformat=geojson&SRSNAME=EPSG:4326&Lake=${lakeName}`;
 
                 // add geojson lake layer with simple popup
                 $.getJSON(url, function(data) {
@@ -389,8 +382,8 @@
 
               } // end getLakeJson function
 
-              // run getLakeJson function with resConfig & lake name as args
-              getLakeJson(resConfig, "{{ lake }}");
+              // run getLakeJson function with lake name as arg
+              getLakeJson("{{ lake }}");
 
               // Historical slider function below -----
               function setupHistoricalSlider(links) {
